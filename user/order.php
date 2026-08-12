@@ -41,6 +41,7 @@ if (empty($action)) {
     View::output();
 }
 if($action == 'index'){
+    loginAuth::checkLogin(NULL, 'user');
     $page = Input::getIntVar('page', 1);
     $status = Input::getStrVar('status'); // 允许为空值
     $search = Input::getStrVar('search'); // 允许为空值
