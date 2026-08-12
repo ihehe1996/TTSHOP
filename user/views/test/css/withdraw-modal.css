@@ -1,0 +1,259 @@
+/* 提现弹窗专用样式 */
+.withdraw-modal-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.withdraw-modal-content {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    max-width: 500px;
+    max-height: 80vh;
+    width: 90vw;
+    overflow: hidden;
+    animation: slideUp 0.3s ease;
+}
+
+.withdraw-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid #f0f0f0;
+    background: #ffffff;
+}
+
+.withdraw-modal-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.withdraw-modal-close {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+}
+
+.withdraw-modal-close:hover {
+    background: #f8f9fa;
+    color: #495057;
+    transform: scale(1.1);
+}
+
+.withdraw-modal-body {
+    padding: 0;
+    max-height: calc(80vh - 80px);
+    overflow-y: auto;
+}
+
+.withdraw-form {
+    padding: 24px;
+}
+
+.withdraw-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.withdraw-form .layui-form-item {
+    margin-bottom: 20px;
+}
+
+.withdraw-form .layui-form-item.full-width {
+    grid-column: 1 / -1;
+}
+
+.withdraw-form .layui-form-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #495057;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.withdraw-form .layui-input-block {
+    position: relative;
+}
+
+.withdraw-form .layui-input,
+.withdraw-form .layui-textarea,
+.withdraw-form .layui-select {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background: #ffffff;
+}
+
+.withdraw-form .layui-input:focus,
+.withdraw-form .layui-textarea:focus,
+.withdraw-form .layui-select:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    outline: none;
+}
+
+.form-hint {
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 6px;
+    line-height: 1.4;
+}
+
+.withdraw-form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    padding-top: 20px;
+    border-top: 1px solid #f0f0f0;
+    margin-top: 20px;
+}
+
+.withdraw-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 100px;
+    justify-content: center;
+}
+
+.submit-btn {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    color: #ffffff;
+    border: 1px solid transparent;
+}
+
+.submit-btn:hover {
+    background: linear-gradient(135deg, #2980b9 0%, #21618c 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+}
+
+.cancel-btn {
+    background: #ffffff;
+    color: #6c757d;
+    border: 1px solid #dee2e6;
+}
+
+.cancel-btn:hover {
+    background: #f8f9fa;
+    color: #495057;
+    border-color: #ced4da;
+    transform: translateY(-1px);
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .withdraw-modal-content {
+        width: 95vw;
+        max-height: 90vh;
+        border-radius: 12px;
+    }
+    
+    .withdraw-modal-header {
+        padding: 16px 20px;
+    }
+    
+    .withdraw-modal-title {
+        font-size: 16px;
+    }
+    
+    .withdraw-form {
+        padding: 20px;
+    }
+    
+    .withdraw-form-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .withdraw-form-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .withdraw-btn {
+        width: 100%;
+        min-width: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .withdraw-modal-header {
+        padding: 12px 16px;
+    }
+    
+    .withdraw-modal-title {
+        font-size: 15px;
+    }
+    
+    .withdraw-modal-close {
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+    }
+    
+    .withdraw-form {
+        padding: 16px;
+    }
+    
+    .withdraw-form .layui-input,
+    .withdraw-form .layui-textarea,
+    .withdraw-form .layui-select {
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+    
+    .withdraw-btn {
+        padding: 14px 20px;
+        font-size: 13px;
+    }
+}

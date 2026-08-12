@@ -1,0 +1,353 @@
+/* 充值表单样式 */
+
+/* 快捷金额选择 */
+.amount-quick-select {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.amount-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 8px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    background: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    min-height: 60px;
+}
+
+.amount-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(79, 99, 235, 0.1), transparent);
+    transition: left 0.6s ease;
+}
+
+.amount-item:hover::before {
+    left: 100%;
+}
+
+.amount-item:hover {
+    border-color: #4F63EB;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(79, 99, 235, 0.15);
+}
+
+.amount-item.active {
+    border-color: #4F63EB;
+    background: linear-gradient(135deg, #4F63EB 0%, #6C5CE7 100%);
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(79, 99, 235, 0.3);
+}
+
+.amount-item.custom-amount {
+    border-style: dashed;
+    border-color: #cbd5e1;
+    background: #f8fafc;
+}
+
+.amount-item.custom-amount:hover {
+    border-color: #4F63EB;
+    border-style: solid;
+    background: #ffffff;
+}
+
+.amount-item.custom-amount.active {
+    border-style: solid;
+    border-color: #4F63EB;
+    background: linear-gradient(135deg, #4F63EB 0%, #6C5CE7 100%);
+    color: #ffffff;
+}
+
+.amount-symbol {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+.amount-item.active .amount-symbol,
+.amount-item:hover .amount-symbol {
+    opacity: 1;
+}
+
+.amount-value {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.2;
+    transition: all 0.3s ease;
+}
+
+/* 自定义金额输入框 */
+.custom-amount-input {
+    margin-top: 12px;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 2px solid #4F63EB;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.custom-amount-input .layui-input {
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1e293b;
+    padding: 0;
+    height: auto;
+}
+
+.custom-amount-input .layui-input:focus {
+    box-shadow: none;
+}
+
+/* 支付方式选择 */
+.payment-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.payment-method-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    background: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.payment-method-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(79, 99, 235, 0.05), transparent);
+    transition: left 0.6s ease;
+}
+
+.payment-method-item:hover::before {
+    left: 100%;
+}
+
+.payment-method-item:hover {
+    border-color: #4F63EB;
+    transform: translateX(2px);
+    box-shadow: 0 4px 12px rgba(79, 99, 235, 0.1);
+}
+
+.payment-method-item.active {
+    border-color: #4F63EB;
+    background: linear-gradient(135deg, rgba(79, 99, 235, 0.05) 0%, rgba(108, 92, 231, 0.05) 100%);
+    transform: translateX(2px);
+    box-shadow: 0 4px 12px rgba(79, 99, 235, 0.15);
+}
+
+.payment-method-item.active::after {
+    content: '✓';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(135deg, #4F63EB 0%, #6C5CE7 100%);
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    animation: scaleIn 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.payment-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+    margin-right: 12px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.payment-icon img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    transition: all 0.3s ease;
+}
+
+.payment-method-item:hover .payment-icon,
+.payment-method-item.active .payment-icon {
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.payment-method-item:hover .payment-icon img,
+.payment-method-item.active .payment-icon img {
+    transform: scale(1.1);
+}
+
+.payment-icon svg {
+    width: 24px;
+    height: 24px;
+    transition: all 0.3s ease;
+}
+
+.payment-info {
+    flex: 1;
+}
+
+.payment-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 2px;
+    line-height: 1.3;
+}
+
+.payment-desc {
+    font-size: 12px;
+    color: #64748b;
+    line-height: 1.4;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .amount-quick-select {
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        gap: 8px;
+    }
+    
+    .amount-item {
+        padding: 12px 8px;
+        min-height: 60px;
+    }
+    
+    .amount-value {
+        font-size: 16px;
+    }
+    
+    .payment-method-item {
+        padding: 14px 16px;
+    }
+    
+    .payment-icon {
+        width: 40px;
+        height: 40px;
+        margin-right: 12px;
+    }
+    
+    .payment-icon img {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .payment-icon svg {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .payment-name {
+        font-size: 14px;
+    }
+    
+    .payment-desc {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .amount-quick-select {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+    }
+    
+    .amount-item {
+        padding: 10px 6px;
+        min-height: 50px;
+    }
+    
+    .amount-symbol {
+        font-size: 12px;
+    }
+    
+    .amount-value {
+        font-size: 14px;
+    }
+    
+    .payment-method-item {
+        padding: 12px 14px;
+    }
+    
+    .payment-icon {
+        width: 36px;
+        height: 36px;
+        margin-right: 10px;
+    }
+    
+    .payment-icon img {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .payment-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .payment-name {
+        font-size: 13px;
+    }
+    
+    .payment-desc {
+        font-size: 11px;
+    }
+}
