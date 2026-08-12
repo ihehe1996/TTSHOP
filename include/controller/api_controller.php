@@ -673,29 +673,7 @@ class Api_Controller {
         output::ok(['userinfo' => $data]);
     }
 
-    public function upload() {
-        $sid = Input::postIntVar('sid');
-        $author_uid = Input::postIntVar('author_uid', 1);
-        $attach = isset($_FILES['file']) ? $_FILES['file'] : '';
 
-        $this->checkApiKey();
-
-        if (!$attach || $attach['error'] === 4) {
-            Output::error('Upload error');
-        }
-
-        $ret = '';
-        addAction('upload_media', 'upload2local');
-        doOnceAction('upload_media', $attach, $ret);
-
-        if (empty($ret['success']) || !isset($ret['file_info'])) {
-            Output::error($ret['message']);
-        }
-
-        $aid = $this->Media_Model->addMedia($ret['file_info'], $sid, $author_uid);
-
-        Output::ok(['media_id' => $aid, 'url' => $ret['url'], 'file_info' => $ret['file_info']]);
-    }
 
     private function comment_list() {
         $id = Input::getIntVar('id');
