@@ -2,6 +2,7 @@
 .htaccess
 .user.ini
 .CLAUDE.md
+CLAUDE.md
 Dockerfile
 # config.php
 /content/backup/*.sql
@@ -15,6 +16,7 @@ Dockerfile
 .cache
 .idea
 .claude
+.vscode
 .netbeans
 .DS_Store
 
