@@ -299,6 +299,99 @@
             padding-top: 24px;
         }
     }
+
+    /* ===== 找回密码教程 ===== */
+    .alert-info {
+        background: #EFF6FB;
+        border-color: #C4DCEF;
+        color: #3D4F5A;
+    }
+
+    .alert i {
+        margin-right: 6px;
+    }
+
+    .steps {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 16px;
+        counter-reset: step;
+    }
+
+    .step {
+        position: relative;
+        padding: 0 0 22px 44px;
+    }
+
+    .step:last-child {
+        padding-bottom: 0;
+    }
+
+    .step::before {
+        counter-increment: step;
+        content: counter(step);
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 28px;
+        height: 28px;
+        line-height: 28px;
+        text-align: center;
+        background: linear-gradient(135deg, #7BA89D 0%, #9DBEB5 100%);
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 50%;
+    }
+
+    .step::after {
+        content: '';
+        position: absolute;
+        left: 13px;
+        top: 34px;
+        bottom: 6px;
+        width: 2px;
+        background: #E4EEEA;
+    }
+
+    .step:last-child::after {
+        display: none;
+    }
+
+    .step-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #3D4F4A;
+        margin-bottom: 4px;
+    }
+
+    .step-desc {
+        font-size: 13px;
+        color: #7A8B86;
+        line-height: 1.6;
+    }
+
+    .step-desc code {
+        background: #EAF4F1;
+        color: #3D4F4A;
+        padding: 1px 6px;
+        border-radius: 4px;
+        font-size: 12px;
+    }
+
+    .cmd {
+        margin: 8px 0 0;
+        padding: 10px 14px;
+        background: #2B3532;
+        color: #D8F0E8;
+        border-radius: 8px;
+        font-size: 13px;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        overflow-x: auto;
+        line-height: 1.6;
+        white-space: pre-wrap;
+        word-break: break-all;
+    }
 </style>
 
 <div class="login-wrapper">
@@ -307,50 +400,47 @@
             <i class="fa fa-unlock-alt"></i>
         </div>
         <h1><?= Option::get('blogname') ?></h1>
-        <p>找回密码：验证邮箱</p>
+        <p>找回密码 · 使用站长工具箱重置</p>
     </div>
 
     <div class="login-card">
-        <form method="post" class="layui-form" action="./account.php?action=doreset">
-            <?php if (isset($_GET['error_mail'])): ?>
-                <div class="alert alert-danger">错误的管理员邮箱</div><?php endif ?>
-            <?php if (isset($_GET['error_sendmail'])): ?>
-                <div class="alert alert-danger">邮件验证码发送失败，请检查邮件通知设置</div><?php endif ?>
-            <?php if (isset($_GET['err_ckcode'])): ?>
-                <div class="alert alert-danger">图形验证码错误</div><?php endif ?>
+        <div class="alert alert-info">
+            <i class="fa fa-info-circle"></i>
+            本站已改用服务器上的「站长工具箱」重置密码，操作简单、无需依赖邮件服务。
+        </div>
 
-            <div class="form-group">
-                <label>管理员邮箱</label>
-                <div class="input-box">
-                    <input type="email" class="form-control" id="mail" name="mail" aria-describedby="emailHelp" placeholder="输入管理员邮箱" required autofocus>
-                    <i class="fa fa-envelope"></i>
-                </div>
-            </div>
+        <ol class="steps">
+            <li class="step">
+                <div class="step-title">登录服务器</div>
+                <div class="step-desc">通过 SSH 连接服务器，或在宝塔面板中使用「终端」功能。</div>
+            </li>
+            <li class="step">
+                <div class="step-title">进入网站根目录</div>
+                <div class="step-desc">切换到安装本系统的目录，例如：</div>
+                <pre class="cmd"><code>cd /www/wwwroot/你的站点目录</code></pre>
+            </li>
+            <li class="step">
+                <div class="step-title">启动站长工具箱</div>
+                <pre class="cmd"><code>php ttshop</code></pre>
+            </li>
+            <li class="step">
+                <div class="step-title">选择「修改管理员密码」</div>
+                <div class="step-desc">在菜单中输入 <code>3</code> 并回车，进入改密流程。</div>
+            </li>
+            <li class="step">
+                <div class="step-title">按提示完成重置</div>
+                <div class="step-desc">输入管理员 UID（直接回车默认第一个），再输入并确认新密码（至少 6 位）。</div>
+            </li>
+        </ol>
 
-            <?php if ($login_code): ?>
-            <div class="form-group">
-                <label>验证码</label>
-                <div class="captcha-row">
-                    <div class="input-box">
-                        <input type="text" name="login_code" class="form-control" id="login_code" placeholder="验证码" required>
-                        <i class="fa fa-shield"></i>
-                    </div>
-                    <div class="captcha-img-box" id="captcha-box" title="点击刷新">
-                        <img src="../include/lib/checkcode.php" id="checkcode" alt="验证码">
-                    </div>
-                </div>
-            </div>
-            <?php endif ?>
+        <div class="alert alert-success">
+            <i class="fa fa-check-circle"></i>
+            重置完成后返回登录页，使用新密码登录即可。若忘记管理员账号，可在工具箱中选择「查看管理员信息」查看。
+        </div>
 
-            <button class="btn-login" type="submit">
-                <i class="fa fa-paper-plane"></i>
-                <span>提交</span>
-            </button>
-
-            <div class="login-ext">
-                <a href="./">返回登录</a>
-            </div>
-        </form>
+        <div class="login-ext">
+            <a href="./">返回登录</a>
+        </div>
     </div>
 
     <div class="login-footer">
@@ -363,12 +453,3 @@
 </div>
 </body>
 </html>
-<script>
-    $(function () {
-        setTimeout(hideActived, 6000);
-        $('#checkcode, #captcha-box').click(function () {
-            var timestamp = new Date().getTime();
-            $('#checkcode').attr("src", "../include/lib/checkcode.php?" + timestamp);
-        });
-    });
-</script>
