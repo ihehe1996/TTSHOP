@@ -1,0 +1,586 @@
+<?php
+/**
+ * TTSHOP 站长工具箱
+ *
+ * 在网站根目录执行：php ttshop
+ *
+ * 提供：查看管理员信息、修改管理员账号、修改管理员密码、系统信息等。
+ * 仅支持命令行运行（CLI），Web 环境会直接拒绝。
+ *
+ * @package TTSHOP
+ */
+
+// ---------------------------------------------------------------------------
+// 1. 运行环境校验
+// ---------------------------------------------------------------------------
+if (PHP_SAPI !== 'cli') {
+    http_response_code(403);
+    header('Content-Type: text/plain; charset=utf-8');
+    exit("TTSHOP 工具箱仅支持命令行运行。\n请在网站根目录执行：php ttshop\n");
+}
+
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_DEPRECATED);
+ini_set('display_errors', '0');
+@ini_set('default_charset', 'UTF-8');
+
+define('TT_ROOT', __DIR__);
+define('TOOL_NAME', 'TTSHOP 工具箱');
+define('TOOL_VERSION', '1.0.0');
+
+// ---------------------------------------------------------------------------
+// 2. 命令行参数
+// ---------------------------------------------------------------------------
+$OPTS = array('plain' => false, 'help' => false, 'version' => false);
+foreach (array_slice($argv, 1) as $arg) {
+    switch ($arg) {
+        case '--plain':
+        case '--no-color':
+            $OPTS['plain'] = true;
+            break;
+        case '-h':
+        case '--help':
+            $OPTS['help'] = true;
+            break;
+        case '-v':
+        case '--version':
+            $OPTS['version'] = true;
+            break;
+    }
+}
+
+// ---------------------------------------------------------------------------
+// 3. 输出辅助（颜色、宽度、表格、边框）
+// ---------------------------------------------------------------------------
+
+/**
+ * 是否启用 ANSI 颜色
+ */
+function useColor() {
+    global $OPTS;
+    static $r = null;
+    if ($r !== null) {
+        return $r;
+    }
+    if ($OPTS['plain']) {
+        return $r = false;
+    }
+    $noColor = getenv('NO_COLOR');
+    if ($noColor !== false && $noColor !== '') {
+        return $r = false;
+    }
+    if (function_exists('stream_isatty') && !@stream_isatty(STDOUT)) {
+        return $r = false;
+    }
+    return $r = true;
+}
+
+function style($text, $code) {
+    return useColor() ? "\033[{$code}m{$text}\033[0m" : $text;
+}
+
+function bold($t)   { return style($t, '1'); }
+function dim($t)    { return style($t, '2'); }
+function red($t)    { return style($t, '31'); }
+function green($t)  { return style($t, '32'); }
+function yellow($t) { return style($t, '33'); }
+function blue($t)   { return style($t, '34'); }
+function magenta($t){ return style($t, '35'); }
+function cyan($t)   { return style($t, '36'); }
+
+function ok($msg)   { fwrite(STDOUT, style('✔ ', '32') . $msg . "\n"); }
+function info($msg) { fwrite(STDOUT, style('ℹ ', '36') . $msg . "\n"); }
+function warn($msg) { fwrite(STDOUT, style('⚠ ', '33') . $msg . "\n"); }
+function fail($msg) { fwrite(STDERR, style('✖ ', '31') . $msg . "\n"); exit(1); }
+
+/**
+ * 计算字符串显示宽度（中文等全角字符按 2 列计）
+ */
+function strWidth($s) {
+    if (function_exists('mb_strwidth')) {
+        return mb_strwidth($s, 'UTF-8');
+    }
+    $w = 0;
+    $len = strlen($s);
+    for ($i = 0; $i < $len; $i++) {
+        $o = ord($s[$i]);
+        if ($o < 0x80) {
+            $w += 1;
+        } elseif (($o & 0xE0) === 0xC0) {
+            $w += 2; $i += 1;
+        } elseif (($o & 0xF0) === 0xE0) {
+            $w += 2; $i += 2;
+        } elseif (($o & 0xF8) === 0xF0) {
+            $w += 2; $i += 3;
+        } else {
+            $w += 1;
+        }
+    }
+    return $w;
+}
+
+function pad($s, $w) {
+    $gap = $w - strWidth($s);
+    return $s . ($gap > 0 ? str_repeat(' ', $gap) : '');
+}
+
+/**
+ * 在若干行文字外面画一个方框
+ * $lines 每项可以是字符串，也可以是 array(text, colorCode)
+ */
+function box($lines) {
+    $w = 0;
+    foreach ($lines as $ln) {
+        $t = is_array($ln) ? $ln[0] : $ln;
+        $w = max($w, strWidth($t));
+    }
+    fwrite(STDOUT, style('╔' . str_repeat('═', $w + 2) . '╗', '36') . "\n");
+    foreach ($lines as $ln) {
+        $t   = is_array($ln) ? $ln[0] : $ln;
+        $col = is_array($ln) ? $ln[1] : null;
+        $cell = ' ' . pad($t, $w) . ' ';
+        if ($col !== null) {
+            $cell = style($cell, $col);
+        }
+        fwrite(STDOUT, style('║', '36') . $cell . style('║', '36') . "\n");
+    }
+    fwrite(STDOUT, style('╚' . str_repeat('═', $w + 2) . '╝', '36') . "\n");
+}
+
+/**
+ * 渲染对齐表格
+ * $headers 为表头；$rows 每格可以是字符串，也可以是 array(text, colorCode)
+ */
+function renderTable($headers, $rows, $indent = '  ') {
+    $cols = count($headers);
+    $widths = array_fill(0, $cols, 0);
+
+    $norm = function ($cell) {
+        return is_array($cell)
+            ? array($cell[0], isset($cell[1]) ? $cell[1] : null)
+            : array($cell, null);
+    };
+
+    foreach ($headers as $i => $h) {
+        $widths[$i] = max($widths[$i], strWidth($h));
+    }
+    foreach ($rows as $r) {
+        foreach ($r as $i => $cell) {
+            $n = $norm($cell);
+            $widths[$i] = max($widths[$i], strWidth($n[0]));
+        }
+    }
+
+    $border = function ($l, $j, $r) use ($widths) {
+        $parts = array();
+        foreach ($widths as $w) {
+            $parts[] = str_repeat('─', $w + 2);
+        }
+        return $l . implode($j, $parts) . $r;
+    };
+
+    fwrite(STDOUT, $indent . style($border('┌', '┬', '┐'), '2') . "\n");
+
+    $hc = array();
+    foreach ($headers as $i => $h) {
+        $hc[] = ' ' . style(pad($h, $widths[$i]), '1;36') . ' ';
+    }
+    fwrite(STDOUT, $indent . style('│', '2') . implode(style('│', '2'), $hc) . style('│', '2') . "\n");
+    fwrite(STDOUT, $indent . style($border('├', '┼', '┤'), '2') . "\n");
+
+    foreach ($rows as $r) {
+        $cells = array();
+        foreach ($r as $i => $cell) {
+            $n = $norm($cell);
+            $c = ' ' . pad($n[0], $widths[$i]) . ' ';
+            if ($n[1] !== null) {
+                $c = style($c, $n[1]);
+            }
+            $cells[] = $c;
+        }
+        fwrite(STDOUT, $indent . style('│', '2') . implode(style('│', '2'), $cells) . style('│', '2') . "\n");
+    }
+    fwrite(STDOUT, $indent . style($border('└', '┴', '┘'), '2') . "\n");
+}
+
+function clear() {
+    if (!useColor()) {
+        return;
+    }
+    if (function_exists('stream_isatty') && !@stream_isatty(STDOUT)) {
+        return;
+    }
+    fwrite(STDOUT, "\033[2J\033[H");
+}
+
+// ---------------------------------------------------------------------------
+// 4. 输入辅助
+// ---------------------------------------------------------------------------
+
+function readLine($prompt = '') {
+    if ($prompt !== '') {
+        fwrite(STDOUT, $prompt);
+    }
+    $line = fgets(STDIN);
+    return $line === false ? null : rtrim($line, "\r\n");
+}
+
+function canHideInput() {
+    if (DIRECTORY_SEPARATOR !== '/' || !function_exists('shell_exec')) {
+        return false;
+    }
+    return @shell_exec('stty -echo 2>/dev/null') !== null;
+}
+
+function readPassword($prompt = '') {
+    $hidden = canHideInput();
+    if ($hidden) {
+        @shell_exec('stty -echo 2>/dev/null');
+    }
+    if ($prompt !== '') {
+        fwrite(STDOUT, $prompt);
+    }
+    $line = fgets(STDIN);
+    if ($hidden) {
+        @shell_exec('stty echo 2>/dev/null');
+        fwrite(STDOUT, "\n");
+    }
+    return $line === false ? null : rtrim($line, "\r\n");
+}
+
+function pause() {
+    fwrite(STDOUT, "\n");
+    readLine(dim('按回车键返回菜单...'));
+}
+
+// ---------------------------------------------------------------------------
+// 5. 引导（加载 config + 自动加载 + 数据库）
+// ---------------------------------------------------------------------------
+
+function ttMsg($msg, $url = '') {
+    fwrite(STDERR, style('✖ ', '31') . $msg . "\n");
+    exit(1);
+}
+
+function bootstrap() {
+    $config = TT_ROOT . '/config.php';
+    if (!file_exists($config)) {
+        fail('未找到 config.php，请确认已在网站根目录执行本工具。');
+    }
+
+    // 未安装时 config.php 是跳转文件（header + die），需提前识别，避免 require 直接退出
+    $content = file_get_contents($config);
+    if ($content === false || strpos($content, 'DB_HOST') === false) {
+        fail('系统尚未安装或 config.php 未写入数据库配置，请先访问 install.php 完成安装。');
+    }
+
+    require_once $config;
+
+    foreach (array('DB_HOST', 'DB_USER', 'DB_PASSWD', 'DB_NAME', 'DB_PREFIX') as $c) {
+        if (!defined($c)) {
+            fail("config.php 缺少常量 {$c}，配置可能不完整。");
+        }
+    }
+
+    // 与 init.php 一致的类自动加载
+    spl_autoload_register(function ($class) {
+        $class = strtolower($class);
+        foreach (array('model', 'lib', 'controller', 'service') as $dir) {
+            $f = TT_ROOT . "/include/{$dir}/{$class}.php";
+            if (file_exists($f)) {
+                require_once $f;
+                return;
+            }
+        }
+    });
+
+    try {
+        $db = Database::getInstance();
+    } catch (Exception $e) {
+        fail('数据库连接失败：' . $e->getMessage());
+    }
+
+    return $db;
+}
+
+// ---------------------------------------------------------------------------
+// 6. 业务动作
+// ---------------------------------------------------------------------------
+
+function getAdmins($db, $prefix) {
+    return $db->fetch_all("SELECT * FROM {$prefix}user WHERE role = 'admin' ORDER BY uid ASC");
+}
+
+function actionViewAdmins($db) {
+    $prefix = DB_PREFIX;
+    $admins = getAdmins($db, $prefix);
+    if (empty($admins)) {
+        warn('未找到管理员账号（role = admin）。');
+        return;
+    }
+
+    $headers = array('UID', '账号', '昵称', '邮箱', '手机', '状态', '创建时间');
+    $rows = array();
+    foreach ($admins as $a) {
+        $rows[] = array(
+            array((string)$a['uid'], '33'),
+            array($a['username'], '1;36'),
+            $a['nickname'],
+            empty($a['email']) ? '-' : $a['email'],
+            empty($a['tel']) ? '-' : $a['tel'],
+            ($a['state'] == 0) ? array('正常', '32') : array('禁用', '31'),
+            empty($a['create_time']) ? '-' : date('Y-m-d H:i', (int)$a['create_time']),
+        );
+    }
+
+    renderTable($headers, $rows);
+    fwrite(STDOUT, "\n" . dim('共 ' . count($admins) . ' 个管理员账号') . "\n");
+}
+
+/**
+ * 交互式选择一个管理员，返回其记录；未选择返回 null
+ */
+function chooseAdmin($db) {
+    $prefix = DB_PREFIX;
+    $admins = getAdmins($db, $prefix);
+    if (empty($admins)) {
+        warn('未找到管理员账号（role = admin）。');
+        return null;
+    }
+
+    $headers = array('UID', '账号', '昵称', '邮箱');
+    $rows = array();
+    foreach ($admins as $a) {
+        $rows[] = array(
+            array((string)$a['uid'], '33'),
+            array($a['username'], '1;36'),
+            empty($a['nickname']) ? '-' : $a['nickname'],
+            empty($a['email']) ? '-' : $a['email'],
+        );
+    }
+    renderTable($headers, $rows);
+
+    $first = $admins[0]['uid'];
+    $uid = readLine("\n请输入管理员 UID" . dim('（回车默认 ' . $first . '）') . '：');
+    if ($uid === null) {
+        return null;
+    }
+    $uid = trim($uid);
+    if ($uid === '') {
+        $uid = $first;
+    }
+    $uid = (int)$uid;
+
+    foreach ($admins as $a) {
+        if ((int)$a['uid'] === $uid) {
+            return $a;
+        }
+    }
+
+    warn('未找到 UID 为 ' . $uid . ' 的管理员。');
+    return null;
+}
+
+function actionChangeUsername($db) {
+    $prefix = DB_PREFIX;
+    $admin = chooseAdmin($db);
+    if (!$admin) {
+        return;
+    }
+
+    fwrite(STDOUT, "\n" . dim('注意：账号（username）用于后台登录，修改后该账号当前的登录状态将失效。') . "\n");
+
+    $new = readLine('请输入新账号（留空取消）：');
+    if ($new === null || trim($new) === '') {
+        info('已取消。');
+        return;
+    }
+    $new = trim($new);
+
+    if (preg_match('/[\s]/', $new)) {
+        warn('账号不能包含空格或制表符。');
+        return;
+    }
+    if (strWidth($new) > 32) {
+        warn('账号过长（不能超过 32 个字符宽度）。');
+        return;
+    }
+
+    // 唯一性校验
+    $esc = $db->escape_string($new);
+    $exist = $db->once_fetch_array("SELECT uid FROM {$prefix}user WHERE username = '{$esc}' LIMIT 1");
+    if (!empty($exist) && (int)$exist['uid'] !== (int)$admin['uid']) {
+        warn("账号「{$new}」已被 UID {$exist['uid']} 使用。");
+        return;
+    }
+
+    $old = $admin['username'];
+    $confirm = readLine("确认将账号「{$old}」修改为「{$new}」？" . dim('(y/N)') . '：');
+    if (strtolower(trim($confirm)) !== 'y') {
+        info('已取消。');
+        return;
+    }
+
+    $uid = (int)$admin['uid'];
+    $db->query("UPDATE {$prefix}user SET username = '{$esc}', update_time = " . time() . " WHERE uid = {$uid}");
+    ok("账号修改成功：{$old} → {$new}");
+    warn('该账号的登录状态已失效，请使用新账号重新登录后台。');
+}
+
+function actionChangePassword($db) {
+    $prefix = DB_PREFIX;
+    $admin = chooseAdmin($db);
+    if (!$admin) {
+        return;
+    }
+
+    if (!canHideInput()) {
+        fwrite(STDOUT, dim('提示：当前终端不支持隐藏输入，密码将明文显示。') . "\n");
+    }
+
+    $p1 = readPassword('请输入新密码（至少 6 位，留空取消）：');
+    if ($p1 === null || $p1 === '') {
+        info('已取消。');
+        return;
+    }
+    if (strlen($p1) < 6) {
+        warn('密码不能少于 6 位。');
+        return;
+    }
+
+    $p2 = readPassword('请再次输入新密码：');
+    if ($p1 !== $p2) {
+        warn('两次输入的密码不一致。');
+        return;
+    }
+
+    $hasher = new PasswordHash(8, true);
+    $hash = $hasher->HashPassword($p1);
+    $esc = $db->escape_string($hash);
+    $uid = (int)$admin['uid'];
+
+    $db->query("UPDATE {$prefix}user SET password = '{$esc}', update_time = " . time() . " WHERE uid = {$uid}");
+    ok("管理员「{$admin['username']}」(UID {$uid}) 的密码已重置。");
+    warn('该账号的登录状态已失效，请使用新密码重新登录后台。');
+}
+
+function actionSysInfo($db) {
+    $prefix = DB_PREFIX;
+
+    $adminCount = $db->once_fetch_array("SELECT COUNT(*) AS c FROM {$prefix}user WHERE role = 'admin'");
+    $userCount  = $db->once_fetch_array("SELECT COUNT(*) AS c FROM {$prefix}user");
+    $tables     = $db->fetch_all('SHOW TABLES');
+    $mysql      = method_exists($db, 'getMysqlVersion') ? $db->getMysqlVersion() : '-';
+
+    $rows = array(
+        array('PHP 版本', PHP_VERSION),
+        array('MySQL 版本', $mysql),
+        array('数据库名', DB_NAME),
+        array('表前缀', DB_PREFIX),
+        array('数据表数量', (string)count($tables)),
+        array('管理员数量', (string)$adminCount['c']),
+        array('用户总数', (string)$userCount['c']),
+        array('工具箱版本', TOOL_VERSION),
+    );
+
+    renderTable(array('项目', '值'), $rows);
+}
+
+// ---------------------------------------------------------------------------
+// 7. 菜单与主流程
+// ---------------------------------------------------------------------------
+
+function showHelp() {
+    fwrite(STDOUT, "用法：php ttshop [选项]\n\n");
+    fwrite(STDOUT, "在网站根目录执行，进入交互式站长工具箱。\n\n");
+    fwrite(STDOUT, "选项：\n");
+    fwrite(STDOUT, "  --plain, --no-color   禁用颜色输出\n");
+    fwrite(STDOUT, "  -v, --version         显示版本号\n");
+    fwrite(STDOUT, "  -h, --help            显示本帮助\n");
+}
+
+function showMenu($db) {
+    clear();
+    box(array(
+        array('TTSHOP', '1;36'),
+        array('站 长 工 具 箱', '1'),
+        array(''),
+        array('版本 v' . TOOL_VERSION, '2'),
+    ));
+
+    fwrite(STDOUT, "\n");
+    fwrite(STDOUT, '  数据库：' . yellow(DB_NAME) . '    表前缀：' . yellow(DB_PREFIX) . "\n\n");
+
+    $items = array(
+        array('1', '查看管理员信息', '查看所有管理员账号及资料'),
+        array('2', '修改管理员账号', '修改登录用户名（username）'),
+        array('3', '修改管理员密码', '重置管理员登录密码'),
+        array('4', '系统信息', 'PHP / MySQL / 数据统计'),
+        array('0', '退出工具箱', '结束本次操作'),
+    );
+
+    foreach ($items as $it) {
+        $num = ($it[0] === '0') ? red($it[0]) : green($it[0]);
+        fwrite(STDOUT, '  ' . $num . '  ' . bold($it[1]) . '　' . dim($it[2]) . "\n");
+    }
+
+    fwrite(STDOUT, "\n" . dim('提示：可用 --plain 关闭颜色。') . "\n");
+}
+
+function goodbye() {
+    fwrite(STDOUT, "\n" . green('再见，好兄弟！') . "\n");
+}
+
+function main() {
+    global $OPTS;
+
+    if ($OPTS['help']) {
+        showHelp();
+        exit(0);
+    }
+    if ($OPTS['version']) {
+        fwrite(STDOUT, TOOL_NAME . ' v' . TOOL_VERSION . "\n");
+        exit(0);
+    }
+
+    $db = bootstrap();
+
+    while (true) {
+        showMenu($db);
+        $choice = readLine('请输入编号 [' . yellow('0-4') . ']：');
+        if ($choice === null) {
+            fwrite(STDOUT, "\n");
+            break;
+        }
+        $choice = trim($choice);
+
+        switch ($choice) {
+            case '1':
+                actionViewAdmins($db);
+                pause();
+                break;
+            case '2':
+                actionChangeUsername($db);
+                pause();
+                break;
+            case '3':
+                actionChangePassword($db);
+                pause();
+                break;
+            case '4':
+                actionSysInfo($db);
+                pause();
+                break;
+            case '0':
+                goodbye();
+                exit(0);
+            default:
+                warn('无效的编号，请重新输入。');
+                pause();
+                break;
+        }
+    }
+
+    goodbye();
+}
+
+main();
