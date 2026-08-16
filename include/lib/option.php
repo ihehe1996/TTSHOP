@@ -2,8 +2,8 @@
 
 class Option {
 
-    const TT_VERSION = '1.2.72';
-    const TT_VERSION_TIMESTAMP = 1272;
+    const TT_VERSION = '1.2.73';
+    const TT_VERSION_TIMESTAMP = 1273;
     const UPLOADFILE_PATH = '../content/uploadfile/';
     const UPLOADFILE_FULL_PATH = TT_ROOT . '/content/uploadfile/';
 
