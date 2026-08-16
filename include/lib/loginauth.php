@@ -1,7 +1,7 @@
 <?php
 /**
  * Login authentication
- * @package EMLOG
+ * @package TTSHOP
  * @link https://www.emlog.net
  */
 
@@ -41,7 +41,7 @@ class LoginAuth {
 
 
             if($role == 'admin' && ROLE != ROLE_ADMIN){
-                emMsg('当前已登录用户账号，无法进入后台页面');
+                ttMsg('当前已登录用户账号，无法进入后台页面');
             }
 
             return;
@@ -50,16 +50,16 @@ class LoginAuth {
         if($role == 'admin'){
 
             if ($error_code) {
-                emDirect(EM_URL . "admin/account.php?action=signin&code=$error_code");
+                ttDirect(TT_URL . "admin/account.php?action=signin&code=$error_code");
             } else {
-                emDirect(EM_URL . "admin/account.php?action=signin");
+                ttDirect(TT_URL . "admin/account.php?action=signin");
             }
         }else{
 
             if ($error_code) {
-                emDirect(EM_URL . "user/account.php?action=signin&code=$error_code");
+                ttDirect(TT_URL . "user/account.php?action=signin&code=$error_code");
             } else {
-                emDirect(EM_URL . "user/account.php?action=signin");
+                ttDirect(TT_URL . "user/account.php?action=signin");
             }
         }
 
@@ -70,7 +70,7 @@ class LoginAuth {
         if (self::isLogin() === false) {
             return;
         }
-        emDirect("./");
+        ttDirect("./");
     }
 
     public static function checkUser($email_tel, $password, $type = '') {
@@ -158,13 +158,13 @@ class LoginAuth {
     }
 
     private static function generateAuthCookie($user_login, $expiration) {
-        $key = self::emHash($user_login . '|' . $expiration);
+        $key = self::ttHash($user_login . '|' . $expiration);
         $hash = hash_hmac('md5', $user_login . '|' . $expiration, $key);
 
         return $user_login . '|' . $expiration . '|' . $hash;
     }
 
-    private static function emHash($data) {
+    private static function ttHash($data) {
         return hash_hmac('md5', $data, AUTH_KEY);
     }
 
@@ -184,7 +184,7 @@ class LoginAuth {
             return false;
         }
 
-        $key = self::emHash($username . '|' . $expiration);
+        $key = self::ttHash($username . '|' . $expiration);
         $hash = hash_hmac('md5', $username . '|' . $expiration, $key);
 
         if ($hmac !== $hash) {
@@ -233,7 +233,7 @@ class LoginAuth {
             return;
         }
         if ($token !== $sessionToken) {
-            emMsg('安全token校验失败，请尝试刷新页面或者更换浏览器重试');
+            ttMsg('安全token校验失败，请尝试刷新页面或者更换浏览器重试');
         }
     }
     public static function checkAjaxToken() {

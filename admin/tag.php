@@ -1,7 +1,7 @@
 <?php
 /**
  * tags
- * @package EMLOG
+ * @package TTSHOP
  * @link https://www.emlog.net
  */
 
@@ -34,12 +34,12 @@ if ($action == 'update_tag') {
     $tagId = Input::postIntVar('tid');
 
     if (empty($tagName)) {
-        emDirect("tag.php?error_a=1");
+        ttDirect("tag.php?error_a=1");
     }
 
     $Tag_Model->updateTagName($tagId, $tagName);
     $CACHE->updateCache('tags');
-    emDirect("./tag.php?active_edit=1");
+    ttDirect("./tag.php?active_edit=1");
 }
 
 if ($action == 'del_tag') {
@@ -47,11 +47,11 @@ if ($action == 'del_tag') {
 
     LoginAuth::checkToken();
     if (!$tid) {
-        emDirect("./tag.php?error_a=1");
+        ttDirect("./tag.php?error_a=1");
     }
     $Tag_Model->deleteTag($tid);
     $CACHE->updateCache('tags');
-    emDirect("./tag.php?active_del=1");
+    ttDirect("./tag.php?active_del=1");
 }
 
 if ($action === 'operate_tag') {
@@ -64,6 +64,6 @@ if ($action === 'operate_tag') {
             $Tag_Model->deleteTag($value);
         }
         $CACHE->updateCache('tags');
-        emDirect("./tag.php?active_del=1");
+        ttDirect("./tag.php?active_del=1");
     }
 }

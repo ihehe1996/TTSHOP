@@ -1,4 +1,4 @@
-<?php defined('EM_ROOT') || exit('access denied!');
+<?php defined('TT_ROOT') || exit('access denied!');
 
 
 
@@ -536,7 +536,7 @@ if ($orderStatus === 1) {
 <script>
     (function () {
         var allSecrets = <?= json_encode($secretContents, JSON_UNESCAPED_UNICODE) ?>;
-        var downloadUrl = <?= json_encode(EM_URL . '?plugin=goods_once&action=download&out_trade_no=' . rawurlencode($viewOrder['out_trade_no'] ?? ''), JSON_UNESCAPED_UNICODE) ?>;
+        var downloadUrl = <?= json_encode(TT_URL . '?plugin=goods_once&action=download&out_trade_no=' . rawurlencode($viewOrder['out_trade_no'] ?? ''), JSON_UNESCAPED_UNICODE) ?>;
 
         function copyToClipboard(text) {
             return new Promise(function(resolve, reject) {

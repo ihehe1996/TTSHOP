@@ -1,4 +1,4 @@
-<?php defined('EM_ROOT') || exit('access denied!'); ?>
+<?php defined('TT_ROOT') || exit('access denied!'); ?>
 
 <div class="layui-panel">
     <div style="padding: 20px;">

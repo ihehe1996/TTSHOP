@@ -1,4 +1,4 @@
-<?php defined('EM_ROOT') || exit('access denied!'); ?>
+<?php defined('TT_ROOT') || exit('access denied!'); ?>
 <?php if (isset($_GET['active_del'])): ?>
     <div class="alert alert-success">备份文件删除成功</div><?php endif ?>
 <?php if (isset($_GET['active_backup'])): ?>
@@ -46,7 +46,7 @@
         <div class="card-body">
             <form action="data.php?action=import" enctype="multipart/form-data" method="post">
                 <div id="import">
-                    <p class="des">仅可导入相同版本emlog的数据库备份文件，且数据库表前缀需保持一致。<br/>当前数据库表前缀：<?= DB_PREFIX ?></p>
+                    <p class="des">仅可导入相同版本ttshop的数据库备份文件，且数据库表前缀需保持一致。<br/>当前数据库表前缀：<?= DB_PREFIX ?></p>
                     <p>
                         <input name="token" id="token" value="<?= LoginAuth::genToken() ?>" type="hidden"/>
                         <input type="file" name="sqlfile" required/>

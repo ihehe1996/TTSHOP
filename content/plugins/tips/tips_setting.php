@@ -1,5 +1,5 @@
 <?php
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 
 
 function plugin_setting_view() {
@@ -12,7 +12,7 @@ function plugin_setting_view() {
         <div style="padding: 25px;" id="open-box">
 
             <blockquote class="layui-elem-quote">
-                这是世界上第一个EMSHOP插件。此处配置作为演示，也可用于开发使用
+                这是世界上第一个TTSHOP插件。此处配置作为演示，也可用于开发使用
             </blockquote>
 
 

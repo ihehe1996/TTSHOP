@@ -12,7 +12,7 @@
     <div class="copyright">Copyright ©2019 L-admin v2.3 All Rights Reserved</div>
 </div>-->
 <!-- 底部结束 -->
- <script src="<?= EM_URL ?>/content/static/js/em.js?t=<?= Option::EM_VERSION_TIMESTAMP ?>"></script>
+ <script src="<?= TT_URL ?>/content/static/js/em.js?t=<?= Option::TT_VERSION_TIMESTAMP ?>"></script>
 <?php doAction('user_footer') ?>
 </body>
 </html>

@@ -3,7 +3,7 @@
 /**
  * 侧边栏组件、页面模块
  */
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 ?>
 <?php
 /**
@@ -44,7 +44,7 @@ function widget_blogger($title)
     $uid = UID ?: 1;
     $name = '';
     $description = '';
-    $avatar = EM_URL . "admin/views/images/avatar.svg";
+    $avatar = TT_URL . "admin/views/images/avatar.svg";
     $user = $userModel->getOneUser($uid);
     if ($user) {
         $name = $user['nickname'];
@@ -186,7 +186,7 @@ function widget_newcomm($title)
             <?php
             foreach ($com_cache as $value):
                 $url = Url::comment($value['gid'], $value['page'], $value['cid']);
-                $avatar = getEmUserAvatar($value['uid'], $value['mail']);
+                $avatar = getTtUserAvatar($value['uid'], $value['mail']);
             ?>
                 <li class="comment-info">
                     <img class='comment-info_img' src="<?= $avatar ?>" alt="commentator" />
@@ -270,7 +270,7 @@ function widget_search($title)
             <h3><?= $title ?></h3>
         </div>
         <div class="unstyle-li" style="text-align: center;">
-            <form name="keyform" method="get" action="<?= EM_URL ?>index.php">
+            <form name="keyform" method="get" action="<?= TT_URL ?>index.php">
                 <input name="keyword" class="search form-control" autocomplete="off" aria-label="Search" type="search" />
                 <input type="submit" value="搜索">
             </form>
@@ -336,8 +336,8 @@ function blog_navi()
                     continue;
                 endif;
                 $newtab = $value['newtab'] == 'y' ? 'target="_blank"' : '';
-                $value['url'] = $value['isdefault'] == 'y' ? EM_URL . $value['url'] : trim($value['url'], '/');
-                $current_tab = EM_URL . trim(Dispatcher::setPath(), '/') == $value['url'] ? 'active' : '';
+                $value['url'] = $value['isdefault'] == 'y' ? TT_URL . $value['url'] : trim($value['url'], '/');
+                $current_tab = TT_URL . trim(Dispatcher::setPath(), '/') == $value['url'] ? 'active' : '';
                 ?>
                 <?php if (!empty($value['children']) || !empty($value['childnavi'])) : ?>
                 <li class="list-item list-menu">
@@ -389,7 +389,7 @@ function topflg($top, $sortop = 'n', $sortid = null)
  */
 function editflg($logid, $author)
 {
-    $editflg = User::haveEditPermission() || $author == UID ? '<a href="' . EM_URL . 'admin/article.php?action=edit&gid=' . $logid . '" target="_blank"><span class="iconfont icon-edit"></span></a>' : '';
+    $editflg = User::haveEditPermission() || $author == UID ? '<a href="' . TT_URL . 'admin/article.php?action=edit&gid=' . $logid . '" target="_blank"><span class="iconfont icon-edit"></span></a>' : '';
     echo $editflg;
 }
 
@@ -486,7 +486,7 @@ function blog_comments($comments, $comnum)
     ?>
         <div class="comment" id="<?= $comment['cid'] ?>">
             <?php
-            $avatar = getEmUserAvatar($comment['uid'], $comment['mail']);
+            $avatar = getTtUserAvatar($comment['uid'], $comment['mail']);
             ?>
             <div class="avatar"><img src="<?= $avatar ?>" alt="avatar" /></div>
             <div class="comment-infos">
@@ -515,7 +515,7 @@ function blog_comments_children($comments, $children)
 ?>
         <div class="comment comment-children" id="<?= $comment['cid'] ?>">
             <?php
-            $avatar = getEmUserAvatar($comment['uid'], $comment['mail']);
+            $avatar = getTtUserAvatar($comment['uid'], $comment['mail']);
             ?>
             <div class="avatar"><img src="<?= $avatar ?>" alt="commentator" /></div>
             <div class="comment-infos">
@@ -542,7 +542,7 @@ function blog_comments_post($logid, $ckname, $ckmail, $ckurl, $verifyCode, $allo
     if ($allow_remark == 'y'): ?>
         <div id="comments">
             <div class="comment-post" id="comment-post">
-                <form class="commentform" method="post" name="commentform" action="<?= EM_URL ?>index.php?action=addcom" id="commentform">
+                <form class="commentform" method="post" name="commentform" action="<?= TT_URL ?>index.php?action=addcom" id="commentform">
                     <input type="hidden" name="gid" value="<?= $logid ?>" />
                     <textarea class="form-control log_comment" name="comment" id="comment" rows="10" tabindex="4" placeholder="撰写评论" required></textarea>
                     <?php if (User::isVisitor() && $isLoginComment === 'n'): ?>
@@ -567,7 +567,7 @@ function blog_comments_post($logid, $ckname, $ckmail, $ckurl, $verifyCode, $allo
                         <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content" style="display: table-cell;">
-                                    <input type="hidden" id="blog_url" value="<?= EM_URL ?>" />
+                                    <input type="hidden" id="blog_url" value="<?= TT_URL ?>" />
                                     <div class="modal-header" style="border-bottom: 0;">输入验证码</div>
                                     <?= $verifyCode ?>
                                     <div class="modal-footer" style="border-top: 0;">
@@ -591,7 +591,7 @@ function blog_comments_post($logid, $ckname, $ckmail, $ckurl, $verifyCode, $allo
  */
 function blog_tool_ishome()
 {
-    if (EM_URL . trim(Dispatcher::setPath(), '/') == EM_URL) {
+    if (TT_URL . trim(Dispatcher::setPath(), '/') == TT_URL) {
         return true;
     } else {
         return FALSE;
@@ -599,7 +599,7 @@ function blog_tool_ishome()
 }
 ?>
 <?php
-function getEmUserAvatar($uid, $mail)
+function getTtUserAvatar($uid, $mail)
 {
     $avatar = '';
     if ($uid) {
@@ -609,6 +609,6 @@ function getEmUserAvatar($uid, $mail)
     } elseif ($mail) {
         $avatar = getGravatar($mail);
     }
-    return $avatar ?: EM_URL . "admin/views/images/avatar.svg";
+    return $avatar ?: TT_URL . "admin/views/images/avatar.svg";
 }
 ?>

@@ -1,5 +1,5 @@
 <?php
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 
 // 启用主题时执行该函数
 function callback_init()

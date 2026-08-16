@@ -1,4 +1,4 @@
-<?php defined('EM_ROOT') || exit('access denied!'); ?>
+<?php defined('TT_ROOT') || exit('access denied!'); ?>
 <?php if (isset($_GET['active_t'])): ?>
     <div class="alert alert-success">发布成功</div><?php endif ?>
 <?php if (isset($_GET['active_set'])): ?>
@@ -77,8 +77,8 @@
 <div class="page"><?= $pageurl ?> </div>
 <div class="text-center small">有 <?= $twnum ?> 条微语</div>
 
-<link rel="stylesheet" type="text/css" href="./views/css/markdown.css?t=<?= Option::EM_VERSION_TIMESTAMP ?>">
-<script src="./editor.md/editormd.js?t=<?= Option::EM_VERSION_TIMESTAMP ?>"></script>
+<link rel="stylesheet" type="text/css" href="./views/css/markdown.css?t=<?= Option::TT_VERSION_TIMESTAMP ?>">
+<script src="./editor.md/editormd.js?t=<?= Option::TT_VERSION_TIMESTAMP ?>"></script>
 <script>
     $("#menu_twitter").addClass('active');
     setTimeout(hideActived, 3600);

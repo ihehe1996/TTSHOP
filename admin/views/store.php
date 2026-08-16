@@ -1,4 +1,4 @@
-<?php defined('EM_ROOT') || exit('access denied!'); ?>
+<?php defined('TT_ROOT') || exit('access denied!'); ?>
 
 <style>
 /* 表格容器 */
@@ -466,7 +466,7 @@ layui.use(['laypage', 'layer'], function(){
             } else if (item.is_buy === 'y' && item.reg_type > 0) {
                 actionBtn = '<button class="layui-btn btn-install layui-btn-green" data-action="install" data-id="' + item.id + '" data-type="' + item.type + '" data-name="' + item.name + '"><i class="layui-icon layui-icon-download-circle"></i> 立即安装</button>';
             } else if (item.is_buy === 'n' && item.my_price > 0 && item.reg_type > 0) {
-                actionBtn = '<a href="<?= EM_LINE[0]['value'] ?>api/emshop.php?action=buy&emkey=<?= $emkey ?>&plugin=' + item.id + '" target="_blank" class="layui-btn btn-buy layui-btn-blue">' + item.my_price + ' 立即购买</a>';
+                actionBtn = '<a href="<?= TT_LINE[0]['value'] ?>api/emshop.php?action=buy&ttkey=<?= $ttkey ?>&plugin=' + item.id + '" target="_blank" class="layui-btn btn-buy layui-btn-blue">' + item.my_price + ' 立即购买</a>';
             } else if (item.my_price == 0) {
                 actionBtn = '<button class="layui-btn btn-install layui-btn-green" data-action="install" data-id="' + item.id + '" data-type="' + item.type + '" data-name="' + item.name + '"><i class="layui-icon layui-icon-download-circle"></i> 免费安装</button>';
             }

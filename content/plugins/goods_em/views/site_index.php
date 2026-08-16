@@ -1,23 +1,23 @@
 <?php
 /**
- * EMSHOP 同系统对接 - 站点列表
+ * TTSHOP 同系统对接 - 站点列表
  */
 
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 ?>
 <style>
-    .em-container {
+    .tt-container {
         padding: 20px;
         background: #f6f8fa;
         min-height: calc(100vh - 120px);
     }
-    .em-header {
+    .tt-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 20px;
     }
-    .em-header h3 {
+    .tt-header h3 {
         margin: 0;
         font-size: 18px;
         font-weight: 600;
@@ -26,18 +26,18 @@ defined('EM_ROOT') || exit('access denied!');
         align-items: center;
         gap: 10px;
     }
-    .em-header h3::before {
+    .tt-header h3::before {
         content: '';
         width: 4px;
         height: 20px;
         background: linear-gradient(180deg, #4C7D71, #6BA596);
         border-radius: 2px;
     }
-    .em-actions {
+    .tt-actions {
         display: flex;
         gap: 10px;
     }
-    .em-btn {
+    .tt-btn {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -52,44 +52,44 @@ defined('EM_ROOT') || exit('access denied!');
         border: none;
         gap: 6px;
     }
-    .em-btn-primary {
+    .tt-btn-primary {
         background: linear-gradient(90deg, #4C7D71 0%, #6BA596 100%);
         color: #fff;
     }
-    .em-btn-primary:hover {
+    .tt-btn-primary:hover {
         background: linear-gradient(90deg, #3D6A5F 0%, #5A9485 100%);
         box-shadow: 0 4px 12px rgba(76, 125, 113, 0.35);
         transform: translateY(-1px);
     }
-    .em-btn-secondary {
+    .tt-btn-secondary {
         background: #f3f4f6;
         color: #374151;
         border: 1px solid #d1d5db;
     }
-    .em-btn-secondary:hover {
+    .tt-btn-secondary:hover {
         background: #e5e7eb;
         border-color: #4C7D71;
         color: #4C7D71;
     }
-    .em-btn-danger {
+    .tt-btn-danger {
         background: linear-gradient(90deg, #dc2626, #ef4444);
         color: #fff;
     }
-    .em-btn-danger:hover {
+    .tt-btn-danger:hover {
         background: linear-gradient(90deg, #b91c1c, #f87171);
         box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);
         transform: translateY(-1px);
     }
-    .em-btn-sm {
+    .tt-btn-sm {
         padding: 6px 12px;
         font-size: 12px;
     }
-    .em-site-list {
+    .tt-site-list {
         display: grid;
         gap: 18px;
         grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     }
-    .em-site-card {
+    .tt-site-card {
         background: #fff;
         padding: 20px;
         border-radius: 12px;
@@ -101,7 +101,7 @@ defined('EM_ROOT') || exit('access denied!');
         display: flex;
         flex-direction: column;
     }
-    .em-site-card::before {
+    .tt-site-card::before {
         content: '';
         position: absolute;
         top: 0;
@@ -110,24 +110,24 @@ defined('EM_ROOT') || exit('access denied!');
         height: 3px;
         background: linear-gradient(90deg, #4C7D71, #6BA596);
     }
-    .em-site-card:hover {
+    .tt-site-card:hover {
         box-shadow: 0 6px 16px rgba(0,0,0,0.08);
         transform: translateY(-2px);
     }
-    .em-card-header {
+    .tt-card-header {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
         margin-bottom: 12px;
     }
-    .em-card-title {
+    .tt-card-title {
         font-size: 16px;
         font-weight: 600;
         color: #1a1a1a;
         word-break: break-all;
         max-width: 220px;
     }
-    .em-card-balance {
+    .tt-card-balance {
         color: #059669;
         font-size: 15px;
         font-weight: 600;
@@ -136,19 +136,19 @@ defined('EM_ROOT') || exit('access denied!');
         border-radius: 20px;
         border: 1px solid #d1fae5;
     }
-    .em-card-info {
+    .tt-card-info {
         color: #666;
         font-size: 13px;
         line-height: 2.0;
         margin-bottom: 16px;
     }
-    .em-card-info .label {
+    .tt-card-info .label {
         color: #9ca3af;
         font-size: 12px;
         min-width: 52px;
         display: inline-block;
     }
-    .em-card-actions {
+    .tt-card-actions {
         display: flex;
         gap: 8px;
         flex-wrap: wrap;
@@ -156,7 +156,7 @@ defined('EM_ROOT') || exit('access denied!');
         border-top: 1px solid #f0f0f0;
         margin-top: auto;
     }
-    .em-site-add {
+    .tt-site-add {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -165,14 +165,14 @@ defined('EM_ROOT') || exit('access denied!');
         border: 2px dashed #d1d5db;
         background: #fafbfc;
     }
-    .em-site-add::before {
+    .tt-site-add::before {
         display: none;
     }
-    .em-site-add:hover {
+    .tt-site-add:hover {
         border-color: #4C7D71;
         background: #f0fdf4;
     }
-    .em-add-icon {
+    .tt-add-icon {
         width: 52px;
         height: 52px;
         border-radius: 50%;
@@ -184,16 +184,16 @@ defined('EM_ROOT') || exit('access denied!');
         transition: all 0.2s;
         color: #6b7280;
     }
-    .em-site-add:hover .em-add-icon {
+    .tt-site-add:hover .tt-add-icon {
         background: #4C7D71;
         color: #fff;
     }
-    .em-add-text {
+    .tt-add-text {
         font-size: 14px;
         color: #6b7280;
         font-weight: 500;
     }
-    .em-empty {
+    .tt-empty {
         text-align: center;
         padding: 80px 20px;
         color: #9ca3af;
@@ -207,13 +207,13 @@ defined('EM_ROOT') || exit('access denied!');
         gap: 12px;
         grid-column: 1 / -1;
     }
-    .em-loading {
+    .tt-loading {
         text-align: center;
         padding: 60px 20px;
         color: #999;
         grid-column: 1 / -1;
     }
-    .em-modal-mask {
+    .tt-modal-mask {
         position: fixed;
         top: 0;
         left: 0;
@@ -225,10 +225,10 @@ defined('EM_ROOT') || exit('access denied!');
         align-items: center;
         justify-content: center;
     }
-    .em-modal-mask.active {
+    .tt-modal-mask.active {
         display: flex;
     }
-    .em-modal {
+    .tt-modal {
         background: #fff;
         border-radius: 16px;
         width: 90%;
@@ -237,17 +237,17 @@ defined('EM_ROOT') || exit('access denied!');
         overflow: hidden;
         display: flex;
         flex-direction: column;
-        animation: emModalIn 0.25s ease;
+        animation: ttModalIn 0.25s ease;
         box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.05);
     }
-    .em-modal.em-modal-lg {
+    .tt-modal.tt-modal-lg {
         max-width: 860px;
     }
-    @keyframes emModalIn {
+    @keyframes ttModalIn {
         from { opacity: 0; transform: scale(0.96) translateY(-8px); }
         to { opacity: 1; transform: scale(1) translateY(0); }
     }
-    .em-modal-header {
+    .tt-modal-header {
         height: 56px;
         padding: 0 20px;
         background: #fff;
@@ -258,7 +258,7 @@ defined('EM_ROOT') || exit('access denied!');
         flex-shrink: 0;
         position: relative;
     }
-    .em-modal-header::before {
+    .tt-modal-header::before {
         content: '';
         position: absolute;
         top: 0;
@@ -267,7 +267,7 @@ defined('EM_ROOT') || exit('access denied!');
         height: 3px;
         background: linear-gradient(90deg, #4C7D71, #6BA596);
     }
-    .em-modal-title {
+    .tt-modal-title {
         color: #1a1a1a;
         font-size: 16px;
         font-weight: 600;
@@ -276,14 +276,14 @@ defined('EM_ROOT') || exit('access denied!');
         align-items: center;
         gap: 10px;
     }
-    .em-modal-title::before {
+    .tt-modal-title::before {
         content: '';
         width: 4px;
         height: 18px;
         background: linear-gradient(180deg, #4C7D71, #6BA596);
         border-radius: 2px;
     }
-    .em-modal-close {
+    .tt-modal-close {
         width: 32px;
         height: 32px;
         background: #f5f7f9;
@@ -296,18 +296,18 @@ defined('EM_ROOT') || exit('access denied!');
         justify-content: center;
         transition: all 0.2s ease;
     }
-    .em-modal-close:hover {
+    .tt-modal-close:hover {
         background: #fee2e2;
         color: #dc2626;
         transform: rotate(90deg);
     }
-    .em-modal-body {
+    .tt-modal-body {
         padding: 24px;
         overflow-y: auto;
         flex: 1;
         background: #fff;
     }
-    .em-modal-footer {
+    .tt-modal-footer {
         padding: 16px 24px;
         background: #fafbfc;
         border-top: 1px solid #eef2f5;
@@ -316,43 +316,43 @@ defined('EM_ROOT') || exit('access denied!');
         gap: 12px;
         flex-shrink: 0;
     }
-    .em-modal-footer.hidden {
+    .tt-modal-footer.hidden {
         display: none;
     }
     @media (max-width: 768px) {
-        .em-modal {
+        .tt-modal {
             width: 95%;
             max-height: 90vh;
         }
     }
 </style>
 
-<div class="em-container">
-    <div class="em-header">
+<div class="tt-container">
+    <div class="tt-header">
         <h3>站点管理</h3>
-        <div class="em-actions">
-            <button class="em-btn em-btn-primary" id="addSiteBtn">
+        <div class="tt-actions">
+            <button class="tt-btn tt-btn-primary" id="addSiteBtn">
                 <i class="layui-icon layui-icon-add-1"></i> 添加站点
             </button>
-            <button class="em-btn em-btn-secondary" id="refreshBalance">
+            <button class="tt-btn tt-btn-secondary" id="refreshBalance">
                 <i class="layui-icon layui-icon-refresh"></i> 刷新余额
             </button>
         </div>
     </div>
 
-    <div class="em-site-list" id="siteList">
-        <div class="em-loading">加载中...</div>
+    <div class="tt-site-list" id="siteList">
+        <div class="tt-loading">加载中...</div>
     </div>
 </div>
 
-<div class="em-modal-mask" id="emModalMask">
-    <div class="em-modal" id="emModalBox">
-        <div class="em-modal-header">
-            <span class="em-modal-title" id="emModalTitle">标题</span>
-            <button class="em-modal-close" type="button" id="emModalClose">&times;</button>
+<div class="tt-modal-mask" id="ttModalMask">
+    <div class="tt-modal" id="ttModalBox">
+        <div class="tt-modal-header">
+            <span class="tt-modal-title" id="ttModalTitle">标题</span>
+            <button class="tt-modal-close" type="button" id="ttModalClose">&times;</button>
         </div>
-        <div class="em-modal-body" id="emModalBody"></div>
-        <div class="em-modal-footer hidden" id="emModalFooter"></div>
+        <div class="tt-modal-body" id="ttModalBody"></div>
+        <div class="tt-modal-footer hidden" id="ttModalFooter"></div>
     </div>
 </div>
 
@@ -360,26 +360,26 @@ defined('EM_ROOT') || exit('access denied!');
 layui.use(['layer', 'jquery'], function(){
     var layer = layui.layer;
     var $ = layui.$;
-    var apiBase = '<?= EM_URL ?>?plugin=goods_em';
+    var apiBase = '<?= TT_URL ?>?plugin=goods_em';
     var isLoading = false;
 
     function openModal(title, url, isLarge) {
-        var mask = $('#emModalMask');
-        var titleEl = $('#emModalTitle');
-        var body = $('#emModalBody');
-        var footer = $('#emModalFooter');
-        var box = $('#emModalBox');
+        var mask = $('#ttModalMask');
+        var titleEl = $('#ttModalTitle');
+        var body = $('#ttModalBody');
+        var footer = $('#ttModalFooter');
+        var box = $('#ttModalBox');
 
         titleEl.text(title);
         body.html('<div style="padding: 20px; text-align: center; color: #999;">加载中...</div>');
         footer.addClass('hidden').empty();
         mask.addClass('active');
-        box.toggleClass('em-modal-lg', !!isLarge);
+        box.toggleClass('tt-modal-lg', !!isLarge);
 
         $.get(url, function(html) {
             body.html(html);
 
-            var actions = body.find('.em-form-actions');
+            var actions = body.find('.tt-form-actions');
             if (actions.length) {
                 footer.empty().append(actions.children());
                 footer.removeClass('hidden');
@@ -398,48 +398,48 @@ layui.use(['layer', 'jquery'], function(){
     function openSiteForm(id) {
         openModal(
             id ? '编辑站点' : '添加站点',
-            '<?= EM_URL ?>?plugin=goods_em&do=site_form&id=' + id
+            '<?= TT_URL ?>?plugin=goods_em&do=site_form&id=' + id
         );
     }
     function openImport(siteId) {
         openModal(
             '导入商品',
-            '<?= EM_URL ?>?plugin=goods_em&do=import&site_id=' + siteId,
+            '<?= TT_URL ?>?plugin=goods_em&do=import&site_id=' + siteId,
             true
         );
     }
     function renderSites(sites) {
         var html = '';
         if (!sites || sites.length === 0) {
-            html = '<div class="em-empty">';
+            html = '<div class="tt-empty">';
             html += '<div style="font-size:18px;color:#374151;font-weight:600;">暂无站点</div>';
             html += '<div style="color:#6b7280;">请先添加对接站点</div>';
-            html += '<button class="em-btn em-btn-primary" id="emptyAddBtn">立即添加</button>';
+            html += '<button class="tt-btn tt-btn-primary" id="emptyAddBtn">立即添加</button>';
             html += '</div>';
             $('#siteList').html(html);
             return;
         }
 
-        html += '<div class="em-site-card em-site-add" id="cardAddSite">';
-        html += '<div class="em-add-icon"><i class="layui-icon layui-icon-add-1"></i></div>';
-        html += '<div class="em-add-text">添加新站点</div>';
+        html += '<div class="tt-site-card tt-site-add" id="cardAddSite">';
+        html += '<div class="tt-add-icon"><i class="layui-icon layui-icon-add-1"></i></div>';
+        html += '<div class="tt-add-text">添加新站点</div>';
         html += '</div>';
 
         sites.forEach(function(site){
             var balance = parseFloat(site.balance || 0).toFixed(2);
-            html += '<div class="em-site-card">';
-            html += '<div class="em-card-header">';
-            html += '<div class="em-card-title" title="' + (site.sitename || '未知站点') + '">' + (site.sitename || '未知站点') + '</div>';
-            html += '<div class="em-card-balance">¥' + balance + '</div>';
+            html += '<div class="tt-site-card">';
+            html += '<div class="tt-card-header">';
+            html += '<div class="tt-card-title" title="' + (site.sitename || '未知站点') + '">' + (site.sitename || '未知站点') + '</div>';
+            html += '<div class="tt-card-balance">¥' + balance + '</div>';
             html += '</div>';
-            html += '<div class="em-card-info">';
+            html += '<div class="tt-card-info">';
             html += '<div><span class="label">域名</span>' + (site.domain || '-') + '</div>';
             html += '<div><span class="label">用户ID</span>' + (site.app_id || '-') + '</div>';
             html += '</div>';
-            html += '<div class="em-card-actions">';
-            html += '<button class="em-btn em-btn-primary em-btn-sm btn-import" data-id="' + site.id + '">导入商品</button>';
-            html += '<button class="em-btn em-btn-secondary em-btn-sm btn-edit" data-id="' + site.id + '">编辑</button>';
-            html += '<button class="em-btn em-btn-danger em-btn-sm btn-delete" data-id="' + site.id + '">删除</button>';
+            html += '<div class="tt-card-actions">';
+            html += '<button class="tt-btn tt-btn-primary tt-btn-sm btn-import" data-id="' + site.id + '">导入商品</button>';
+            html += '<button class="tt-btn tt-btn-secondary tt-btn-sm btn-edit" data-id="' + site.id + '">编辑</button>';
+            html += '<button class="tt-btn tt-btn-danger tt-btn-sm btn-delete" data-id="' + site.id + '">删除</button>';
             html += '</div>';
             html += '</div>';
         });
@@ -451,7 +451,7 @@ layui.use(['layer', 'jquery'], function(){
         if (isLoading) return;
         isLoading = true;
         if (!refresh) {
-            $('#siteList').html('<div class="em-loading">加载中...</div>');
+            $('#siteList').html('<div class="tt-loading">加载中...</div>');
         }
         $.post(apiBase, {action: 'site_list', refresh: refresh ? 1 : 0}, function(res){
             if (res.code === 0) {
@@ -460,17 +460,17 @@ layui.use(['layer', 'jquery'], function(){
                     layer.msg('刷新成功', {icon: 1});
                 }
             } else {
-                $('#siteList').html('<div class="em-empty">加载失败：' + (res.msg || '未知错误') + '</div>');
+                $('#siteList').html('<div class="tt-empty">加载失败：' + (res.msg || '未知错误') + '</div>');
             }
         }, 'json').always(function(){
             isLoading = false;
         });
     }
 
-    window.closeEmModal = function(reload) {
-        $('#emModalMask').removeClass('active');
-        $('#emModalFooter').addClass('hidden').empty();
-        $('#emModalBody').empty();
+    window.closeTtModal = function(reload) {
+        $('#ttModalMask').removeClass('active');
+        $('#ttModalFooter').addClass('hidden').empty();
+        $('#ttModalBody').empty();
         if (reload) {
             loadSites();
         }
@@ -492,20 +492,20 @@ layui.use(['layer', 'jquery'], function(){
         openSiteForm(0);
     });
 
-    $('#emModalClose').on('click', function(){
-        window.closeEmModal(false);
+    $('#ttModalClose').on('click', function(){
+        window.closeTtModal(false);
     });
 
     // 点击遮罩关闭（已禁用 - 不允许点击遮罩层关闭窗口）
-    // $('#emModalMask').on('click', function(e){
+    // $('#ttModalMask').on('click', function(e){
     //     if (e.target === this) {
-    //         window.closeEmModal(false);
+    //         window.closeTtModal(false);
     //     }
     // });
 
     $(document).on('keydown', function(e){
         if (e.key === 'Escape') {
-            window.closeEmModal(false);
+            window.closeTtModal(false);
         }
     });
 

@@ -1,15 +1,15 @@
 <?php
 /**
- * EMSHOP 同系统对接 - 用户订单详情
+ * TTSHOP 同系统对接 - 用户订单详情
  */
 
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 
 // 获取发货记录
-$secrets = emGetOrderSecrets($child_order['id']);
+$secrets = ttGetOrderSecrets($child_order['id']);
 
 // 获取对接信息
-$emGoods = $db->once_fetch_array("SELECT * FROM " . DB_PREFIX . "em_goods WHERE goods_id = " . (int)$goods['id']);
+$ttGoods = $db->once_fetch_array("SELECT * FROM " . DB_PREFIX . "em_goods WHERE goods_id = " . (int)$goods['id']);
 ?>
 <div class="order-detail-container" style="padding: 20px;">
     <div class="order-header" style="margin-bottom: 20px;">

@@ -9,7 +9,7 @@ Author URL:
 Ui: Layui
 */
 
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 
 
 /**
@@ -47,7 +47,7 @@ function init_alipay() {
         $GLOBALS['mode_payment'] = array_merge($GLOBALS['mode_payment'], [
             [
                 'plugin_name' => 'alipay', // 插件名. 与插件目录名保持一致
-                'icon' => EM_URL . 'content/plugins/alipay/icon-btn.png',
+                'icon' => TT_URL . 'content/plugins/alipay/icon-btn.png',
                 'title' => '支付宝', // 当前支付方式名称
                 'unique' => 'alipay', // 当前支付方式唯一标识，所有支付插件中此项禁止重复
                 'name' => '支付宝'
@@ -82,7 +82,7 @@ function pay_alipay($order_info, $order_list){
 //    d($order_info);die;
 
     if($order_info['expire_time'] <= time()){
-        emMsg('订单已过期，请重新发起支付');
+        ttMsg('订单已过期，请重新发起支付');
     }
 
     $cmd = '';
@@ -105,10 +105,10 @@ function pay_alipay($order_info, $order_list){
     }
 
     if($cmd == ''){
-        emMsg('官方支付宝支付插件出现错误！请联系作者');
+        ttMsg('官方支付宝支付插件出现错误！请联系作者');
     }
     if($cmd == 'error'){
-        emMsg('当前设备无法使用支付宝支付，请联系管理员或更换其他支付方式');
+        ttMsg('当前设备无法使用支付宝支付，请联系管理员或更换其他支付方式');
     }
 
 
@@ -119,8 +119,8 @@ function pay_alipay($order_info, $order_list){
         'sign_type' => 'RSA2', //加密方式
         'timestamp' => date('Y-m-d H:i:s', time()), //发送请求的时间
         'version' => '1.0', //api版本
-//        'notify_url' => EM_URL . "action/notify/out_trade_no/" . $order_info['out_trade_no'] . ".html", //支付完成后的异步回调通知
-        'notify_url' => EM_URL . "action/notify/alipay", //支付完成后的异步回调通知
+//        'notify_url' => TT_URL . "action/notify/out_trade_no/" . $order_info['out_trade_no'] . ".html", //支付完成后的异步回调通知
+        'notify_url' => TT_URL . "action/notify/alipay", //支付完成后的异步回调通知
     ];
 
     Log::debug('订单号：' . $order_info['out_trade_no'] . ' 异步回调地址：' . $data['notify_url']);
@@ -147,15 +147,15 @@ function pay_alipay($order_info, $order_list){
     if($cmd == 'mb'){
         $data['method'] = 'alipay.trade.wap.pay'; //接口名称 - 手机网站支付
         $biz_content['product_code'] = 'QUICK_WAP_WAY'; //销售产品码， 商家和支付宝签约的产品码
-        $data['return_url'] = EM_URL . "action/return/alipay"; //付款完成后跳转的地址
+        $data['return_url'] = TT_URL . "action/return/alipay"; //付款完成后跳转的地址
         $biz_content['goods_type'] = 0; //商品主类型 0虚拟 1实物
-        $biz_content['quit_url'] = EM_URL;
+        $biz_content['quit_url'] = TT_URL;
         $pay_name = '手机网站支付';
         $data['biz_content'] = json_encode($biz_content); //请求参数的集合
         $data['sign'] = getAlipaySign($data, ['private_key' => trim($private_key)]);
 
         if(empty($data['sign'])){
-            emMsg('官方支付宝插件配置错误，签名生成失败！');
+            ttMsg('官方支付宝插件配置错误，签名生成失败！');
         }
 
 
@@ -170,15 +170,15 @@ function pay_alipay($order_info, $order_list){
     if($cmd == 'pc'){
         $data['method'] = 'alipay.trade.page.pay'; //接口名称 - pc网站支付
         $biz_content['product_code'] = 'FAST_INSTANT_TRADE_PAY'; //销售产品码， 商家和支付宝签约的产品码
-        $data['return_url'] = EM_URL . "action/return/alipay"; //付款完成后跳转的地址
+        $data['return_url'] = TT_URL . "action/return/alipay"; //付款完成后跳转的地址
         $biz_content['goods_type'] = 0; //商品主类型 0虚拟 1实物
-        $biz_content['quit_url'] = EM_URL;
+        $biz_content['quit_url'] = TT_URL;
 
         $data['biz_content'] = json_encode($biz_content); //请求参数的集合
         $data['sign'] = getAlipaySign($data, ['private_key' => trim($private_key)]);
 
         if(empty($data['sign'])){
-            emMsg('官方支付宝插件配置错误，签名生成失败！');
+            ttMsg('官方支付宝插件配置错误，签名生成失败！');
         }
 
 
@@ -201,7 +201,7 @@ function pay_alipay($order_info, $order_list){
 
 
 
-        if(empty($data['sign'])) emMsg('官方支付宝插件配置错误，签名生成失败！');
+        if(empty($data['sign'])) ttMsg('官方支付宝插件配置错误，签名生成失败！');
 
         $resultStr = ebCurl($gateway_url, http_build_query($data), true);
         $result = json_decode($resultStr, true);
@@ -216,7 +216,7 @@ function pay_alipay($order_info, $order_list){
 
 
         if (empty($result)){
-            emMsg('支付发起失败，请重试刷新本页面重新发起支付');
+            ttMsg('支付发起失败，请重试刷新本页面重新发起支付');
         }
         $result = $result['alipay_trade_precreate_response'];
 
@@ -235,17 +235,17 @@ function pay_alipay($order_info, $order_list){
         } else{
 
             if($result['sub_code'] == 'ACQ.ACCESS_FORBIDDEN'){
-                emMsg('无权限使用【' . $pay_name . '】接口, 请前往支付宝进行签约');
+                ttMsg('无权限使用【' . $pay_name . '】接口, 请前往支付宝进行签约');
             }
 
             if($result['code'] == 40004){
-                emMsg('订单已过期，请从商品页重新发起支付');
+                ttMsg('订单已过期，请从商品页重新发起支付');
             }
 
             if($result['code'] == 40003 && $result['sub_code'] == 'isv.app-unbind-partner'){
-                emMsg('无效应用，或应用未绑定商户');
+                ttMsg('无效应用，或应用未绑定商户');
             }
-            emMsg('错误的支付配置');
+            ttMsg('错误的支付配置');
 
         }
     }

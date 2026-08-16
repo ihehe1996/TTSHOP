@@ -1,30 +1,30 @@
 <?php
 /**
- * EMSHOP 同系统对接 - 站点表单
+ * TTSHOP 同系统对接 - 站点表单
  */
 
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 
 $isEdit = !empty($site);
 $pageTitle = $isEdit ? '编辑站点' : '添加站点';
 ?>
 <style>
-    .em-form-item {
+    .tt-form-item {
         margin-bottom: 20px;
     }
-    .em-form-item label {
+    .tt-form-item label {
         display: block;
         font-size: 14px;
         color: #374151;
         margin-bottom: 8px;
         font-weight: 500;
     }
-    .em-form-item label em {
+    .tt-form-item label em {
         color: #dc2626;
         margin-right: 6px;
         font-style: normal;
     }
-    .em-form-item input[type="text"] {
+    .tt-form-item input[type="text"] {
         width: 100%;
         height: 42px;
         padding: 10px 14px;
@@ -36,23 +36,23 @@ $pageTitle = $isEdit ? '编辑站点' : '添加站点';
         box-sizing: border-box;
         transition: all 0.2s;
     }
-    .em-form-item input[type="text"]:focus {
+    .tt-form-item input[type="text"]:focus {
         outline: none;
         border-color: #4C7D71;
         box-shadow: 0 0 0 3px rgba(76, 125, 113, 0.15);
     }
-    .em-form-item .hint {
+    .tt-form-item .hint {
         font-size: 12px;
         color: #6b7280;
         margin-top: 6px;
         padding-left: 2px;
     }
-    .em-form-actions {
+    .tt-form-actions {
         display: flex;
         justify-content: flex-end;
         gap: 12px;
     }
-    .em-btn {
+    .tt-btn {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -67,21 +67,21 @@ $pageTitle = $isEdit ? '编辑站点' : '添加站点';
         border: none;
         gap: 6px;
     }
-    .em-btn-primary {
+    .tt-btn-primary {
         background: linear-gradient(90deg, #4C7D71 0%, #6BA596 100%);
         color: #fff;
     }
-    .em-btn-primary:hover {
+    .tt-btn-primary:hover {
         background: linear-gradient(90deg, #3D6A5F 0%, #5A9485 100%);
         box-shadow: 0 4px 12px rgba(76, 125, 113, 0.35);
         transform: translateY(-1px);
     }
-    .em-btn-secondary {
+    .tt-btn-secondary {
         background: #f3f4f6;
         color: #374151;
         border: 1px solid #d1d5db;
     }
-    .em-btn-secondary:hover {
+    .tt-btn-secondary:hover {
         background: #e5e7eb;
         border-color: #4C7D71;
         color: #4C7D71;
@@ -91,43 +91,43 @@ $pageTitle = $isEdit ? '编辑站点' : '添加站点';
 <form id="siteForm">
     <input type="hidden" name="id" value="<?php echo $site['id'] ?? 0; ?>">
 
-    <div class="em-form-item">
+    <div class="tt-form-item">
         <label><em>*</em>站点域名</label>
         <input type="text" name="domain" value="<?php echo htmlspecialchars($site['domain'] ?? ''); ?>" placeholder="https://example.com" required>
-        <div class="hint">对方 EMSHOP 系统的完整域名</div>
+        <div class="hint">对方 TTSHOP 系统的完整域名</div>
     </div>
 
-    <div class="em-form-item">
+    <div class="tt-form-item">
         <label><em>*</em>用户ID</label>
         <input type="text" name="app_id" value="<?php echo htmlspecialchars($site['app_id'] ?? ''); ?>" placeholder="对方系统的用户ID" required>
     </div>
 
-    <div class="em-form-item">
+    <div class="tt-form-item">
         <label><em>*</em>用户Token</label>
         <input type="text" name="app_key" value="<?php echo htmlspecialchars($site['app_key'] ?? ''); ?>" placeholder="对方系统的用户Token" required>
         <div class="hint">在对方系统的个人中心获取 Token</div>
     </div>
 </form>
 
-<div class="em-form-actions">
-    <button type="button" class="em-btn em-btn-secondary" id="cancelBtn">取消</button>
-    <button type="button" class="em-btn em-btn-primary" id="saveBtn">保存</button>
+<div class="tt-form-actions">
+    <button type="button" class="tt-btn tt-btn-secondary" id="cancelBtn">取消</button>
+    <button type="button" class="tt-btn tt-btn-primary" id="saveBtn">保存</button>
 </div>
 
 <script>
 layui.use([], function(){
     var layer = layui.layer;
     var $ = layui.$;
-    var apiBase = '<?= EM_URL ?>?plugin=goods_em';
+    var apiBase = '<?= TT_URL ?>?plugin=goods_em';
     var isSaving = false;
 
     function closeLayer(reload) {
-        if (typeof window.closeEmModal === 'function') {
-            window.closeEmModal(reload);
+        if (typeof window.closeTtModal === 'function') {
+            window.closeTtModal(reload);
             return;
         }
-        if (window.parent && typeof window.parent.closeEmModal === 'function') {
-            window.parent.closeEmModal(reload);
+        if (window.parent && typeof window.parent.closeTtModal === 'function') {
+            window.parent.closeTtModal(reload);
             return;
         }
         location.href = 'plugin.php?action=setting_page&plugin=goods_em&do=site';

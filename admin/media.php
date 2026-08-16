@@ -1,7 +1,7 @@
 <?php
 /**
  * media
- * @package EMLOG
+ * @package TTSHOP
  * @link https://www.emlog.net
  */
 
@@ -115,7 +115,7 @@ if ($action === 'lib') {
         $data['media_alias'] = $v['alias'];
         $data['media_path'] = $v['filepath'];
         $data['media_url'] = rmUrlParams(getFileUrl($v['filepath']));
-        $data['media_down_url'] = EM_URL . '?resource_alias=' . $v['alias'];
+        $data['media_down_url'] = TT_URL . '?resource_alias=' . $v['alias'];
         $data['media_name'] = subString($v['filename'], 0, 20);
         $data['attsize'] = $v['attsize'];
         $data['media_type'] = '';
@@ -172,7 +172,7 @@ if ($action === 'delete') {
     LoginAuth::checkToken();
     $aid = Input::getIntVar('aid');
     $Media_Model->deleteMedia($aid);
-    emDirect("media.php?active_del=1");
+    ttDirect("media.php?active_del=1");
 }
 
 if ($action === 'delete_async') {
@@ -198,7 +198,7 @@ if ($action === 'operate_media') {
             foreach ($aids as $id) {
                 $Media_Model->updateMedia(['sortid' => $sort], $id);
             }
-            emDirect("media.php?active_mov=1");
+            ttDirect("media.php?active_mov=1");
             break;
     }
 }
@@ -208,49 +208,49 @@ if ($action === 'update_media') {
     $id = Input::postIntVar('id');
 
     if (empty($filename)) {
-        emDirect("./media.php?error_a=1");
+        ttDirect("./media.php?error_a=1");
     }
 
     $Media_Model->updateMedia(["filename" => $filename], $id);
-    emDirect("./media.php?active_edit=1");
+    ttDirect("./media.php?active_edit=1");
 }
 
 if ($action === 'add_media_sort') {
     if (!User::isAdmin()) {
-        emMsg('权限不足！', './');
+        ttMsg('权限不足！', './');
     }
     $sortname = Input::postStrVar('sortname');
     if (empty($sortname)) {
-        emDirect("./media.php?error_a=1");
+        ttDirect("./media.php?error_a=1");
     }
 
     $MediaSortModel->addSort($sortname);
-    emDirect("./media.php?active_add=1");
+    ttDirect("./media.php?active_add=1");
 }
 
 if ($action === 'update_media_sort') {
     if (!User::isAdmin()) {
-        emMsg('权限不足！', './');
+        ttMsg('权限不足！', './');
     }
     $sortname = Input::postStrVar('sortname');
     $id = isset($_POST['id']) ? (int)$_POST['id'] : '';
 
     if (empty($sortname)) {
-        emDirect("./media.php?error_a=1");
+        ttDirect("./media.php?error_a=1");
     }
 
     $MediaSortModel->updateSort(["sortname" => $sortname], $id);
-    emDirect("./media.php?active_edit=1");
+    ttDirect("./media.php?active_edit=1");
 }
 
 if ($action === 'del_media_sort') {
     if (!User::isAdmin()) {
-        emMsg('权限不足！', './');
+        ttMsg('权限不足！', './');
     }
     $id = Input::getIntVar('id');
 
     LoginAuth::checkToken();
 
     $MediaSortModel->deleteSort($id);
-    emDirect("./media.php?active_del=1");
+    ttDirect("./media.php?active_del=1");
 }

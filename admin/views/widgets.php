@@ -1,4 +1,4 @@
-<?php defined('EM_ROOT') || exit('access denied!'); ?>
+<?php defined('TT_ROOT') || exit('access denied!'); ?>
 <?php if (isset($_GET['activated'])): ?>
     <div class="alert alert-success">保存成功</div><?php endif ?>
 
@@ -11,7 +11,7 @@
     }
     
     /* 卡片基础样式 */
-    .em-card {
+    .tt-card {
         background: #fff;
         border-radius: 8px;
         box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
@@ -19,10 +19,10 @@
         transition: all 0.3s;
         border: 1px solid #f0f0f0;
     }
-    .em-card:hover {
+    .tt-card:hover {
         box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
-    .em-card-header {
+    .tt-card-header {
         padding: 16px 20px;
         border-bottom: 1px solid #f0f0f0;
         display: flex;
@@ -31,13 +31,13 @@
         background: #fafafa;
         border-radius: 8px 8px 0 0;
     }
-    .em-card-title {
+    .tt-card-title {
         font-size: 16px;
         font-weight: 600;
         color: #333;
         margin: 0;
     }
-    .em-card-body {
+    .tt-card-body {
         padding: 20px;
     }
 
@@ -173,7 +173,7 @@
     }
 
     /* 弹窗自定义样式 */
-    .em-modal-skin .layui-layer-title {
+    .tt-modal-skin .layui-layer-title {
         background: #fff;
         border-bottom: none;
         padding: 20px 20px 0 20px;
@@ -184,11 +184,11 @@
         color: #333;
     }
     
-    .em-modal-skin .layui-layer-setwin {
+    .tt-modal-skin .layui-layer-setwin {
         right: 20px;
         top: 20px;
     }
-    .em-modal-skin .layui-layer-setwin .layui-layer-close1 {
+    .tt-modal-skin .layui-layer-setwin .layui-layer-close1 {
         background: none;
         width: 24px;
         height: 24px;
@@ -201,8 +201,8 @@
         transition: all 0.2s;
         cursor: pointer;
     }
-    .em-modal-skin .layui-layer-setwin .layui-layer-close1::before,
-    .em-modal-skin .layui-layer-setwin .layui-layer-close1::after {
+    .tt-modal-skin .layui-layer-setwin .layui-layer-close1::before,
+    .tt-modal-skin .layui-layer-setwin .layui-layer-close1::after {
         content: '';
         position: absolute;
         width: 14px;
@@ -211,19 +211,19 @@
         transform: rotate(45deg);
         border-radius: 1px;
     }
-    .em-modal-skin .layui-layer-setwin .layui-layer-close1::after {
+    .tt-modal-skin .layui-layer-setwin .layui-layer-close1::after {
         transform: rotate(-45deg);
     }
-    .em-modal-skin .layui-layer-setwin .layui-layer-close1:hover {
+    .tt-modal-skin .layui-layer-setwin .layui-layer-close1:hover {
         background-color: #f5f5f5;
     }
-    .em-modal-skin .layui-layer-setwin .layui-layer-close1:hover::before,
-    .em-modal-skin .layui-layer-setwin .layui-layer-close1:hover::after {
+    .tt-modal-skin .layui-layer-setwin .layui-layer-close1:hover::before,
+    .tt-modal-skin .layui-layer-setwin .layui-layer-close1:hover::after {
         background-color: #666;
     }
     
     /* 弹窗圆角 */
-    body .em-modal-skin {
+    body .tt-modal-skin {
         border-radius: 20px !important;
         box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
         overflow: hidden;
@@ -234,16 +234,16 @@
     <div class="row">
         <!-- 左侧：组件库 -->
         <div class="col-md-6">
-            <div class="em-card">
-                <div class="em-card-header">
-                    <h3 class="em-card-title">
+            <div class="tt-card">
+                <div class="tt-card-header">
+                    <h3 class="tt-card-title">
                         <i class="fa fa-cubes" style="color: #1890ff; margin-right: 8px;"></i>组件库
                     </h3>
                     <button type="button" class="layui-btn layui-btn-sm layui-btn" id="btnAddWidget">
                         <i class="layui-icon layui-icon-add-1"></i> 自定义组件
                     </button>
                 </div>
-                <div class="em-card-body" id="adm_widget_list">
+                <div class="tt-card-body" id="adm_widget_list">
                     <!-- 系统组件 -->
                     <?php 
                     $sys_widgets = [
@@ -356,14 +356,14 @@
 
         <!-- 右侧：已启用组件 -->
         <div class="col-md-6">
-            <div class="em-card">
-                <div class="em-card-header">
-                    <h3 class="em-card-title">
+            <div class="tt-card">
+                <div class="tt-card-header">
+                    <h3 class="tt-card-title">
                         <i class="fa fa-check-circle" style="color: #4C7D71; margin-right: 8px;"></i>已启用组件
                     </h3>
                     <span class="text-muted" style="font-size: 12px;">按保存顺序显示</span>
                 </div>
-                <div class="em-card-body">
+                <div class="tt-card-body">
                     <form action="widgets.php?action=compages" method="post">
                         <div class="adm_widget_box" style="min-height: 100px;">
                             <?php
@@ -416,16 +416,16 @@
 
 <!-- 添加自定义组件弹窗 -->
 <div id="add-widget-modal" style="display: none;">
-    <div class="em-modal-box">
-        <div class="em-modal-close-btn" onclick="layer.close(layer.index)">
+    <div class="tt-modal-box">
+        <div class="tt-modal-close-btn" onclick="layer.close(layer.index)">
             <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
         </div>
-        <div class="em-modal-header">
-            <div class="em-modal-icon-wrapper"><i class="layui-icon layui-icon-component"></i></div>
-            <div class="em-modal-title">添加自定义组件</div>
-            <div class="em-modal-desc">创建一个新的侧边栏组件，支持 HTML 代码</div>
+        <div class="tt-modal-header">
+            <div class="tt-modal-icon-wrapper"><i class="layui-icon layui-icon-component"></i></div>
+            <div class="tt-modal-title">添加自定义组件</div>
+            <div class="tt-modal-desc">创建一个新的侧边栏组件，支持 HTML 代码</div>
         </div>
-        <div class="em-modal-body">
+        <div class="tt-modal-body">
             <form action="widgets.php?action=setwg&wg=custom_text" method="post" class="layui-form">
                 <div class="layui-form-item">
                     <label class="layui-form-label" style="padding-left: 0; color: #4C7D71; font-weight: 500;">组件名</label>
@@ -525,7 +525,7 @@
                 area: area, // 宽度自适应
                 content: $('#add-widget-modal').html(), // 直接引用 DOM
                 shadeClose: true,
-                skin: 'em-modal-skin', // 应用自定义皮肤类名
+                skin: 'tt-modal-skin', // 应用自定义皮肤类名
                 success: function(layero, index){
                     // 弹窗打开后不需要特殊处理，只需正常显示
                 }

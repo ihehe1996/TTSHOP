@@ -13,7 +13,7 @@ require_once 'globals.php';
 
 $filename = Input::getStrVar('filename');
 
-$filepath = EM_ROOT . '/content/em_temp/' . $filename;
+$filepath = TT_ROOT . '/content/em_temp/' . $filename;
 
 // 防止输出缓存影响下载
 if (ob_get_length()) {

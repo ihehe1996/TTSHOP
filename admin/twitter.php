@@ -1,6 +1,6 @@
 <?php
 /**
- * @package EMSHOP
+ * @package TTSHOP
  */
 
 /**
@@ -39,7 +39,7 @@ if ($action == 'post') {
     $private = Input::postStrVar('private', 'n');
 
     if (!$t) {
-        emDirect("twitter.php?error_a=1");
+        ttDirect("twitter.php?error_a=1");
     }
 
     $data = [
@@ -52,7 +52,7 @@ if ($action == 'post') {
     $id = $Twitter_Model->addTwitter($data);
     $CACHE->updateCache('sta');
     doAction('post_note', $data, $id);
-    emDirect("twitter.php?active_t=1");
+    ttDirect("twitter.php?active_t=1");
 }
 
 if ($action == 'update') {
@@ -60,7 +60,7 @@ if ($action == 'update') {
     $id = Input::postIntVar('id');
 
     if (!$t) {
-        emDirect("twitter.php?error_a=1");
+        ttDirect("twitter.php?error_a=1");
     }
 
     $data = [
@@ -69,7 +69,7 @@ if ($action == 'update') {
 
     $Twitter_Model->update($data, $id);
     $CACHE->updateCache('sta');
-    emDirect("twitter.php?active_set=1");
+    ttDirect("twitter.php?active_set=1");
 }
 
 if ($action == 'del') {
@@ -77,5 +77,5 @@ if ($action == 'del') {
     $id = Input::getIntVar('id');
     $Twitter_Model->delTwitter($id);
     $CACHE->updateCache('sta');
-    emDirect("twitter.php?active_del=1");
+    ttDirect("twitter.php?active_del=1");
 }

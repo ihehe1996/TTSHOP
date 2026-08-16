@@ -51,12 +51,12 @@ if($action == 'visitors_order'){
 
     $order_id = Input::getIntVar('order_id');
     if(empty($order_id)){
-        emMsg('订单ID不能为空');
+        ttMsg('订单ID不能为空');
     }
 
     $order = $orderModel->getOrderInfoId($order_id);
     if(empty($order)){
-        emMsg('订单不存在');
+        ttMsg('订单不存在');
     }
 
     // 构建订单列表数据（单个订单）
@@ -96,8 +96,8 @@ if($action == 'visitors_order'){
         }
 
         // 处理规格信息
-        if (in_array($goods['type'] ?? '', ['em_auto', 'em_manual']) && function_exists('emFormatSkuOptionIds')) {
-            $order_list[$key]['attr_spec'] = emFormatSkuOptionIds($row['goods_id'], $row['sku'] ?? '');
+        if (in_array($goods['type'] ?? '', ['em_auto', 'em_manual']) && function_exists('ttFormatSkuOptionIds')) {
+            $order_list[$key]['attr_spec'] = ttFormatSkuOptionIds($row['goods_id'], $row['sku'] ?? '');
         } else {
             $order_list[$key]['attr_spec'] = empty($row['attr_spec']) ? '默认规格' : $row['attr_spec'];
         }
@@ -199,8 +199,8 @@ if($action == 'visitors_search_order'){
         ];
 
         // 处理规格信息
-        if (in_array($goods['type'] ?? '', ['em_auto', 'em_manual']) && function_exists('emFormatSkuOptionIds')) {
-            $order_item['attr_spec'] = emFormatSkuOptionIds($row['goods_id'], $row['sku'] ?? '');
+        if (in_array($goods['type'] ?? '', ['em_auto', 'em_manual']) && function_exists('ttFormatSkuOptionIds')) {
+            $order_item['attr_spec'] = ttFormatSkuOptionIds($row['goods_id'], $row['sku'] ?? '');
         } else {
             $order_item['attr_spec'] = empty($row['attr_spec']) ? '默认规格' : $row['attr_spec'];
         }
@@ -231,7 +231,7 @@ if($action == 'visitors_order_list'){
     $page = Input::getIntVar('page', 1);
 
     if(empty($contact) && empty($password)){
-        emMsg('查询信息不能为空');
+        ttMsg('查询信息不能为空');
     }
 
     $orders = $orderModel->getOrdersByVisitorInfo($contact, $password, $page, 10);

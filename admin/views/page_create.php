@@ -1,4 +1,4 @@
-<?php defined('EM_ROOT') || exit('access denied!'); ?>
+<?php defined('TT_ROOT') || exit('access denied!'); ?>
 
 <style>
     body{
@@ -117,9 +117,9 @@
     </div>
 </div>
 <div class="dropzone-previews" style="display: none;"></div>
-<script src="./views/js/dropzone.min.js?t=<?= Option::EM_VERSION_TIMESTAMP ?>"></script>
-<script src="./views/js/media-lib.js?t=<?= Option::EM_VERSION_TIMESTAMP ?>"></script>
-<script src="./tinymce/tinymce.min.js?t=<?= Option::EM_VERSION_TIMESTAMP ?>"></script>
+<script src="./views/js/dropzone.min.js?t=<?= Option::TT_VERSION_TIMESTAMP ?>"></script>
+<script src="./views/js/media-lib.js?t=<?= Option::TT_VERSION_TIMESTAMP ?>"></script>
+<script src="./tinymce/tinymce.min.js?t=<?= Option::TT_VERSION_TIMESTAMP ?>"></script>
 
 
 <script>

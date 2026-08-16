@@ -9,7 +9,7 @@ Author URL:
 Ui: Layui
 */
 
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 
 function adm_home(){
     echo <<<html

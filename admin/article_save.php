@@ -1,7 +1,7 @@
 <?php
 
 /**
- * EMSHOP
+ * TTSHOP
  */
 
 require_once 'globals.php';
@@ -87,7 +87,7 @@ $logData = [
 
 // 每日发文限制
 if (Article::hasReachedDailyPostLimit()) {
-    emDirect("./article.php?error_post_per_day=1");
+    ttDirect("./article.php?error_post_per_day=1");
 }
 
 doMultiAction('pre_save_log', $logData, $logData);
@@ -113,7 +113,7 @@ if ($action === 'autosave') {
 
 // 保存草稿
 if ($ishide === 'y') {
-    emDirect("./article.php?draft=1&active_savedraft=1");
+    ttDirect("./article.php?draft=1&active_savedraft=1");
 }
 
 

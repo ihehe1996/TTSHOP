@@ -4,13 +4,13 @@
  * 模板启用后，该文件会被系统自动加载。可用于实现类似插件的功能。
  */
 
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 
 // 为下载链接添加按钮样式
 function add_download_style($logData, &$result) {
     // 修改正则表达式以匹配 href 带有 ?resource_alias 和文件后缀为 .zip 等的下载链接
     $pattern = '/(href="[^"]*(\?resource_alias=.{16}|\.zip|\.rar|\.7z|\.gz|\.bz2))">/';
-    $replacement = '$1" class="em-download-btn"><span class="iconfont icon-clouddownload"></span> ';
+    $replacement = '$1" class="tt-download-btn"><span class="iconfont icon-clouddownload"></span> ';
     $result['log_content'] = preg_replace($pattern, $replacement, $logData['log_content']);
 }
 
@@ -20,7 +20,7 @@ addAction('article_content_echo', 'add_download_style');
 function render_download_btn() {
     echo <<<EOT
 <style>
-.em-download-btn {
+.tt-download-btn {
     background-color: var(--buttonBgColor);
     color: var(--fontColor);
     border: 1px solid var(--buttonBorderColor);

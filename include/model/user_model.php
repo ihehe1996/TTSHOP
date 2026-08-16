@@ -1,6 +1,6 @@
 <?php
 /**
- * @package EMSHOP
+ * @package TTSHOP
  */
 
 class User_Model {

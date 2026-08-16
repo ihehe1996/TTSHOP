@@ -1,4 +1,4 @@
-<?php defined('EM_ROOT') || exit('access denied!'); ?>
+<?php defined('TT_ROOT') || exit('access denied!'); ?>
 
 <style>
     .coupon-status-cell {
@@ -74,7 +74,7 @@
                     title: title,
                     type: 2,
                     area: area,
-                    skin: 'em-modal',
+                    skin: 'tt-modal',
                     content: url,
                     fixed: false,
                     scrollbar: false,

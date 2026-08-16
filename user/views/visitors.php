@@ -1,4 +1,4 @@
-<?php defined('EM_ROOT') || exit('access denied!'); ?>
+<?php defined('TT_ROOT') || exit('access denied!'); ?>
 
 <style>
     .main-content {
@@ -631,8 +631,8 @@
             var cookies = document.cookie.split(';');
             for (var i = 0; i < cookies.length; i++) {
                 var cookie = cookies[i].trim();
-                if (cookie.indexOf('EM_LOCAL=') === 0) {
-                    return cookie.substring('EM_LOCAL='.length);
+                if (cookie.indexOf('TT_LOCAL=') === 0) {
+                    return cookie.substring('TT_LOCAL='.length);
                 }
             }
             return null;
@@ -666,7 +666,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "<?= EM_URL ?>/user/visitors.php?action=get_local_orders",
+                url: "<?= TT_URL ?>/user/visitors.php?action=get_local_orders",
                 data: {
                     local: local,
                     page: page
@@ -783,7 +783,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "<?= EM_URL ?>/user/visitors.php?action=visitors_search_by_info",
+                url: "<?= TT_URL ?>/user/visitors.php?action=visitors_search_by_info",
                 data: Object.assign({}, searchParams, {page: searchPage}),
                 dataType: "json",
                 success: function (e) {
@@ -946,7 +946,7 @@
             var loadIndex = layer.load(2);
             $.ajax({
                 type: "POST",
-                url: "<?= EM_URL ?>/user/visitors.php?action=visitors_search_by_info",
+                url: "<?= TT_URL ?>/user/visitors.php?action=visitors_search_by_info",
                 data: Object.assign({}, field, {page: 1}),
                 dataType: "json",
                 success: function (e) {
@@ -983,7 +983,7 @@
             var loadIndex = layer.load(2);
             $.ajax({
                 type: "POST",
-                url: "<?= EM_URL ?>/user/visitors.php?action=visitors_search_order",
+                url: "<?= TT_URL ?>/user/visitors.php?action=visitors_search_order",
                 data: field,
                 dataType: "json",
                 success: function (e) {

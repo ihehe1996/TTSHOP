@@ -1,7 +1,7 @@
 <?php
 /**
  * View control
- * @package EMSHOP
+ * @package TTSHOP
  */
 
 class View {
@@ -9,20 +9,20 @@ class View {
         if(STATION_DATA){
             $nonce_templet = isMobile() ? STATION_DATA['tel_tpl'] : STATION_DATA['pc_tpl'];
             if (strpos(TPLS_PATH, 'em_null_tpl') || empty($nonce_templet)) {
-                emMsg('当前未启用任何模板，请启用模板。', EM_URL . 'user/station.php?action=template');
+                ttMsg('当前未启用任何模板，请启用模板。', TT_URL . 'user/station.php?action=template');
             }
             if (!is_dir(TPLS_PATH . $nonce_templet)) {
-                emMsg('当前使用的模板已被删除或损坏，请更换其他模板。', EM_URL . 'user/station.php?action=template');
+                ttMsg('当前使用的模板已被删除或损坏，请更换其他模板。', TT_URL . 'user/station.php?action=template');
             }
             return TPLS_PATH . $nonce_templet . '/' . $template . $ext;
         }else{
             
             $nonce_templet = isMobile() ? Option::get('nonce_templet_tel') : Option::get('nonce_templet');
             if (strpos(TEMPLATE_PATH, 'em_null_tpl') || empty($nonce_templet)) {
-                emMsg('当前未启用任何模板，请登录后台启用模板。 错误码：em_template', EM_URL . 'admin/template.php');
+                ttMsg('当前未启用任何模板，请登录后台启用模板。 错误码：tt_template', TT_URL . 'admin/template.php');
             }
             if (!is_dir(TEMPLATE_PATH)) {
-                emMsg('当前使用的模板已被删除或损坏，请登录后台更换其他模板。 错误码：em_one_template', EM_URL . 'admin/template.php');
+                ttMsg('当前使用的模板已被删除或损坏，请登录后台更换其他模板。 错误码：tt_one_template', TT_URL . 'admin/template.php');
             }
             return TEMPLATE_PATH . $template . $ext;
         }
@@ -33,7 +33,7 @@ class View {
         $template_dir = $template == 'common' ? COMMON_TEMPLATE_PATH : TEMPLATE_PATH;
         // echo $template_dir;die;
         if (!is_dir($template_dir)) {
-            emMsg('当前使用的模板已被删除或损坏，请登录后台更换其他模板。 错误码：em_one_header', EM_URL . 'admin/template.php');
+            ttMsg('当前使用的模板已被删除或损坏，请登录后台更换其他模板。 错误码：tt_one_header', TT_URL . 'admin/template.php');
         }
         return $template_dir . $ext;
     }
@@ -41,35 +41,35 @@ class View {
     public static function getFooterView($template, $ext = 'footer.php') {
         $template_dir = $template == 'common' ? COMMON_TEMPLATE_PATH : TEMPLATE_PATH;
         if (!is_dir($template_dir)) {
-            emMsg('当前使用的模板已被删除或损坏，请登录后台更换其他模板。 错误码：em_one_footer', EM_URL . 'admin/template.php');
+            ttMsg('当前使用的模板已被删除或损坏，请登录后台更换其他模板。 错误码：tt_one_footer', TT_URL . 'admin/template.php');
         }
         return $template_dir . $ext;
     }
 
     public static function getCommonView($template, $ext = '.php') {
         if (!is_dir(COMMON_TEMPLATE_PATH)) {
-            emMsg('当前使用的模板已被删除或损坏，请登录后台更换其他模板。 错误码：em_common_template', EM_URL . 'admin/template.php');
+            ttMsg('当前使用的模板已被删除或损坏，请登录后台更换其他模板。 错误码：tt_common_template', TT_URL . 'admin/template.php');
         }
         return COMMON_TEMPLATE_PATH . $template . $ext;
     }
 
     public static function getBlogView($template, $ext = '.php') {
         if (!is_dir(BLOG_TEMPLATE_PATH)) {
-            emMsg('当前使用的博客模板已被删除或损坏，请登录后台更换其他模板。');
+            ttMsg('当前使用的博客模板已被删除或损坏，请登录后台更换其他模板。');
         }
         return BLOG_TEMPLATE_PATH . $template . $ext;
     }
 
     public static function getAdmView($template, $ext = '.php') {
         if (!is_dir(ADMIN_TEMPLATE_PATH)) {
-            emMsg('后台模板已损坏', EM_URL);
+            ttMsg('后台模板已损坏', TT_URL);
         }
         return ADMIN_TEMPLATE_PATH . $template . $ext;
     }
 
     public static function getUserView($template, $ext = '.php') {
         if (!is_dir(USER_TEMPLATE_PATH)) {
-            emMsg('后台模板已损坏', EM_URL);
+            ttMsg('后台模板已损坏', TT_URL);
         }
         return USER_TEMPLATE_PATH . $template . $ext;
     }

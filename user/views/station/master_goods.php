@@ -1,5 +1,5 @@
 <?php
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 ?>
 <style>
     /* 主内容区样式 */
@@ -52,7 +52,7 @@ defined('EM_ROOT') || exit('access denied!');
         <script type="text/html" id="cover">
             <div class="layui-clear-space">
                 <a href="javascript:;" data-id="{{ d.id }}" lay-event="img">
-                    <img onerror="this.onerror=null; this.src='<?= EM_URL ?>admin/views/images/null.png'" class="cover" data-img="{{ d.cover }}" src="{{ d.cover }}" style="width: 40px; border-radius: 3px;" />
+                    <img onerror="this.onerror=null; this.src='<?= TT_URL ?>admin/views/images/null.png'" class="cover" data-img="{{ d.cover }}" src="{{ d.cover }}" style="width: 40px; border-radius: 3px;" />
                 </a>
             </div>
         </script>

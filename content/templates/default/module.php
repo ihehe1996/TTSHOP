@@ -2,7 +2,7 @@
 /**
  * 侧边栏组件、页面模块
  */
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 
 
 
@@ -27,8 +27,8 @@ function blog_navi() {
 
         // 处理链接属性
         $newtab = $value['newtab'] == 'y' ? 'target="_blank"' : '';
-        $value['url'] = $value['isdefault'] == 'y' ? EM_URL . $value['url'] : trim($value['url'], '/');
-        $current_tab = EM_URL . trim(Dispatcher::setPath(), '/') == $value['url'] ? 'active' : '';
+        $value['url'] = $value['isdefault'] == 'y' ? TT_URL . $value['url'] : trim($value['url'], '/');
+        $current_tab = TT_URL . trim(Dispatcher::setPath(), '/') == $value['url'] ? 'active' : '';
 
         // 检查是否有子菜单
         $has_children = !empty($value['children']) || !empty($value['childnavi']);
@@ -88,7 +88,7 @@ function topflg($top, $sortop = 'n', $sortid = null) {
  * 文章详情页：编辑链接
  */
 function editflg($logid, $author) {
-    $editflg = User::haveEditPermission() || $author == UID ? '<a href="' . EM_URL . 'admin/article.php?action=edit&gid=' . $logid . '" target="_blank"><span class="iconfont icon-edit"></span></a>' : '';
+    $editflg = User::haveEditPermission() || $author == UID ? '<a href="' . TT_URL . 'admin/article.php?action=edit&gid=' . $logid . '" target="_blank"><span class="iconfont icon-edit"></span></a>' : '';
     echo $editflg;
 }
 
@@ -179,7 +179,7 @@ function blog_comments($comments, $comnum) {
         ?>
         <div class="comment" id="<?= $comment['cid'] ?>">
             <?php
-            $avatar = getEmUserAvatar($comment['uid'], $comment['mail']);
+            $avatar = getTtUserAvatar($comment['uid'], $comment['mail']);
             ?>
             <div class="avatar"><img src="<?= $avatar ?>" alt="avatar"/></div>
             <div class="comment-infos">
@@ -207,7 +207,7 @@ function blog_comments_children($comments, $children) {
         ?>
         <div class="comment comment-children" id="<?= $comment['cid'] ?>">
             <?php
-            $avatar = getEmUserAvatar($comment['uid'], $comment['mail']);
+            $avatar = getTtUserAvatar($comment['uid'], $comment['mail']);
             ?>
             <div class="avatar"><img src="<?= $avatar ?>" alt="commentator"/></div>
             <div class="comment-infos">
@@ -233,7 +233,7 @@ function blog_comments_post($logid, $ckname, $ckmail, $ckurl, $verifyCode, $allo
     if ($allow_remark == 'y'): ?>
         <div id="comments">
             <div class="comment-post" id="comment-post">
-                <form class="commentform" method="post" name="commentform" action="<?= EM_URL ?>index.php?action=addcom" id="commentform">
+                <form class="commentform" method="post" name="commentform" action="<?= TT_URL ?>index.php?action=addcom" id="commentform">
                     <input type="hidden" name="gid" value="<?= $logid ?>"/>
                     <textarea class="form-control log_comment" name="comment" id="comment" rows="10" tabindex="4" placeholder="撰写评论" required></textarea>
                     <?php if (User::isVisitor() && $isLoginComment === 'n'): ?>
@@ -258,7 +258,7 @@ function blog_comments_post($logid, $ckname, $ckmail, $ckurl, $verifyCode, $allo
                         <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content" style="display: table-cell;">
-                                    <input type="hidden" id="EM_URL" value="<?= EM_URL ?>"/>
+                                    <input type="hidden" id="TT_URL" value="<?= TT_URL ?>"/>
                                     <div class="modal-header" style="border-bottom: 0;">输入验证码</div>
                                     <?= $verifyCode ?>
                                     <div class="modal-footer" style="border-top: 0;">
@@ -281,7 +281,7 @@ function blog_comments_post($logid, $ckname, $ckmail, $ckurl, $verifyCode, $allo
  * 判断函数：是否是首页
  */
 function blog_tool_ishome() {
-    if (EM_URL . trim(Dispatcher::setPath(), '/') == EM_URL) {
+    if (TT_URL . trim(Dispatcher::setPath(), '/') == TT_URL) {
         return true;
     } else {
         return FALSE;
@@ -290,7 +290,7 @@ function blog_tool_ishome() {
 
 ?>
 <?php
-function getEmUserAvatar($uid, $mail) {
+function getTtUserAvatar($uid, $mail) {
     $avatar = '';
     if ($uid) {
         $userModel = new User_Model();
@@ -299,7 +299,7 @@ function getEmUserAvatar($uid, $mail) {
     } elseif ($mail) {
         $avatar = getGravatar($mail);
     }
-    return $avatar ?: EM_URL . "admin/views/images/avatar.svg";
+    return $avatar ?: TT_URL . "admin/views/images/avatar.svg";
 }
 
 ?>

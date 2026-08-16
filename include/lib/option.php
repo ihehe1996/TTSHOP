@@ -2,10 +2,10 @@
 
 class Option {
 
-    const EM_VERSION = '1.2.72';
-    const EM_VERSION_TIMESTAMP = 1272;
+    const TT_VERSION = '1.2.72';
+    const TT_VERSION_TIMESTAMP = 1272;
     const UPLOADFILE_PATH = '../content/uploadfile/';
-    const UPLOADFILE_FULL_PATH = EM_ROOT . '/content/uploadfile/';
+    const UPLOADFILE_FULL_PATH = TT_ROOT . '/content/uploadfile/';
 
     static function get($option) {
         $CACHE = Cache::getInstance();
@@ -189,10 +189,10 @@ class Option {
 
             $sql = "select * from {$db_prefix}authorization where domain='{$host}'";
             $res = $db->once_fetch_array($sql);
-            $emkey =  empty($res) ? false : $res['emkey'];
+            $ttkey =  empty($res) ? false : $res['ttkey'];
 
             # hehe
-            if (empty($emkey)) {
+            if (empty($ttkey)) {
                 $options_cache['site_title'] = '&#26410;&#25480;&#26435;&#30340;&#29256;&#26412; ' . $options_cache['site_title'];
             }
         }

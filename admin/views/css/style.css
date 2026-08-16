@@ -1,5 +1,5 @@
 /* ==========================================================================
-   EMSHOP Admin Theme - 后台管理系统样式
+   TTSHOP Admin Theme - 后台管理系统样式
    ==========================================================================
 
 
@@ -2045,19 +2045,19 @@ body {
 }
 
 /* EM Modal Pro */
-.em-modal-skin {
+.tt-modal-skin {
     border-radius: 20px !important;
     background: transparent !important;
     box-shadow: none !important;
 }
 
-.em-modal-skin .layui-layer-content {
+.tt-modal-skin .layui-layer-content {
     overflow: visible !important;
     background: transparent !important;
     border-radius: 20px;
 }
 
-.em-modal-box {
+.tt-modal-box {
     background: #ffffff;
     border-radius: 20px;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
@@ -2066,7 +2066,7 @@ body {
     font-family: "Space Grotesk", "Noto Sans SC", sans-serif;
 }
 
-.em-modal-box::before {
+.tt-modal-box::before {
     content: '';
     position: absolute;
     top: 0;
@@ -2076,7 +2076,7 @@ body {
     background: var(--admin-primary);
 }
 
-.em-modal-close-btn {
+.tt-modal-close-btn {
     position: absolute;
     top: 16px;
     right: 16px;
@@ -2093,19 +2093,19 @@ body {
     color: #9ca3af;
 }
 
-.em-modal-close-btn:hover {
+.tt-modal-close-btn:hover {
     background: #e5e7eb;
     color: #4b5563;
     transform: rotate(90deg);
 }
 
-.em-modal-header {
+.tt-modal-header {
     padding: 40px 32px 24px;
     text-align: center;
     background: #fff;
 }
 
-.em-modal-icon-wrapper {
+.tt-modal-icon-wrapper {
     width: 64px;
     height: 64px;
     background: #edf2f1;
@@ -2117,11 +2117,11 @@ body {
     color: var(--admin-primary);
 }
 
-.em-modal-icon-wrapper i {
+.tt-modal-icon-wrapper i {
     font-size: 32px;
 }
 
-.em-modal-title {
+.tt-modal-title {
     font-size: 24px;
     font-weight: 800;
     color: #111827;
@@ -2129,7 +2129,7 @@ body {
     letter-spacing: -0.5px;
 }
 
-.em-modal-desc {
+.tt-modal-desc {
     font-size: 14px;
     color: #6b7280;
     line-height: 1.5;
@@ -2137,18 +2137,18 @@ body {
     margin: 0 auto;
 }
 
-.em-modal-body {
+.tt-modal-body {
     padding: 0 32px 40px;
     background: #fff;
 }
 
-.em-modal-list {
+.tt-modal-list {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
-.em-modal-item {
+.tt-modal-item {
     display: flex;
     align-items: center;
     padding: 16px 20px;
@@ -2160,14 +2160,14 @@ body {
     position: relative;
 }
 
-.em-modal-item:hover {
+.tt-modal-item:hover {
     background: #fff;
     border-color: var(--admin-primary);
     box-shadow: 0 8px 20px rgba(15, 118, 110, 0.1);
     transform: translateY(-2px);
 }
 
-.em-item-icon {
+.tt-item-icon {
     width: 40px;
     height: 40px;
     background: #fff;
@@ -2181,12 +2181,12 @@ body {
     flex-shrink: 0;
 }
 
-.em-item-content {
+.tt-item-content {
     flex: 1;
     min-width: 0;
 }
 
-.em-item-title {
+.tt-item-title {
     font-size: 15px;
     font-weight: 600;
     color: #374151;
@@ -2194,7 +2194,7 @@ body {
     display: block;
 }
 
-.em-item-sub {
+.tt-item-sub {
     font-size: 12px;
     color: #9ca3af;
     display: block;
@@ -2204,7 +2204,7 @@ body {
     font-family: 'Monaco', 'Menlo', 'Ubuntu', 'Consolas', 'source-code-pro', monospace;
 }
 
-.em-item-action {
+.tt-item-action {
     width: 32px;
     height: 32px;
     display: flex;
@@ -2214,18 +2214,18 @@ body {
     transition: all 0.2s;
 }
 
-.em-modal-item:hover .em-item-action {
+.tt-modal-item:hover .tt-item-action {
     color: var(--admin-primary);
     transform: translateX(4px);
 }
 
-.em-link-item:hover {
+.tt-link-item:hover {
     border-color: var(--admin-primary);
     box-shadow: 0 8px 24px rgba(15, 118, 110, 0.12);
     transform: translateY(-2px);
 }
 
-.em-link-icon {
+.tt-link-icon {
     width: 44px;
     height: 44px;
     background: #edf2f1;
@@ -2238,26 +2238,26 @@ body {
     transition: all 0.3s;
 }
 
-.em-link-icon i {
+.tt-link-icon i {
     color: var(--admin-primary);
     font-size: 22px;
 }
 
-.em-link-item:hover .em-link-icon {
+.tt-link-item:hover .tt-link-icon {
     background: var(--admin-primary);
 }
 
-.em-link-item:hover .em-link-icon i {
+.tt-link-item:hover .tt-link-icon i {
     color: #fff;
 }
 
-.em-link-content {
+.tt-link-content {
     flex: 1;
     min-width: 0;
     margin-right: 16px;
 }
 
-.em-link-name {
+.tt-link-name {
     font-size: 15px;
     font-weight: 600;
     color: #1f2937;
@@ -2265,7 +2265,7 @@ body {
     display: block;
 }
 
-.em-link-url {
+.tt-link-url {
     font-size: 13px;
     color: #9ca3af;
     white-space: nowrap;
@@ -2275,7 +2275,7 @@ body {
     font-family: 'Monaco', 'Menlo', 'Ubuntu', 'Consolas', 'source-code-pro', monospace;
 }
 
-.em-link-action a {
+.tt-link-action a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -2292,13 +2292,13 @@ body {
     white-space: nowrap;
 }
 
-.em-link-action a:hover {
+.tt-link-action a:hover {
     background: var(--admin-primary);
     color: #fff;
     box-shadow: 0 4px 12px rgba(15, 118, 110, 0.25);
 }
 
-.em-link-item {
+.tt-link-item {
     display: flex;
     align-items: center;
     padding: 16px 20px;
@@ -2310,38 +2310,38 @@ body {
 }
 
 @media (max-width: 767px) {
-    .em-link-item {
+    .tt-link-item {
         flex-wrap: wrap;
         padding: 16px;
     }
-    .em-link-icon {
+    .tt-link-icon {
         width: 36px;
         height: 36px;
         margin-right: 12px;
     }
-    .em-link-icon i {
+    .tt-link-icon i {
         font-size: 18px;
     }
-    .em-link-content {
+    .tt-link-content {
         width: calc(100% - 60px);
         margin-right: 0;
     }
-    .em-link-action {
+    .tt-link-action {
         width: 100%;
         margin-top: 12px;
         padding-top: 12px;
         border-top: 1px dashed rgba(15, 118, 110, 0.12);
     }
-    .em-link-action a {
+    .tt-link-action a {
         width: 100%;
     }
 }
 
 @media (max-width: 640px) {
-    .em-modal-header { padding: 32px 24px 20px; }
-    .em-modal-body { padding: 0 24px 32px; }
-    .em-modal-title { font-size: 20px; }
-    .em-modal-item { padding: 14px; }
+    .tt-modal-header { padding: 32px 24px 20px; }
+    .tt-modal-body { padding: 0 24px 32px; }
+    .tt-modal-title { font-size: 20px; }
+    .tt-modal-item { padding: 14px; }
 }
 
 .auth-promo-card {
@@ -2592,12 +2592,12 @@ body {
 }
 
 /* 优化layui的弹窗样式 start */
-    .em-modal.layui-layer {
+    .tt-modal.layui-layer {
         border-radius: 16px;
         box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.05);
         overflow: hidden!important;
     }
-    .em-modal .layui-layer-title {
+    .tt-modal .layui-layer-title {
         height: 56px;
         line-height: 56px;
         padding: 0 20px 0 42px;
@@ -2608,7 +2608,7 @@ body {
         font-weight: 600;
         position: relative;
     }
-    .em-modal .layui-layer-title:before {
+    .tt-modal .layui-layer-title:before {
         content: '';
         position: absolute;
         top: 0;
@@ -2617,7 +2617,7 @@ body {
         height: 3px;
         background: #0f766e;
     }
-    .em-modal .layui-layer-title:after {
+    .tt-modal .layui-layer-title:after {
         content: '';
         position: absolute;
         left: 20px;
@@ -2628,16 +2628,16 @@ body {
         border-radius: 2px;
         transform: translateY(-50%);
     }
-    .em-modal .layui-layer-content {
+    .tt-modal .layui-layer-content {
         background: #f8fafb;
         padding: 0;
     }
-    .em-modal .layui-layer-setwin {
+    .tt-modal .layui-layer-setwin {
         right: 16px;
         top: 14px;
         font-size: 0;
     }
-    .em-modal .layui-layer-setwin span {
+    .tt-modal .layui-layer-setwin span {
         width: 32px !important;
         height: 32px !important;
         border-radius: 16px;
@@ -2652,24 +2652,24 @@ body {
         position: relative;
         box-sizing: border-box;
     }
-    .em-modal .layui-layer-setwin span:before{
+    .tt-modal .layui-layer-setwin span:before{
         font-weight: bold;
     }
-    .em-modal .layui-layer-setwin span:hover {
+    .tt-modal .layui-layer-setwin span:hover {
         background: #e8edf2 !important;
         color: #111;
         font-weight: bold;
     }
-    .em-modal .layui-layer-setwin .layui-layer-close:hover {
+    .tt-modal .layui-layer-setwin .layui-layer-close:hover {
         background: #fee2e2 !important;
         color: #dc2626!important;
         transform: rotate(90deg);
     }
 
-    .em-modal .layui-layer-setwin .layui-layer-min:before{
+    .tt-modal .layui-layer-setwin .layui-layer-min:before{
         border-bottom: 1.7px solid #2e2d3c;
     }
-    .em-modal .layui-layer-setwin .layui-layer-max:after, .layui-layer-setwin .layui-layer-max:before{
+    .tt-modal .layui-layer-setwin .layui-layer-max:after, .layui-layer-setwin .layui-layer-max:before{
         border: 1.6px solid #2e2d3c;
         border-radius: 2px;
         margin: -5px 0 0 -5.5px;

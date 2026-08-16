@@ -3,7 +3,7 @@
 /**
  * 加密文章输入密码页面
  */
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 ?>
 <!doctype html>
 <html lang="zh-cn">
@@ -79,7 +79,7 @@ defined('EM_ROOT') || exit('access denied!');
             <input type="password" id="logpwd" name="logpwd" required autofocus>
             <button type="submit">提交</button>
         </div>
-        <a href="<?= EM_URL ?>">&larr;返回首页</a>
+        <a href="<?= TT_URL ?>">&larr;返回首页</a>
     </form>
 </body>
 

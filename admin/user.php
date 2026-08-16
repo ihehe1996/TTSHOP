@@ -148,16 +148,16 @@ if ($action == 'new') {
     }
 
     if ($email == '') {
-        emDirect('./user.php?error_email=1');
+        ttDirect('./user.php?error_email=1');
     }
     if ($User_Model->isMailExist($email)) {
-        emDirect("./user.php?error_exist_email=1");
+        ttDirect("./user.php?error_exist_email=1");
     }
     if (strlen($password) < 6) {
-        emDirect('./user.php?error_pwd_len=1');
+        ttDirect('./user.php?error_pwd_len=1');
     }
     if ($password != $password2) {
-        emDirect('./user.php?error_pwd2=1');
+        ttDirect('./user.php?error_pwd2=1');
     }
 
     $PHPASS = new PasswordHash(8, true);
@@ -165,7 +165,7 @@ if ($action == 'new') {
 
     $User_Model->addUser('', $email, $password, $role);
     $CACHE->updateCache(array('sta', 'user'));
-    emDirect('./user.php?active_add=1');
+    ttDirect('./user.php?active_add=1');
 }
 
 if ($action == 'edit') {
@@ -217,7 +217,7 @@ if ($action == 'edit_ajax') {
 
     //创始人账户不能被他人编辑
     if (!User::isFounder() && $uid === 1) {
-        emDirect('./user.php?error_del_b=1');
+        ttDirect('./user.php?error_del_b=1');
     }
     if ($uid === 1) {
         $role = User::ROLE_ADMIN;

@@ -3,7 +3,7 @@
 /**
  * 首页模板
  */
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 ?>
 <main class="container blog-container">
     <div class="row">

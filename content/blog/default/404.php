@@ -3,7 +3,7 @@
 /**
  * 自定义404页面
  */
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 ?>
 <!doctype html>
 <html lang="zh-cn" data-theme="light">
@@ -11,7 +11,7 @@ defined('EM_ROOT') || exit('access denied!');
 <head>
     <meta charset="utf-8">
     <title>错误提示-页面未找到</title>
-    <link href="<?= TEMPLATE_URL ?>css/style.css?t=<?= Option::EM_VERSION_TIMESTAMP ?>" rel="stylesheet" type="text/css" />
+    <link href="<?= TEMPLATE_URL ?>css/style.css?t=<?= Option::TT_VERSION_TIMESTAMP ?>" rel="stylesheet" type="text/css" />
     <style>
         .main {
             background-color: var(--bodyBground);
@@ -45,10 +45,10 @@ defined('EM_ROOT') || exit('access denied!');
 <body>
     <div class="main">
         <p>404 Not Found ！</p>
-        <p><a href="<?= EM_URL ?>">首页</a></p>
+        <p><a href="<?= TT_URL ?>">首页</a></p>
     </div>
-    <script src="<?= TEMPLATE_URL ?>js/jquery.min.3.5.1.js?v=<?= Option::EM_VERSION_TIMESTAMP ?>"></script>
-    <script src="<?= TEMPLATE_URL ?>js/common_tpl.js?t=<?= Option::EM_VERSION_TIMESTAMP ?>"></script>
+    <script src="<?= TEMPLATE_URL ?>js/jquery.min.3.5.1.js?v=<?= Option::TT_VERSION_TIMESTAMP ?>"></script>
+    <script src="<?= TEMPLATE_URL ?>js/common_tpl.js?t=<?= Option::TT_VERSION_TIMESTAMP ?>"></script>
 </body>
 
 </html>

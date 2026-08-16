@@ -4,10 +4,10 @@ require_once 'init.php';
 
 doAction('init');
 
-$emDispatcher = Dispatcher::getInstance();
+$ttDispatcher = Dispatcher::getInstance();
 
 
-$emDispatcher->dispatch();
+$ttDispatcher->dispatch();
 
 
 

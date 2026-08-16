@@ -2,19 +2,19 @@
 /**
  * curl wrapper class
  *
- * @package EMLOG
+ * @package TTSHOP
  * @link https://www.emlog.net
  */
 
 class EmCurl {
-    protected $_useragent = 'emlog ';
+    protected $_useragent = 'ttshop ';
     protected $_url;
     protected $_followlocation = false;
     protected $_timeout;
     protected $_maxRedirects = 0;
     protected $_post;
     protected $_postFields;
-    protected $_referer = EM_URL;
+    protected $_referer = TT_URL;
     protected $_response;
     protected $_includeHeader;
     protected $_noBody;
@@ -42,7 +42,7 @@ class EmCurl {
         }
 
         if (!extension_loaded('curl')) {
-            emMsg("请求失败，请先安装 PHP 的 Curl 扩展。");
+            ttMsg("请求失败，请先安装 PHP 的 Curl 扩展。");
         }
 
         $s = curl_init();
@@ -70,7 +70,7 @@ class EmCurl {
             curl_setopt($s, CURLOPT_NOBODY, true);
         }
 
-        curl_setopt($s, CURLOPT_USERAGENT, $this->_useragent . Option::EM_VERSION);
+        curl_setopt($s, CURLOPT_USERAGENT, $this->_useragent . Option::TT_VERSION);
         curl_setopt($s, CURLOPT_REFERER, $this->_referer);
 
         $this->_response = curl_exec($s);

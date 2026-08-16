@@ -1,11 +1,11 @@
 <?php
 /**
- * EMSHOP 同系统对接 API 封装类
+ * TTSHOP 同系统对接 API 封装类
  *
- * 用于对接另一个 EMSHOP 系统的商品
+ * 用于对接另一个 TTSHOP 系统的商品
  */
 
-class EmApi
+class TtApi
 {
     private $domain;
     private $userId;
@@ -30,7 +30,7 @@ class EmApi
      * 从站点信息创建实例
      *
      * @param array $site 站点配置
-     * @return EmApi
+     * @return TtApi
      */
     public static function fromSite($site)
     {
@@ -54,7 +54,7 @@ class EmApi
     /**
      * 生成签名
      *
-     * EMSHOP 签名规则：md5(req_time + req_token)
+     * TTSHOP 签名规则：md5(req_time + req_token)
      *
      * @param int $timestamp 时间戳
      * @return string
@@ -92,7 +92,7 @@ class EmApi
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($ch, CURLOPT_USERAGENT, 'EMSHOP-GOODS-EM/1.0');
+        curl_setopt($ch, CURLOPT_USERAGENT, 'TTSHOP-GOODS-EM/1.0');
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -123,11 +123,11 @@ class EmApi
         }
         
 
-        // EMSHOP 返回格式：{"code": 200, "msg": "success", "data": {...}}
+        // TTSHOP 返回格式：{"code": 200, "msg": "success", "data": {...}}
         // code = 200 表示成功
         if (isset($result['code']) && $result['code'] !== 200) {
             $this->lastError = $result['msg'] ?? '未知错误';
-            Log::error("EMApi请求失败: action={$action}, code={$result['code']}, msg={$this->lastError}");
+            Log::error("对接API请求失败: action={$action}, code={$result['code']}, msg={$this->lastError}");
             return false;
         }
 
@@ -142,7 +142,7 @@ class EmApi
      */
     public function connect()
     {
-        $data = $this->request('getEmInfo');
+        $data = $this->request('getTtInfo');
         if (!$data) return false;
 
         // 获取用户余额信息
@@ -207,7 +207,7 @@ class EmApi
             }
             $result[$sortId]['commodity'][] = [
                 'id' => $goodsId,
-                'code' => $goodsId, // EMSHOP 使用商品 ID 作为 code
+                'code' => $goodsId, // TTSHOP 使用商品 ID 作为 code
                 'name' => $goods['title'] ?? ($goods['name'] ?? ''),
                 'price' => $goods['price'] ?? 0,
                 'cover' => $goods['cover'] ?? '',
@@ -374,7 +374,7 @@ class EmApi
      */
     public function query($tradeNo)
     {
-        // EMSHOP 暂未实现订单查询 API，后续可扩展
+        // TTSHOP 暂未实现订单查询 API，后续可扩展
         $this->lastError = '订单查询功能暂未实现';
         return false;
     }

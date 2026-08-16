@@ -1,5 +1,5 @@
 <?php
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 
 
 
@@ -111,7 +111,7 @@ function plugin_setting_view() {
             </div>
         </div>
     </form>
-    <script src="./tinymce/tinymce.min.js?t=<?= Option::EM_VERSION_TIMESTAMP ?>"></script>
+    <script src="./tinymce/tinymce.min.js?t=<?= Option::TT_VERSION_TIMESTAMP ?>"></script>
     <script>
 
         layui.use(['table'], function(){

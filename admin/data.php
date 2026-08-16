@@ -1,7 +1,7 @@
 <?php
 /**
  * data backup
- * @package EMLOG
+ * @package TTSHOP
  * @link https://www.emlog.net
  */
 
@@ -26,7 +26,7 @@ if ($action === 'backup') {
     $DB = Database::getInstance();
     $tables = $DB->listTables();
 
-    $bakfname = 'emlog_' . date('Ymd') . '_' . substr(md5(AUTH_KEY . uniqid('', true)), 0, 18);
+    $bakfname = 'ttshop_' . date('Ymd') . '_' . substr(md5(AUTH_KEY . uniqid('', true)), 0, 18);
     $filename = '';
     $sqldump = '';
 
@@ -34,16 +34,16 @@ if ($action === 'backup') {
         $sqldump .= exportData($table);
     }
 
-    $dumpfile = '#version:emlog ' . Option::EM_VERSION . "\n";
+    $dumpfile = '#version:ttshop ' . Option::TT_VERSION . "\n";
     $dumpfile .= '#date:' . date('Y-m-d H:i') . "\n";
     $dumpfile .= '#tableprefix:' . DB_PREFIX . "\n";
     $dumpfile .= $sqldump;
     $dumpfile .= "\n#the end of backup";
 
-    $filename = 'emlog_' . Option::EM_VERSION . '_' . date('Ymd_His');
+    $filename = 'ttshop_' . Option::TT_VERSION . '_' . date('Ymd_His');
     if ($zipbak == 'y') {
-        if (($dumpfile = emZip($filename . '.sql', $dumpfile)) === false) {
-            emDirect('./data.php?error_f=1');
+        if (($dumpfile = ttZip($filename . '.sql', $dumpfile)) === false) {
+            ttDirect('./data.php?error_f=1');
         }
         header('Content-Type: application/zip');
         header('Content-Disposition: attachment; filename=' . $filename . '.zip');
@@ -62,38 +62,38 @@ if ($action === 'import') {
     LoginAuth::checkToken();
     $sqlfile = isset($_FILES['sqlfile']) ? $_FILES['sqlfile'] : '';
     if (!$sqlfile) {
-        emMsg('非法提交的信息');
+        ttMsg('非法提交的信息');
     }
     if ($sqlfile['error'] == 1) {
-        emMsg('文件大小超过系统' . ini_get('upload_max_filesize') . '限制');
+        ttMsg('文件大小超过系统' . ini_get('upload_max_filesize') . '限制');
     } elseif ($sqlfile['error'] > 1) {
-        emMsg('上传文件失败,错误码：' . $sqlfile['error']);
+        ttMsg('上传文件失败,错误码：' . $sqlfile['error']);
     }
     if (getFileSuffix($sqlfile['name']) == 'zip') {
-        $ret = emUnZip($sqlfile['tmp_name'], dirname($sqlfile['tmp_name']), 'backup');
+        $ret = ttUnZip($sqlfile['tmp_name'], dirname($sqlfile['tmp_name']), 'backup');
         switch ($ret) {
             case -3:
-                emDirect('./data.php?error_e=1');
+                ttDirect('./data.php?error_e=1');
                 break;
             case 1:
             case 2:
-                emDirect('./data.php?error_d=1');
+                ttDirect('./data.php?error_d=1');
                 break;
             case 3:
-                emDirect('./data.php?error_c=1');
+                ttDirect('./data.php?error_c=1');
                 break;
         }
         $sqlfile['tmp_name'] = dirname($sqlfile['tmp_name']) . '/' . str_replace('.zip', '.sql', $sqlfile['name']);
         if (!file_exists($sqlfile['tmp_name'])) {
-            emMsg('只能导入emlog备份的压缩包，且不能修改压缩包文件名！');
+            ttMsg('只能导入ttshop备份的压缩包，且不能修改压缩包文件名！');
         }
     } elseif (getFileSuffix($sqlfile['name']) != 'sql') {
-        emMsg('只能导入emlog备份的SQL文件');
+        ttMsg('只能导入ttshop备份的SQL文件');
     }
     checkSqlFileInfo($sqlfile['tmp_name']);
     importData($sqlfile['tmp_name']);
     $CACHE->updateCache();
-    emDirect('./data.php?active_import=1');
+    ttDirect('./data.php?active_import=1');
 }
 
 /**
@@ -134,7 +134,7 @@ function exportData($table) {
 function checkSqlFileInfo($sqlfile) {
     $fp = @fopen($sqlfile, 'r');
     if (!$fp) {
-        emMsg('读取备份文件失败，检查文件权限');
+        ttMsg('读取备份文件失败，检查文件权限');
     }
     $dumpinfo = [];
     $line = 0;
@@ -151,20 +151,20 @@ function checkSqlFileInfo($sqlfile) {
     }
     fclose($fp);
     if (empty($dumpinfo)) {
-        emMsg('该文件不是emlog的数据备份文件');
+        ttMsg('该文件不是ttshop的数据备份文件');
     }
 
     if (preg_match("/pro\s\d+\.\d+\.\d+/", $dumpinfo[0], $matches)) {
         $v = $matches[0];
-        if ($v !== Option::EM_VERSION) {
-            emMsg('不是生成的数据备份，请安装 emlog ' . $v . ' 导入。');
+        if ($v !== Option::TT_VERSION) {
+            ttMsg('不是生成的数据备份，请安装 ttshop ' . $v . ' 导入。');
         }
     } else {
-        emMsg('该文件不是 emlog pro 的数据备份文件');
+        ttMsg('该文件不是 ttshop pro 的数据备份文件');
     }
 
     if (preg_match('/#tableprefix:' . DB_PREFIX . '/', $dumpinfo[2]) === 0) {
-        emMsg('备份文件中的数据库表前缀与当前系统数据库表前缀不一致' . $dumpinfo[2]);
+        ttMsg('备份文件中的数据库表前缀与当前系统数据库表前缀不一致' . $dumpinfo[2]);
     }
 }
 
@@ -209,5 +209,5 @@ function checkBOM($contents) {
 if ($action == 'Cache') {
     Register::isRegServer();
     $CACHE->updateCache();
-    emDirect('./data.php?active_mc=1');
+    ttDirect('./data.php?active_mc=1');
 }

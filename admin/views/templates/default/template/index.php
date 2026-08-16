@@ -1,5 +1,5 @@
 <?php
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 ?>
 <style>
     .template-page {
@@ -409,7 +409,7 @@ defined('EM_ROOT') || exit('access denied!');
                     area: area,
                     // skin: 'layui-layer-win10',
                     // skin: 'layui-layer-molv',
-                    skin: 'em-modal',
+                    skin: 'tt-modal',
                     content: '?action=setting_page&tpl=' + data.tplfile,
                     fixed: false, // 不固定
                     scrollbar: false,

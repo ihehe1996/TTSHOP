@@ -1,7 +1,7 @@
 <?php
 /**
  * navbar menu items
- * @package EMLOG
+ * @package TTSHOP
  * @link https://www.emlog.net
  */
 
@@ -15,10 +15,10 @@ require_once 'globals.php';
 $Navi_Model = new Navi_Model();
 
 if (empty($action)) {
-    $emPage = new Log_Model();
+    $ttPage = new Log_Model();
     $sorts = $CACHE->readCache('sort');
     $blog_sorts = $CACHE->readCache('blog_sort');
-    $pages = $emPage->getAllPageList();
+    $pages = $ttPage->getAllPageList();
 
     $br = '<a href="./">控制台</a><a href="./template.php">外观设置</a><a><cite>导航管理</cite></a>';
 
@@ -169,8 +169,8 @@ if ($action == 'add_blogsort') {
 
 if ($action == 'add_page') {
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-        $emPage = new Log_Model();
-        $pages = $emPage->getAllPageList();
+        $ttPage = new Log_Model();
+        $pages = $ttPage->getAllPageList();
         include View::getAdmView('open_head');
         require_once(View::getAdmView('templates/default/navbar/add_page'));
         include View::getAdmView('open_foot');

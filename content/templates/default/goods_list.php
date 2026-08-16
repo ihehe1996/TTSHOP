@@ -2,7 +2,7 @@
 /**
  * 默认模板商品列表页
  */
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 
 doAction('goods_list');
 
@@ -74,7 +74,7 @@ if (empty($homeBulletin)) {
 }
 
 if (empty($homeBulletin)) {
-    $homeBulletin = '<p>本站使用 EMSHOP 免费开源程序搭建，此处公告内容配置请前往后台面板 - 外观管理 - 模板管理处配置</p>';
+    $homeBulletin = '<p>本站使用 TTSHOP 免费开源程序搭建，此处公告内容配置请前往后台面板 - 外观管理 - 模板管理处配置</p>';
 }
 
 $topNotice = $homeBulletin;
@@ -135,7 +135,7 @@ foreach ($childSorts as $parentId => $items) {
                     <a href="javascript:;" class="df-category-card js-parent-card<?= $isActive ? ' is-active' : '' ?>" data-sort-id="<?= $sortId ?>" data-sort-name="<?= htmlspecialchars($item['sortname'], ENT_QUOTES, 'UTF-8') ?>">
                         <?php if ($sortImg !== ''): ?>
                             <span class="df-category-thumb">
-                                <img src="<?= $sortImg ?>" alt="<?= htmlspecialchars($item['sortname'], ENT_QUOTES, 'UTF-8') ?>" onerror="this.src='<?= EM_URL ?>admin/views/images/cover.svg'; this.onerror=null;">
+                                <img src="<?= $sortImg ?>" alt="<?= htmlspecialchars($item['sortname'], ENT_QUOTES, 'UTF-8') ?>" onerror="this.src='<?= TT_URL ?>admin/views/images/cover.svg'; this.onerror=null;">
                             </span>
                         <?php else: ?>
                             <span class="df-category-badge is-muted"><i class="fa fa-th-large"></i></span>
@@ -191,7 +191,7 @@ foreach ($childSorts as $parentId => $items) {
                         <?php foreach ($goods_list as $item): ?>
                             <a class="df-product-card" href="<?= $item['url'] ?>" title="<?= htmlspecialchars($item['title'], ENT_QUOTES, 'UTF-8') ?>"<?= !empty($item['link']) ? ' target="_blank" rel="noopener noreferrer"' : '' ?>>
                                 <div class="df-product-thumb">
-                                    <img src="<?= $item['cover'] ?>" alt="<?= htmlspecialchars($item['title'], ENT_QUOTES, 'UTF-8') ?>" loading="lazy" onerror="this.src='<?= EM_URL ?>admin/views/images/cover.svg'; this.onerror=null;">
+                                    <img src="<?= $item['cover'] ?>" alt="<?= htmlspecialchars($item['title'], ENT_QUOTES, 'UTF-8') ?>" loading="lazy" onerror="this.src='<?= TT_URL ?>admin/views/images/cover.svg'; this.onerror=null;">
                                 </div>
                                 <div class="df-product-body">
                                     <div class="df-product-name"><?= $item['title'] ?></div>
@@ -252,8 +252,8 @@ foreach ($childSorts as $parentId => $items) {
     }
 
     var apiUrl = $listSection.data('api') || '/?rest-api=getCategoryProducts';
-    var fallbackCover = '<?= EM_URL ?>admin/views/images/cover.svg';
-    var homeUrl = '<?= EM_URL ?>';
+    var fallbackCover = '<?= TT_URL ?>admin/views/images/cover.svg';
+    var homeUrl = '<?= TT_URL ?>';
     var searchEnabled = <?= $searchEnabled ? 'true' : 'false' ?>;
     var stockShow = <?= _g('stock_show') != 'n' ? 'true' : 'false' ?>;
     var salesShow = <?= _g('sales_show') != 'n' ? 'true' : 'false' ?>;

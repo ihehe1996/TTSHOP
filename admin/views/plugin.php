@@ -1,4 +1,4 @@
-<?php defined('EM_ROOT') || exit('access denied!'); ?>
+<?php defined('TT_ROOT') || exit('access denied!'); ?>
 
 <div class="layui-tabs" style="margin-bottom: 12px;" lay-options="{trigger: false}">
     <ul class="layui-tabs-header">
@@ -266,7 +266,7 @@
                         area: area,
                         // skin: 'layui-layer-win10',
                         // skin: 'layui-layer-molv',
-                        skin: 'em-modal',
+                        skin: 'tt-modal',
                         content: 'plugin.php?action=setting_page&plugin=' + data.Plugin,
                         fixed: false, // 不固定
                         maxmin: true,

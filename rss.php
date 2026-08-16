@@ -1,7 +1,7 @@
 <?php
 /**
  * RSS
- * @package EMLOG
+ * @package TTSHOP
  * @link https://www.emlog.net
  */
 
@@ -20,7 +20,7 @@ xmlns:atom="http://www.w3.org/2005/Atom"
 <title><![CDATA[' . Option::get('blogname') . ']]></title> 
 <atom:link href="'.Option::get('blogurl').'rss.php" rel="self" type="application/rss+xml" />
 <description><![CDATA[' . Option::get('bloginfo') . ']]></description>
-<link>' . EM_URL . '</link>
+<link>' . TT_URL . '</link>
 <language>zh-cn</language>
 <generator>www.baidu.com</generator>';
 if (!empty($articles)) {

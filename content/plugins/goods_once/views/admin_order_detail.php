@@ -1,5 +1,5 @@
 <?php
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 
 $db = Database::getInstance();
 $db_prefix = DB_PREFIX;
@@ -20,8 +20,8 @@ if (empty($user) && !empty($order['user_id'])) {
 }
 
 $attrSpec = $child_order['attr_spec'] ?? '';
-if (in_array($goods['type'] ?? '', ['em_auto', 'em_manual']) && function_exists('emFormatSkuOptionIds')) {
-    $attrSpec = emFormatSkuOptionIds($child_order['goods_id'], $child_order['sku'] ?? '');
+if (in_array($goods['type'] ?? '', ['em_auto', 'em_manual']) && function_exists('ttFormatSkuOptionIds')) {
+    $attrSpec = ttFormatSkuOptionIds($child_order['goods_id'], $child_order['sku'] ?? '');
 }
 $attrSpec = $attrSpec ?: '默认规格';
 
@@ -458,7 +458,7 @@ layui.use(['layer'], function() {
     var layer = layui.layer;
 
     var allSecrets = <?= json_encode($secretContents, JSON_UNESCAPED_UNICODE) ?>;
-    var downloadUrl = <?= json_encode(EM_URL . '?plugin=goods_once&action=download&out_trade_no=' . rawurlencode($order['out_trade_no'] ?? ''), JSON_UNESCAPED_UNICODE) ?>;
+    var downloadUrl = <?= json_encode(TT_URL . '?plugin=goods_once&action=download&out_trade_no=' . rawurlencode($order['out_trade_no'] ?? ''), JSON_UNESCAPED_UNICODE) ?>;
 
     function copyToClipboard(text) {
         return new Promise(function(resolve, reject) {

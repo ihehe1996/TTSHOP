@@ -107,7 +107,7 @@ class Log_Controller
 
         //comments
         $Comment_Model = new Comment_Model();
-        $verifyCode = ISLOGIN == false && $comment_code == 'y' ? "<img src=\"" . EM_URL . "include/lib/checkcode.php\" id=\"captcha\" class=\"captcha\" /><input name=\"imgcode\" type=\"text\" class=\"captcha_input\" size=\"5\" tabindex=\"5\" />" : '';
+        $verifyCode = ISLOGIN == false && $comment_code == 'y' ? "<img src=\"" . TT_URL . "include/lib/checkcode.php\" id=\"captcha\" class=\"captcha\" /><input name=\"imgcode\" type=\"text\" class=\"captcha_input\" size=\"5\" tabindex=\"5\" />" : '';
         $ckname = isset($_COOKIE['commentposter']) ? htmlspecialchars(stripslashes($_COOKIE['commentposter'])) : '';
         $ckmail = isset($_COOKIE['postermail']) ? htmlspecialchars($_COOKIE['postermail']) : '';
         $ckurl = isset($_COOKIE['posterurl']) ? htmlspecialchars($_COOKIE['posterurl']) : '';
@@ -117,7 +117,7 @@ class Log_Controller
 
         if (filter_var($link, FILTER_VALIDATE_URL)) {
             doAction('log_direct_link', $link);
-            emDirect($link);
+            ttDirect($link);
         }
 
         include View::getBlogView('header');
@@ -150,7 +150,7 @@ class Log_Controller
             $user_info = $User_Model->getOneUser(UID);
             $name = addslashes($user_info['name_orig']);
             $mail = addslashes($user_info['email']);
-            $url = addslashes(EM_URL);
+            $url = addslashes(TT_URL);
             $uid = UID;
         }
 
@@ -192,7 +192,7 @@ class Log_Controller
         }
 
         if ($err) {
-            $resp === 'json' ? Output::error($err) : emMsg($err);
+            $resp === 'json' ? Output::error($err) : ttMsg($err);
         }
         $r = $Comment_Model->addComment($uid, $name, $content, $mail, $url, $avatar, $blogId, $pid);
         $cid = isset($r['cid']) ? $r['cid'] : 0;
@@ -203,12 +203,12 @@ class Log_Controller
 
         if ($hide === 'y') {
             $msg = '评论成功，请等待管理员审核';
-            $resp === 'json' ? Output::ok($msg) : emMsg($msg);
+            $resp === 'json' ? Output::ok($msg) : ttMsg($msg);
         }
         if ($resp === 'json') {
             Output::ok(['cid' => $cid]);
         } else {
-            emDirect(Url::log($blogId) . '#' . $cid);
+            ttDirect(Url::log($blogId) . '#' . $cid);
         }
     }
 

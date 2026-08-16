@@ -2,7 +2,7 @@
 /**
  * article and page model
  *
- * @package EMLOG
+ * @package TTSHOP
  * @link https://www.emlog.net
  */
 
@@ -99,7 +99,7 @@ class Log_Model {
         $sql = "SELECT * FROM $this->table WHERE gid=$blogId $author";
         $res = $this->db->query($sql);
         if ($this->db->affected_rows() < 1) {
-            emMsg('权限不足！', './');
+            ttMsg('权限不足！', './');
         }
         $row = $this->db->fetch_array($res);
         if ($row) {
@@ -292,7 +292,7 @@ class Log_Model {
         $author = User::haveEditPermission() ? '' : 'and author=' . UID;
         $this->db->query("DELETE FROM $this->table where gid=$blogId $author");
         if ($this->db->affected_rows() < 1) {
-            emMsg('权限不足！', './');
+            ttMsg('权限不足！', './');
         }
         // comment
         $this->db->query("DELETE FROM " . DB_PREFIX . "comment where gid=$blogId");
@@ -409,7 +409,7 @@ class Log_Model {
     }
 
     public function authPassword($postPwd, $cookiePwd, $logPwd, $logid) {
-        $url = EM_URL;
+        $url = TT_URL;
         $pwd = $cookiePwd ?: $postPwd;
         if ($pwd !== addslashes($logPwd)) {
             if (view::isTplExist('pw')) {
@@ -453,7 +453,7 @@ EOT;
             return;
         }
         if ($r['checked'] === 'y' && Option::get('article_uneditable') === 'y') {
-            emMsg('审核通过的文章不可编辑和删除');
+            ttMsg('审核通过的文章不可编辑和删除');
         }
     }
 }

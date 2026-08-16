@@ -45,9 +45,9 @@ if($action == 'index'){
 
 if($action == 'checkUpdates'){
     $list = $Template_Model->getTemplates();
-    $emkey = getMyEmkey();
+    $ttkey = getMyTtKey();
     $post_data = [
-        'emkey' => $emkey,
+        'ttkey' => $ttkey,
         'apps'  => [],
     ];
     foreach($list as $key => $val){
@@ -56,7 +56,7 @@ if($action == 'checkUpdates'){
             'version' => $val['version']
         ];
     }
-    $res = emCurl(EM_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=is_plugin_upgrade',
+    $res = ttCurl(TT_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=is_plugin_upgrade',
      http_build_query($post_data), 1, [], 10);
     $res = json_decode($res, 1);
     if($res['code'] == 200){
@@ -110,7 +110,7 @@ if ($action === 'del') {
     foreach($tpls as $val){
         $Template_Model->rmCallback($val);
         $path = preg_replace("/^([\w-]+)$/i", "$1", $val);
-        emDeleteFile(TPLS_PATH . $path);
+        ttDeleteFile(TPLS_PATH . $path);
     }
     output::ok();
 }
@@ -136,13 +136,13 @@ if ($action === 'upgrade') {
     if (!Register::isRegLocal()) {
         Ret::error('未授权版本无法更新');
     }
-    $url = EM_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=downloadPlugin&host=' . getTopHost() . '&plugin_id=' . $plugin_id;
-    $temp_file = emFetchFile($url);
+    $url = TT_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=downloadPlugin&host=' . getTopHost() . '&plugin_id=' . $plugin_id;
+    $temp_file = ttFetchFile($url);
     if (!$temp_file) {
         Ret::error('更新包下载失败');
     }
     $unzip_path = '../content/templates/';
-    $ret = emUnZip($temp_file, $unzip_path, 'tpl');
+    $ret = ttUnZip($temp_file, $unzip_path, 'tpl');
     @unlink($temp_file);
     switch ($ret) {
         case 0:

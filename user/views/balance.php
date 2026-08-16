@@ -1,8 +1,8 @@
 <?php
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 $payment = getPayment();
 ?>
-<link rel="stylesheet" href="<?= EM_URL ?>/user/views/test/css/recharge_styles.css">
+<link rel="stylesheet" href="<?= TT_URL ?>/user/views/test/css/recharge_styles.css">
 <style>
     .balance-page {
         display: grid;
@@ -313,10 +313,10 @@ $payment = getPayment();
             <div class="balance-title">当前可用余额</div>
             <div class="balance-amount">¥ <?= $user['money'] ?></div>
             <div class="balance-actions">
-                <button class="balance-btn em-modal" data-modal="recharge-modal">
+                <button class="balance-btn tt-modal" data-modal="recharge-modal">
                     充值余额
                 </button>
-                <span class="balance-btn em-modal" data-modal="withdraw-modal">
+                <span class="balance-btn tt-modal" data-modal="withdraw-modal">
                     余额提现
                 </span>
             </div>
@@ -594,7 +594,7 @@ $payment = getPayment();
                             return layer.msg(e.msg);
                         }
                         // 跳转支付页面
-                        location.href="<?= EM_URL ?>?action=pay&out_trade_no=" + e.data.out_trade_no;
+                        location.href="<?= TT_URL ?>?action=pay&out_trade_no=" + e.data.out_trade_no;
                     },
                     error: function (xhr) {
                         layer.closeAll('loading');
@@ -625,7 +625,7 @@ $payment = getPayment();
                         if(e.code == 400){
                             return layer.msg(e.msg);
                         }
-                        hideEmModal('withdraw-modal');
+                        hideTtModal('withdraw-modal');
                         layer.msg('提现申请已提交');
                         // 刷新页面数据
                         setTimeout(function() {

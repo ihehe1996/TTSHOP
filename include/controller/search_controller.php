@@ -2,7 +2,7 @@
 /**
  * search
  *
- * @package EMLOG
+ * @package TTSHOP
  * @link https://www.emlog.net
  */
 
@@ -29,7 +29,7 @@ class Search_Controller {
         if ($page > $total_pages) {
             $page = $total_pages;
         }
-        $pageurl .= EM_URL . '?keyword=' . urlencode($keyword) . '&page=';
+        $pageurl .= TT_URL . '?keyword=' . urlencode($keyword) . '&page=';
 
         $goods = $Goods_Model->getGoodsForHome($sqlSegment, $page, $index_lognum);
         $page_url = pagination($lognum, $index_lognum, $page, $pageurl);

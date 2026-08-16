@@ -1,15 +1,15 @@
 <?php
 /*
-Plugin Name: 商品对接 【EMSHOP】
+Plugin Name: 商品对接 【TTSHOP】
 Version: 1.1.1
 Plugin URL:
-Description: 对接另一个 EMSHOP 系统的商品
+Description: 对接另一个 TTSHOP 系统的商品
 Author: 驳手
 Author URL:
 Ui: Layui
 */
 
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 
 // 引入 API 封装类
 require_once __DIR__ . '/lib/EmApi.php';
@@ -19,7 +19,7 @@ require_once __DIR__ . '/lib/EmApi.php';
 /**
  * 插件入口函数（用于检测插件是否启用）
  */
-function goodsEmPlugin() {
+function goodsTtPlugin() {
     return true;
 }
 
@@ -57,12 +57,12 @@ function goodsDeliverEm($goods, $order, $child_order){
 
 
     // 获取对接信息
-    $emGoods = $db->once_fetch_array("SELECT * FROM " . DB_PREFIX . "em_goods WHERE goods_id = " . (int)$goods['id']);
+    $ttGoods = $db->once_fetch_array("SELECT * FROM " . DB_PREFIX . "em_goods WHERE goods_id = " . (int)$goods['id']);
 
-    $site = $db->once_fetch_array("SELECT * FROM " . DB_PREFIX . "em_site WHERE id = " . (int)$emGoods['site_id']);
+    $site = $db->once_fetch_array("SELECT * FROM " . DB_PREFIX . "em_site WHERE id = " . (int)$ttGoods['site_id']);
     
 
-    $api = EmApi::fromSite($site);
+    $api = TtApi::fromSite($site);
 
 
     $skuIds = $child_order['sku'] ?? '0';
@@ -92,7 +92,7 @@ function goodsDeliverEm($goods, $order, $child_order){
             }
         }
     }
-    $tradeResult = $api->trade($emGoods['remote_goods_id'], $quantity, $requestNo, $skuIds, $config);
+    $tradeResult = $api->trade($ttGoods['remote_goods_id'], $quantity, $requestNo, $skuIds, $config);
     if (!$tradeResult) {
         $db->query("UPDATE " . DB_PREFIX . "order SET status = 1, pay_time = {$timestamp} WHERE id = {$order['id']}");
         $db->query("UPDATE " . DB_PREFIX . "order_list SET status = 1 WHERE id = {$child_order['id']}");
@@ -104,7 +104,7 @@ function goodsDeliverEm($goods, $order, $child_order){
     $remoteTradeNo = addslashes((string)($tradeResult['trade_no'] ?? ''));
 
     if ($goods['type'] === 'em_auto') {
-        $secrets = EmApi::parseSecrets($tradeResult['secret'] ?? '');
+        $secrets = TtApi::parseSecrets($tradeResult['secret'] ?? '');
         if (!empty($secrets)) {
             foreach ($secrets as $secret) {
                     $secretSql = addslashes((string)$secret);
@@ -152,7 +152,7 @@ function goodsDeliverEm($goods, $order, $child_order){
  */
 function getOneGoodsForHomeEm($goods){
     // 同步远程库存到本地（用于详情页展示最新库存）
-    emSyncSku($goods);
+    ttSyncSku($goods);
 
     $db = Database::getInstance();
     $sql = "SELECT * FROM " . DB_PREFIX . "product_sku WHERE goods_id = {$goods['id']} ORDER BY user_price ASC";
@@ -178,7 +178,7 @@ function getOneGoodsForHomeEm($goods){
 
     if ($goods['is_sku'] == 'y') {
         $skus['option_ids'] = array_values(array_unique($skus['option_ids']));
-        $specInfo = emGetRemoteSpecInfo($goods['id']);
+        $specInfo = ttGetRemoteSpecInfo($goods['id']);
         // d($specInfo);die;
         if (!empty($specInfo) && !empty($specInfo['spec'])) {
             foreach ($specInfo['spec'] as $group) {
@@ -236,14 +236,14 @@ function getOneGoodsForHomeEm_auto($goods){
  * @param bool $refresh 是否刷新余额
  * @return array
  */
-function emGetSiteList($refresh = false)
+function ttGetSiteList($refresh = false)
 {
     $db = Database::getInstance();
     $sites = $db->fetch_all("SELECT * FROM " . DB_PREFIX . "em_site ORDER BY id DESC");
 
     if ($refresh && !empty($sites)) {
         foreach ($sites as &$site) {
-            $api = EmApi::fromSite($site);
+            $api = TtApi::fromSite($site);
             $result = $api->connect();
             if ($result) {
                 $site['balance'] = $result['balance'] ?? 0;
@@ -261,7 +261,7 @@ function emGetSiteList($refresh = false)
  * @param int $siteId
  * @return array|null
  */
-function emGetSite($siteId)
+function ttGetSite($siteId)
 {
     $db = Database::getInstance();
     return $db->once_fetch_array("SELECT * FROM " . DB_PREFIX . "em_site WHERE id = " . (int)$siteId);
@@ -273,7 +273,7 @@ function emGetSite($siteId)
  * @param array $data 站点数据
  * @return array ['success' => bool, 'message' => string, 'id' => int]
  */
-function emSaveSite($data)
+function ttSaveSite($data)
 {
     $db = Database::getInstance();
 
@@ -292,7 +292,7 @@ function emSaveSite($data)
     }
 
     // 验证连接
-    $api = new EmApi($domain, $appId, $appKey);
+    $api = new TtApi($domain, $appId, $appKey);
     $result = $api->connect();
 
     if (!$result) {
@@ -342,7 +342,7 @@ function emSaveSite($data)
  * @param int $siteId
  * @return bool
  */
-function emDeleteSite($siteId)
+function ttDeleteSite($siteId)
 {
     $db = Database::getInstance();
     $siteId = (int)$siteId;
@@ -380,16 +380,16 @@ function emDeleteSite($siteId)
  * @param string $domain 站点域名（用于补全相对路径）
  * @return string|false 成功返回本地路径，失败返回false
  */
-function emDownloadImage($url, $domain = '')
+function ttDownloadImage($url, $domain = '')
 {
     if (empty($url)) return false;
 
     // 补全URL
-    $url = EmApi::fixImageUrl($url, $domain);
+    $url = TtApi::fixImageUrl($url, $domain);
     if (empty($url)) return false;
 
     // 下载图片
-    $imageData = emCurl($url, false, 0, false, 30);
+    $imageData = ttCurl($url, false, 0, false, 30);
     if (empty($imageData)) return false;
 
     // 从URL或内容判断扩展名
@@ -439,7 +439,7 @@ function emDownloadImage($url, $domain = '')
  * @param string $domain 站点域名
  * @return string 替换后的内容
  */
-function emDownloadContentImages($content, $domain = '')
+function ttDownloadContentImages($content, $domain = '')
 {
     if (empty($content)) return $content;
 
@@ -456,7 +456,7 @@ function emDownloadContentImages($content, $domain = '')
         if (strpos($imgUrl, 'data:image') === 0) continue;
 
         // 下载并替换
-        $localPath = emDownloadImage($imgUrl, $domain);
+        $localPath = ttDownloadImage($imgUrl, $domain);
         if ($localPath) {
             $replacements[$imgUrl] = $localPath;
         }
@@ -476,7 +476,7 @@ function emDownloadContentImages($content, $domain = '')
  * @param array $params 导入参数
  * @return array ['success' => int, 'fail' => int, 'messages' => array]
  */
-function emImportGoods($params)
+function ttImportGoods($params)
 {
     $db = Database::getInstance();
     $siteId = (int)($params['site_id'] ?? 0);
@@ -485,12 +485,12 @@ function emImportGoods($params)
     $raiseType = $params['raise_type'] ?? 'percent'; // percent / fixed
     $raiseValue = floatval($params['raise_value'] ?? 10);
 
-    $site = emGetSite($siteId);
+    $site = ttGetSite($siteId);
     if (!$site) {
         return ['success' => 0, 'fail' => count($goodsIds), 'messages' => ['站点不存在']];
     }
 
-    $api = EmApi::fromSite($site);
+    $api = TtApi::fromSite($site);
     $result = ['success' => 0, 'fail' => 0, 'messages' => []];
     foreach ($goodsIds as $remoteGoodsId) {
         $remoteGoodsId = (int)$remoteGoodsId;
@@ -538,16 +538,16 @@ function emImportGoods($params)
         $coverUrl = $item['cover'] ?? '';
         $localCover = '';
         if (!empty($coverUrl)) {
-            $localCover = emDownloadImage($coverUrl, $site['domain']);
+            $localCover = ttDownloadImage($coverUrl, $site['domain']);
             if (!$localCover) {
-                $localCover = EmApi::fixImageUrl($coverUrl, $site['domain']);
+                $localCover = TtApi::fixImageUrl($coverUrl, $site['domain']);
             }
         }
 
         // 下载商品详情中的图片到本地
         $content = $item['description'] ?? ($item['content'] ?? '');
         if (!empty($content)) {
-            $content = emDownloadContentImages($content, $site['domain']);
+            $content = ttDownloadContentImages($content, $site['domain']);
         }
 
         $itemName = $item['name'] ?? ($item['title'] ?? "商品{$remoteGoodsId}");
@@ -581,7 +581,7 @@ function emImportGoods($params)
             foreach ($skus as $skuKey => $sku) {
                 if ($skuKey === '0' || $skuKey === 0) continue;
 
-                $costPrice = emGetRemoteSkuCostPrice($sku);
+                $costPrice = ttGetRemoteSkuCostPrice($sku);
                 // var_dump($costPrice);die;
                 // 计算售价
                 if ($raiseType == 'percent') {
@@ -606,7 +606,7 @@ function emImportGoods($params)
         } else {
             // 单规格
             $sku = reset($skus) ?: [];
-            $costPrice = emGetRemoteSkuCostPrice($sku);
+            $costPrice = ttGetRemoteSkuCostPrice($sku);
             if ($raiseType == 'percent') {
                 $sellPrice = (int)($costPrice * (1 + $raiseValue / 100));
             } else {
@@ -652,7 +652,7 @@ function emImportGoods($params)
  * @param array $goods 商品信息
  * @return bool
  */
-function emSyncSku($goods)
+function ttSyncSku($goods)
 {
     if (!in_array($goods['type'], ['em_auto', 'em_manual'])) {
         return false;
@@ -661,10 +661,10 @@ function emSyncSku($goods)
     $db = Database::getInstance();
 
     // 获取对接映射信息
-    $emGoods = $db->once_fetch_array("SELECT * FROM " . DB_PREFIX . "em_goods WHERE goods_id = " . (int)$goods['id']);
-    if (!$emGoods) return false;
+    $ttGoods = $db->once_fetch_array("SELECT * FROM " . DB_PREFIX . "em_goods WHERE goods_id = " . (int)$goods['id']);
+    if (!$ttGoods) return false;
     // 获取远程商品信息
-    $remoteItem = emGetRemoteItemByGoodsId($goods['id']);
+    $remoteItem = ttGetRemoteItemByGoodsId($goods['id']);
     if (!$remoteItem) return false;
 
     $remoteSkus = $remoteItem['skus'] ?? [];
@@ -701,7 +701,7 @@ function emSyncSku($goods)
                 $db->query("UPDATE " . DB_PREFIX . "product_sku SET stock = {$stock} WHERE goods_id = {$goods['id']} AND option_ids = '{$skuKeyEscaped}'");
             } else {
                 // 新增规格
-                $costPrice = emGetRemoteSkuCostPrice($sku);
+                $costPrice = ttGetRemoteSkuCostPrice($sku);
                 $sellPrice = (int)($costPrice * 1.1);
                 $db->query("INSERT INTO " . DB_PREFIX . "product_sku
                     (goods_id, option_ids, guest_price, user_price, cost_price, stock, sales)
@@ -739,7 +739,7 @@ function emSyncSku($goods)
         if (in_array('0', $localOptionIds)) {
             $db->query("UPDATE " . DB_PREFIX . "product_sku SET stock = {$stock} WHERE goods_id = {$goods['id']} AND option_ids = '0'");
         } else {
-            $costPrice = emGetRemoteSkuCostPrice($sku);
+            $costPrice = ttGetRemoteSkuCostPrice($sku);
             $sellPrice = (int)($costPrice * 1.1);
             $db->query("INSERT INTO " . DB_PREFIX . "product_sku
                 (goods_id, option_ids, guest_price, user_price, cost_price, stock, sales)
@@ -763,7 +763,7 @@ function emSyncSku($goods)
  * @param int $orderListId 子订单ID
  * @return array
  */
-function emGetOrderSecrets($orderListId)
+function ttGetOrderSecrets($orderListId)
 {
     $db = Database::getInstance();
     $sql = "SELECT * FROM " . DB_PREFIX . "stock_usage WHERE order_list_id = " . (int)$orderListId . " ORDER BY id ASC";
@@ -777,7 +777,7 @@ function emGetOrderSecrets($orderListId)
  * @param int $goodsId 本地商品ID
  * @return array|null
  */
-function emGetRemoteItemByGoodsId($goodsId)
+function ttGetRemoteItemByGoodsId($goodsId)
 {
     static $cache = [];
     $goodsId = (int)$goodsId;
@@ -787,19 +787,19 @@ function emGetRemoteItemByGoodsId($goodsId)
     }
 
     $db = Database::getInstance();
-    $emGoods = $db->once_fetch_array("SELECT * FROM " . DB_PREFIX . "em_goods WHERE goods_id = {$goodsId}");
-    if (!$emGoods) {
+    $ttGoods = $db->once_fetch_array("SELECT * FROM " . DB_PREFIX . "em_goods WHERE goods_id = {$goodsId}");
+    if (!$ttGoods) {
         $cache[$goodsId] = null;
         return null;
     }
-    $site = emGetSite($emGoods['site_id']);
+    $site = ttGetSite($ttGoods['site_id']);
     if (!$site) {
         $cache[$goodsId] = null;
         return null;
     }
 
-    $api = EmApi::fromSite($site);
-    $item = $api->getItem($emGoods['remote_goods_id']);
+    $api = TtApi::fromSite($site);
+    $item = $api->getItem($ttGoods['remote_goods_id']);
     if (!$item) {
         $cache[$goodsId] = null;
         return null;
@@ -815,7 +815,7 @@ function emGetRemoteItemByGoodsId($goodsId)
  * @param array $optionName
  * @return array
  */
-function emNormalizeSpecFromOptionName($optionName)
+function ttNormalizeSpecFromOptionName($optionName)
 {
     $spec = [];
     if (empty($optionName) || !is_array($optionName)) {
@@ -852,7 +852,7 @@ function emNormalizeSpecFromOptionName($optionName)
  * @param int $goodsId 本地商品ID
  * @return array|null
  */
-function emGetRemoteSpecInfo($goodsId)
+function ttGetRemoteSpecInfo($goodsId)
 {
     static $cache = [];
     $goodsId = (int)$goodsId;
@@ -861,10 +861,10 @@ function emGetRemoteSpecInfo($goodsId)
         return $cache[$goodsId];
     }
 
-    $item = emGetRemoteItemByGoodsId($goodsId);
+    $item = ttGetRemoteItemByGoodsId($goodsId);
     $spec = $item['spec'] ?? null;
     if ((empty($spec) || !is_array($spec)) && !empty($item['skus']['option_name'])) {
-        $spec = emNormalizeSpecFromOptionName($item['skus']['option_name']);
+        $spec = ttNormalizeSpecFromOptionName($item['skus']['option_name']);
     }
     if (empty($item) || empty($spec) || !is_array($spec)) {
         $cache[$goodsId] = null;
@@ -917,7 +917,7 @@ function emGetRemoteSpecInfo($goodsId)
  * @param array $specInfo 规格信息
  * @return array
  */
-function emMapSkuValuesToNames($optionIds, $specInfo)
+function ttMapSkuValuesToNames($optionIds, $specInfo)
 {
     $optionIds = trim((string)$optionIds);
     if ($optionIds === '' || $optionIds === '0') {
@@ -969,7 +969,7 @@ function emMapSkuValuesToNames($optionIds, $specInfo)
  * @param array $sku
  * @return int
  */
-function emGetRemoteSkuCostPrice($sku) {
+function ttGetRemoteSkuCostPrice($sku) {
 
     // d($sku);
 
@@ -998,19 +998,19 @@ function emGetRemoteSkuCostPrice($sku) {
  * @param bool $withTitle 是否包含规格标题
  * @return string
  */
-function emFormatSkuOptionIds($goodsId, $optionIds, $withTitle = true)
+function ttFormatSkuOptionIds($goodsId, $optionIds, $withTitle = true)
 {
     $optionIds = trim((string)$optionIds);
     if ($optionIds === '' || $optionIds === '0') {
         return '默认规格';
     }
 
-    $specInfo = emGetRemoteSpecInfo($goodsId);
+    $specInfo = ttGetRemoteSpecInfo($goodsId);
     if (empty($specInfo)) {
         return $optionIds;
     }
 
-    $values = emMapSkuValuesToNames($optionIds, $specInfo);
+    $values = ttMapSkuValuesToNames($optionIds, $specInfo);
     if (empty($values)) {
         return $optionIds;
     }
@@ -1049,7 +1049,7 @@ function plugin_em_get_remote_spec($input, &$ret)
     $goodsId = (int)($input['goods_id'] ?? 0);
     if ($goodsId <= 0) return;
 
-    $specInfo = emGetRemoteSpecInfo($goodsId);
+    $specInfo = ttGetRemoteSpecInfo($goodsId);
     $specNames = (!empty($specInfo) && !empty($specInfo['spec_names'])) ? $specInfo['spec_names'] : [];
 
     $db = Database::getInstance();
@@ -1069,7 +1069,7 @@ function plugin_em_get_remote_spec($input, &$ret)
             if ($optionId === '0' || $optionId === 0) continue;
             $values = [];
             if (!empty($specInfo)) {
-                $values = emMapSkuValuesToNames($optionId, $specInfo);
+                $values = ttMapSkuValuesToNames($optionId, $specInfo);
             }
             if (empty($values)) {
                 $values = [$optionId];
@@ -1229,19 +1229,19 @@ function plugin_goods_em_manual_adm_order_detail($db, $db_prefix, $goods, $child
     }
 
     $db = Database::getInstance();
-    $emGoods = $db->once_fetch_array("SELECT * FROM " . DB_PREFIX . "em_goods WHERE goods_id = " . (int)$goods['id']);
-    if (!$emGoods) {
+    $ttGoods = $db->once_fetch_array("SELECT * FROM " . DB_PREFIX . "em_goods WHERE goods_id = " . (int)$goods['id']);
+    if (!$ttGoods) {
         $result['error'] = '对接信息不存在';
         return;
     }
 
-    $site = emGetSite($emGoods['site_id']);
+    $site = ttGetSite($ttGoods['site_id']);
     if (!$site) {
         $result['error'] = '对接站点不存在';
         return;
     }
 
-    $api = EmApi::fromSite($site);
+    $api = TtApi::fromSite($site);
 
 
     $skuIds = empty($input['sku']) ? '0' : $input['sku'];
@@ -1250,7 +1250,7 @@ function plugin_goods_em_manual_adm_order_detail($db, $db_prefix, $goods, $child
     $quantity = (int)$input['quantity'];
 
     // 检查远程库存
-    if (!$api->checkStock($emGoods['remote_goods_id'], $quantity, $skuIds)) {
+    if (!$api->checkStock($ttGoods['remote_goods_id'], $quantity, $skuIds)) {
         $result['error'] = '上游库存不足';
         return;
     }
@@ -1290,8 +1290,8 @@ function adm_stock_em($goods, $skus)
 {
     $db = Database::getInstance();
 
-    $emGoods = $db->once_fetch_array("SELECT * FROM " . DB_PREFIX . "em_goods WHERE goods_id = " . (int)$goods['id']);
-    $site = $emGoods ? emGetSite($emGoods['site_id']) : null;
+    $ttGoods = $db->once_fetch_array("SELECT * FROM " . DB_PREFIX . "em_goods WHERE goods_id = " . (int)$goods['id']);
+    $site = $ttGoods ? ttGetSite($ttGoods['site_id']) : null;
 
     include View::getAdmView('open_head');
     include __DIR__ . '/views/stock_index.php';
@@ -1308,8 +1308,8 @@ addAction('goods_content_echo', 'plugin_em_goods_content_echo');
 addAction('sku_get_remote_spec', 'plugin_em_get_remote_spec');
 
 // 发货处理
-addAction('deliver_goods', 'emDeliver');
-addAction('deliver_goods', 'emDeliverManual');
+addAction('deliver_goods', 'ttDeliver');
+addAction('deliver_goods', 'ttDeliverManual');
 
 // 后台商品列表
 addAction('adm_goods_list_type', 'plugin_em_goods_list_type');
@@ -1333,8 +1333,8 @@ function plugin_em_build_order_attr_spec($input, &$result)
         return;
     }
 
-    if (function_exists('emFormatSkuOptionIds')) {
-        $result['attr_spec'] = emFormatSkuOptionIds($goods['id'], $skuStr);
+    if (function_exists('ttFormatSkuOptionIds')) {
+        $result['attr_spec'] = ttFormatSkuOptionIds($goods['id'], $skuStr);
     } else {
         $result['attr_spec'] = $skuStr . '；';
     }
@@ -1377,20 +1377,20 @@ function plugin_em_get_remote_source($input, &$ret)
     }
 
     $db = Database::getInstance();
-    $emGoods = $db->once_fetch_array("SELECT * FROM " . DB_PREFIX . "em_goods WHERE goods_id = " . (int)$goods['id']);
-    if (!$emGoods) {
+    $ttGoods = $db->once_fetch_array("SELECT * FROM " . DB_PREFIX . "em_goods WHERE goods_id = " . (int)$goods['id']);
+    if (!$ttGoods) {
         $ret = '映射信息丢失';
         return;
     }
 
-    $site = emGetSite($emGoods['site_id']);
+    $site = ttGetSite($ttGoods['site_id']);
     if (!$site) {
         $ret = '站点已删除';
         return;
     }
 
     $deliveryType = $goods['type'] == 'em_manual' ? '人工发货' : '自动发货';
-    $ret = "来自 <b>{$site['sitename']}</b>（{$deliveryType}）<span style=\"color:#999; margin-left:10px;\">远程商品ID: {$emGoods['remote_goods_id']}</span>";
+    $ret = "来自 <b>{$site['sitename']}</b>（{$deliveryType}）<span style=\"color:#999; margin-left:10px;\">远程商品ID: {$ttGoods['remote_goods_id']}</span>";
 }
 addAction('get_remote_goods_source', 'plugin_em_get_remote_source');
 
@@ -1404,13 +1404,13 @@ function plugin_em_goods_list_extend($row, &$ret)
     }
 
     $db = Database::getInstance();
-    $emGoods = $db->once_fetch_array("SELECT site_id FROM " . DB_PREFIX . "em_goods WHERE goods_id = " . (int)$row['id']);
-    if (!$emGoods) {
+    $ttGoods = $db->once_fetch_array("SELECT site_id FROM " . DB_PREFIX . "em_goods WHERE goods_id = " . (int)$row['id']);
+    if (!$ttGoods) {
         $ret['remote_source'] = '映射丢失';
         return;
     }
 
-    $site = emGetSite($emGoods['site_id']);
+    $site = ttGetSite($ttGoods['site_id']);
     if (!$site) {
         $ret['remote_source'] = '站点已删除';
         return;
@@ -1437,7 +1437,7 @@ addAction('del_product', 'plugin_em_delete_goods');
  * 后台管理 - 订单详情页
  */
 function adminOrderDetailEm($goods, $order, $child_order, $user){
-    include_once EM_ROOT . '/content/plugins/goods_em/views/admin_order_detail.php';
+    include_once TT_ROOT . '/content/plugins/goods_em/views/admin_order_detail.php';
 }
 function adminOrderDetailEm_auto($goods, $order, $child_order, $user){
     adminOrderDetailEm($goods, $order, $child_order, $user);
@@ -1462,7 +1462,7 @@ function orderDetailEm($goods, $order, $child_order){
 
     $db = Database::getInstance();
     $db_prefix = DB_PREFIX;
-    include_once EM_ROOT . '/content/plugins/goods_em/views/order_detail.php';
+    include_once TT_ROOT . '/content/plugins/goods_em/views/order_detail.php';
 }
 function orderDetailEm_auto($goods, $order, $child_order){
     orderDetailEm($goods, $order, $child_order);
@@ -1512,7 +1512,7 @@ function adminStockEm($goods){
         $baseUrl .= "&keyword=" . urlencode($keyword);
     }
 
-    include_once EM_ROOT . '/content/plugins/goods_em/views/admin_stock.php';
+    include_once TT_ROOT . '/content/plugins/goods_em/views/admin_stock.php';
 }
 function adminStockEm_auto($goods){
     adminStockEm($goods);

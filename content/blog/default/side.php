@@ -3,7 +3,7 @@
 /**
  * 侧边栏
  */
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 ?>
 <div class="column-small side-bar">
     <?php

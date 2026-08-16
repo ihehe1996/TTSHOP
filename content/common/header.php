@@ -12,7 +12,7 @@ Author Url:
 ?>
 <?php
 
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 require_once View::getView('module');
 
 $version = '1720327727';
@@ -43,8 +43,8 @@ if ($is_user_login) {
     <title><?= $site_title ?></title>
     <meta name="keywords" content="<?= $site_key ?>"/>
     <meta name="description" content="<?= $site_description ?>"/>
-    <link href="<?= empty($home_icon) ? (empty(_g('favicon')) ? EM_URL . 'favicon.ico' : _g('favicon')) : $home_icon; ?>" rel="icon">
-    <link rel="alternate" title="RSS" href="<?= EM_URL ?>rss.php" type="application/rss+xml"/>
+    <link href="<?= empty($home_icon) ? (empty(_g('favicon')) ? TT_URL . 'favicon.ico' : _g('favicon')) : $home_icon; ?>" rel="icon">
+    <link rel="alternate" title="RSS" href="<?= TT_URL ?>rss.php" type="application/rss+xml"/>
 
 
     <script src="../../../admin/views/js/jquery.min.3.5.1.js"></script>
@@ -57,12 +57,12 @@ if ($is_user_login) {
 
 
 
-    <link rel="stylesheet" href="../../content/static/css/em.css?v=<?= Option::EM_VERSION_TIMESTAMP ?>">
-    <link rel="stylesheet" href="../../content/common/common.css?v=<?= Option::EM_VERSION_TIMESTAMP ?>">
-    <link href="<?= TEMPLATE_URL ?>css/style.css?v=<?= Option::EM_VERSION_TIMESTAMP ?>" rel="stylesheet"/>
+    <link rel="stylesheet" href="../../content/static/css/em.css?v=<?= Option::TT_VERSION_TIMESTAMP ?>">
+    <link rel="stylesheet" href="../../content/common/common.css?v=<?= Option::TT_VERSION_TIMESTAMP ?>">
+    <link href="<?= TEMPLATE_URL ?>css/style.css?v=<?= Option::TT_VERSION_TIMESTAMP ?>" rel="stylesheet"/>
 
-    <script src="../../content/static/js/em.js?v=<?= Option::EM_VERSION_TIMESTAMP ?>"></script>
-    <script src="<?= TEMPLATE_URL ?>js/main.js?v=<?= Option::EM_VERSION_TIMESTAMP ?>"></script>
+    <script src="../../content/static/js/em.js?v=<?= Option::TT_VERSION_TIMESTAMP ?>"></script>
+    <script src="<?= TEMPLATE_URL ?>js/main.js?v=<?= Option::TT_VERSION_TIMESTAMP ?>"></script>
 
     <?php doAction('index_head') ?>
 </head>
@@ -75,13 +75,13 @@ if ($is_user_login) {
             <div class="header-bar">
                 <?php if(empty(Option::get('logo'))): ?>
                 <h1 class="logo-text">
-                    <a href="<?= EM_URL ?>" title="<?= $blogname ?>">
+                    <a href="<?= TT_URL ?>" title="<?= $blogname ?>">
                         <span id="light-logo"><?= $blogname ?></span>
                     </a>
                 </h1>
                 <?php else: ?>
                 <h1 class="logo">
-                    <a href="<?= EM_URL ?>" title="<?= $blogname ?>">
+                    <a href="<?= TT_URL ?>" title="<?= $blogname ?>">
                         <img id="light-logo" src="<?= Option::get('logo') ?>" alt="<?= $blogname ?>" title="<?= $blogname ?>">
                     </a>
                 </h1>
@@ -102,14 +102,14 @@ if ($is_user_login) {
 
                 <div class="header-right">
                     <div class="header-right-btn">
-                        <a href="<?= EM_URL ?>user/visitors.php" class="header-order-link">
+                        <a href="<?= TT_URL ?>user/visitors.php" class="header-order-link">
                             <i class="fa fa-search"></i>
                             <span>查询订单</span>
                         </a>
 
                         <?php if ($show_user_entry): ?>
                             <?php if ($is_user_login): ?>
-                                <a href="<?= EM_URL ?>user" class="header-user-card">
+                                <a href="<?= TT_URL ?>user" class="header-user-card">
                                     <img class="header-user-avatar" src="<?= $user_avatar ?>" alt="<?= htmlspecialchars($user_name, ENT_QUOTES, 'UTF-8') ?>">
                                     <span class="header-user-meta">
                                         <span class="header-user-name"><?= htmlspecialchars($user_name, ENT_QUOTES, 'UTF-8') ?></span>
@@ -119,10 +119,10 @@ if ($is_user_login) {
                             <?php else: ?>
                                 <div class="header-auth-links">
                                     <?php if ($can_login): ?>
-                                        <a class="header-auth-btn is-ghost" href="<?= EM_URL ?>user/account.php?action=signin">登录</a>
+                                        <a class="header-auth-btn is-ghost" href="<?= TT_URL ?>user/account.php?action=signin">登录</a>
                                     <?php endif; ?>
                                     <?php if ($can_register): ?>
-                                        <a class="header-auth-btn is-solid" href="<?= EM_URL ?>user/account.php?action=signup">注册</a>
+                                        <a class="header-auth-btn is-solid" href="<?= TT_URL ?>user/account.php?action=signup">注册</a>
                                     <?php endif; ?>
                                 </div>
                             <?php endif; ?>

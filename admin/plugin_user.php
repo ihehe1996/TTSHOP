@@ -1,7 +1,7 @@
 <?php
 /**
  * plugin user interface
- * @package EMLOG
+ * @package TTSHOP
  * @link https://www.emlog.net
  */
 

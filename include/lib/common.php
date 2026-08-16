@@ -1,14 +1,14 @@
 <?php
 
 
-function getMyEmkey(){
+function getMyTtKey(){
     $db = Database::getInstance();
     $db_prefix = DB_PREFIX;
     $domain = getTopHost();
     $sql = "select * from {$db_prefix}authorization where domain='{$domain}'";
     $res = $db->once_fetch_array($sql);
-    $emkey =  empty($res) ? null : $res['emkey'];
-    return $emkey;
+    $ttkey =  empty($res) ? null : $res['ttkey'];
+    return $ttkey;
 }
 
 function isEmail($str) {
@@ -45,7 +45,7 @@ function getPayment($balance = true, $goods_payment = []){
         $mode_payment = array_merge($mode_payment, [
             [
                 'plugin_name' => 'balance', // 插件名. 与插件目录名保持一致
-                'icon' => EM_URL . 'content/static/img/balance.png',
+                'icon' => TT_URL . 'content/static/img/balance.png',
                 'title' => '余额支付', // 当前支付方式名称
                 'unique' => 'balance', // 当前支付方式唯一标识，所有支付插件中此项禁止重复
                 'name' => '余额支付'
@@ -163,7 +163,7 @@ function isFolder($path, $create = false, $permissions = 0755, $recursive = true
  * @param int $ipost [是否采用POST形式]
  * @return  string
  */
-function emCurl($url, $params = false, $ispost = 0, $header = false, $timeout = 0) {
+function ttCurl($url, $params = false, $ispost = 0, $header = false, $timeout = 0) {
     $protocol = substr($url, 0, 5);
     $httpInfo = [];
     $ch = curl_init();
@@ -467,17 +467,17 @@ function dd($arr){
 }
 
 
-function emAutoload($class) {
+function ttAutoload($class) {
 
     $class = strtolower($class);
-    if (file_exists(EM_ROOT . '/include/model/' . $class . '.php')) {
-        require_once(EM_ROOT . '/include/model/' . $class . '.php');
-    } elseif (file_exists(EM_ROOT . '/include/lib/' . $class . '.php')) {
-        require_once(EM_ROOT . '/include/lib/' . $class . '.php');
-    } elseif (file_exists(EM_ROOT . '/include/controller/' . $class . '.php')) {
-        require_once(EM_ROOT . '/include/controller/' . $class . '.php');
-    } elseif (file_exists(EM_ROOT . '/include/service/' . $class . '.php')) {
-        require_once(EM_ROOT . '/include/service/' . $class . '.php');
+    if (file_exists(TT_ROOT . '/include/model/' . $class . '.php')) {
+        require_once(TT_ROOT . '/include/model/' . $class . '.php');
+    } elseif (file_exists(TT_ROOT . '/include/lib/' . $class . '.php')) {
+        require_once(TT_ROOT . '/include/lib/' . $class . '.php');
+    } elseif (file_exists(TT_ROOT . '/include/controller/' . $class . '.php')) {
+        require_once(TT_ROOT . '/include/controller/' . $class . '.php');
+    } elseif (file_exists(TT_ROOT . '/include/service/' . $class . '.php')) {
+        require_once(TT_ROOT . '/include/service/' . $class . '.php');
     }
 }
 
@@ -597,7 +597,7 @@ function getBlogUrl() {
     if (preg_match("/^.*\//", $phpself, $matches)) {
         return 'http://' . $_SERVER['HTTP_HOST'] . $matches[0];
     } else {
-        return EM_URL;
+        return TT_URL;
     }
 }
 
@@ -610,7 +610,7 @@ function realUrl() {
         return $real_url;
     }
 
-    $emlog_path = EM_ROOT . DIRECTORY_SEPARATOR;
+    $ttshop_path = TT_ROOT . DIRECTORY_SEPARATOR;
     $script_path = pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME);
     $script_path = str_replace('\\', '/', $script_path);
     $path_element = explode('/', $script_path);
@@ -621,7 +621,7 @@ function realUrl() {
     $max_deep = count($path_element);
     while ($current_deep < $max_deep) {
         $this_match = $this_match . $path_element[$current_deep] . DIRECTORY_SEPARATOR;
-        if (substr($emlog_path, strlen($this_match) * (-1)) === $this_match) {
+        if (substr($ttshop_path, strlen($this_match) * (-1)) === $this_match) {
             $best_match = $this_match;
         }
         $current_deep++;
@@ -650,7 +650,7 @@ function realUrl() {
  * 检查插件
  */
 function checkPlugin($plugin) {
-    if (is_string($plugin) && preg_match("/^[\w\-\/]+\.php$/", $plugin) && file_exists(EM_ROOT . '/content/plugins/' . $plugin)) {
+    if (is_string($plugin) && preg_match("/^[\w\-\/]+\.php$/", $plugin) && file_exists(TT_ROOT . '/content/plugins/' . $plugin)) {
         return true;
     }
 
@@ -806,7 +806,7 @@ function getFileSuffix($fileName) {
  */
 function getFileUrl($filePath) {
     if (stripos($filePath, 'http') === false) {
-        return EM_URL . substr($filePath, 3);
+        return TT_URL . substr($filePath, 3);
     }
     return $filePath;
 }
@@ -917,9 +917,9 @@ function pagination($count, $perlogs, $page, $url, $anchor = '') {
  */
 function addAction($hook, $actionFunc) {
     // 通过全局变量来存储挂载点上挂载的插件函数
-    global $emHooks;
-    if (!isset($emHooks[$hook]) || !in_array($actionFunc, $emHooks[$hook])) {
-        $emHooks[$hook][] = $actionFunc;
+    global $ttHooks;
+    if (!isset($ttHooks[$hook]) || !in_array($actionFunc, $ttHooks[$hook])) {
+        $ttHooks[$hook][] = $actionFunc;
     }
     return true;
 }
@@ -929,10 +929,10 @@ function addAction($hook, $actionFunc) {
  * eg：在挂载点插入扩展内容
  */
 function doAction($hook) {
-    global $emHooks;
+    global $ttHooks;
     $args = array_slice(func_get_args(), 1);
-    if (isset($emHooks[$hook])) {
-        foreach ($emHooks[$hook] as $function) {
+    if (isset($ttHooks[$hook])) {
+        foreach ($ttHooks[$hook] as $function) {
             call_user_func_array($function, $args);
         }
     }
@@ -943,9 +943,9 @@ function doAction($hook) {
  * eg：接管文件上传函数，将上传本地改为上传云端
  */
 function doOnceAction($hook, $input, &$ret) {
-    global $emHooks;
+    global $ttHooks;
     $args = [$input, &$ret];
-    $func = !empty($emHooks[$hook][0]) ? $emHooks[$hook][0] : '';
+    $func = !empty($ttHooks[$hook][0]) ? $ttHooks[$hook][0] : '';
     if ($func) {
         call_user_func_array($func, $args);
     }
@@ -967,9 +967,9 @@ function doOnceAction($hook, $input, &$ret) {
  * @param mixed &$ret 引用传递的结果
  */
 function doMultiAction($hook, $input, &$ret) {
-    global $emHooks;
-    if (isset($emHooks[$hook])) {
-        foreach ($emHooks[$hook] as $function) {
+    global $ttHooks;
+    if (isset($ttHooks[$hook])) {
+        foreach ($ttHooks[$hook] as $function) {
             call_user_func_array($function, [$input, &$ret]);
         }
     }
@@ -1282,7 +1282,7 @@ function getMonthDayNum($month, $year) {
  * @param string $type
  * @return int
  */
-function emUnZip($zipfile, $path, $type = 'tpl') {
+function ttUnZip($zipfile, $path, $type = 'tpl') {
     if (!class_exists('ZipArchive', FALSE)) {
         return 3;//zip模块问题
     }
@@ -1326,12 +1326,12 @@ function emUnZip($zipfile, $path, $type = 'tpl') {
 /**
  * Zip compression
  */
-function emZip($orig_fname, $content) {
+function ttZip($orig_fname, $content) {
     if (!class_exists('ZipArchive', FALSE)) {
         return false;
     }
     $zip = new ZipArchive();
-    $tempzip = EM_ROOT . '/content/cache/emtemp.zip';
+    $tempzip = TT_ROOT . '/content/cache/tttemp.zip';
     $res = $zip->open($tempzip, ZipArchive::CREATE);
     if ($res === TRUE) {
         $zip->addFromString($orig_fname, $content);
@@ -1349,15 +1349,15 @@ function emZip($orig_fname, $content) {
  * @param string $source file url
  * @return string Temporary file path
  */
-function emFetchFile($source) {
-    $temp_file = tempnam(EM_ROOT . '/content/cache/', 'tmp_');
+function ttFetchFile($source) {
+    $temp_file = tempnam(TT_ROOT . '/content/cache/', 'tmp_');
     // 优先使用 cURL（更可靠）
     if (function_exists('curl_init')) {
         $fp = fopen($temp_file, 'w+b');
         if (!$fp) {
             return false;
         }
-        $emkey = getMyEmKey();
+        $ttkey = getMyTtKey();
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $source);
         curl_setopt($ch, CURLOPT_FILE, $fp);
@@ -1369,9 +1369,9 @@ function emFetchFile($source) {
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_BUFFERSIZE, 8192);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Referer: ' . EM_URL,
-            'Emkey: ' . $emkey,
-            'User-Agent: emshop ' . Option::EM_VERSION
+            'Referer: ' . TT_URL,
+            'Emkey: ' . $ttkey,
+            'User-Agent: ttshop ' . Option::TT_VERSION
         ]);
         $result = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -1432,7 +1432,7 @@ function emFetchFile($source) {
  * @param string $source file url
  * @return string Temporary file path
  */
-function emDownFile($source) {
+function ttDownFile($source) {
     $ctx_opt = set_ctx_option();
     $context = stream_context_create($ctx_opt);
     $content = file_get_contents($source, false, $context);
@@ -1440,13 +1440,13 @@ function emDownFile($source) {
         return false;
     }
 
-    $temp_file = tempnam(EM_ROOT . '/content/cache/', 'tmp_');
+    $temp_file = tempnam(TT_ROOT . '/content/cache/', 'tmp_');
     if ($temp_file === false) {
-        emMsg('emDownFile：Failed to create temporary file.');
+        ttMsg('ttDownFile：Failed to create temporary file.');
     }
     $ret = file_put_contents($temp_file, $content);
     if ($ret === false) {
-        emMsg('emDownFile：Failed to write temporary file.');
+        ttMsg('ttDownFile：Failed to write temporary file.');
     }
 
     return $temp_file;
@@ -1454,14 +1454,14 @@ function emDownFile($source) {
 
 function set_ctx_option() {
 
-    $emkey = getMyEmKey();
+    $ttkey = getMyTtKey();
     return [
         'http' => [
             'timeout' => 120,
             'method'  => 'GET',
-            'header'  => "Referer: " . EM_URL . "\r\n"
-                . "Emkey: " . $emkey . "\r\n"
-                . "User-Agent: emshop " . Option::EM_VERSION . "\r\n",
+            'header'  => "Referer: " . TT_URL . "\r\n"
+                . "Emkey: " . $ttkey . "\r\n"
+                . "User-Agent: ttshop " . Option::TT_VERSION . "\r\n",
         ],
         "ssl"  => [
             "verify_peer"      => false,
@@ -1473,7 +1473,7 @@ function set_ctx_option() {
 /**
  * 删除文件或目录
  */
-function emDeleteFile($file) {
+function ttDeleteFile($file) {
     if (empty($file)) {
         return false;
     }
@@ -1486,7 +1486,7 @@ function emDeleteFile($file) {
             if ($filename == '.' || $filename == '..') {
                 continue;
             }
-            if (!emDeleteFile($file . '/' . $filename)) {
+            if (!ttDeleteFile($file . '/' . $filename)) {
                 $ret = false;
             }
         }
@@ -1503,7 +1503,7 @@ function emDeleteFile($file) {
 /**
  * 页面跳转
  */
-function emDirect($directUrl) {
+function ttDirect($directUrl) {
     header("Location: $directUrl");
     exit;
 }
@@ -1515,7 +1515,7 @@ function emDirect($directUrl) {
  * @param string $url 返回地址
  * @param boolean $isAutoGo 是否自动返回 true false
  */
-function emMsg($msg, $url = 'javascript:history.back(-1);', $isAutoGo = false) {
+function ttMsg($msg, $url = 'javascript:history.back(-1);', $isAutoGo = false) {
     $is404 = false;
     if ($msg == '404') {
         header("HTTP/1.1 404 Not Found");
@@ -1695,7 +1695,7 @@ function show_404_page($show_404_only = false) {
         exit;
     }
 
-    emMsg('404', EM_URL);
+    ttMsg('404', TT_URL);
 }
 
 /**
@@ -1799,7 +1799,7 @@ function get_mimetype($extension) {
 /**
  * 将字符串转换为时区无关的UNIX时间戳
  */
-function emStrtotime($timeStr) {
+function ttStrtotime($timeStr) {
     if (!$timeStr) {
         return false;
     }
@@ -1832,14 +1832,14 @@ function emStrtotime($timeStr) {
 /**
  * 加载jQuery
  */
-function emLoadJQuery() {
+function ttLoadJQuery() {
     static $isJQueryLoaded = false;
     if (!$isJQueryLoaded) {
-        global $emHooks;
-        if (!isset($emHooks['index_head'])) {
-            $emHooks['index_head'] = array();
+        global $ttHooks;
+        if (!isset($ttHooks['index_head'])) {
+            $ttHooks['index_head'] = array();
         }
-        array_unshift($emHooks['index_head'], 'loadJQuery');
+        array_unshift($ttHooks['index_head'], 'loadJQuery');
         $isJQueryLoaded = true;
 
         function loadJQuery() {
@@ -2000,7 +2000,7 @@ function getSkuName($option_ids) {
 }
 
 function bu_yao_po_jie_oj8k($str = '?'){
-    $init_path = EM_ROOT . '/init.php';
+    $init_path = TT_ROOT . '/init.php';
     $init_content = file_get_contents($init_path);
     if (strpos($init_content, 'class Register') !== false) {
         $db = Database::getInstance();

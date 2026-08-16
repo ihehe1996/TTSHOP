@@ -396,8 +396,8 @@ var hooks = {
 // 粘贴上传图片函数
 function imgPasteExpand(thisEditor) {
     var listenObj = document.querySelector("textarea").parentNode  // 要监听的对象
-    var postUrl = './media.php?action=upload';  // emlog 的图片上传地址
-    var emMediaPhpUrl = "./media.php?action=lib";  // emlog 的资源库地址,用于异步获取上传后的图片数据
+    var postUrl = './media.php?action=upload';  // ttshop 的图片上传地址
+    var ttMediaPhpUrl = "./media.php?action=lib";  // ttshop 的资源库地址,用于异步获取上传后的图片数据
 
     // 通过动态配置只读模式,阻止编辑器原有的粘贴动作发生,并恢复光标位置
     function preventEditorPaste() {
@@ -473,7 +473,7 @@ function imgPasteExpand(thisEditor) {
                 return xhr;
             }, success: function (result) {
                 console.log('上传成功！正在获取结果...');
-                $.get(emMediaPhpUrl, function (resp) {
+                $.get(ttMediaPhpUrl, function (resp) {
                     var image = resp.data.images[0];
                     if (image) {
                         console.log('获取结果成功！')

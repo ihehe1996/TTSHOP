@@ -285,7 +285,7 @@ if ($action == 'seo_save') {
     ];
 
     if ($permalink != '0' || $isalias == 'y') {
-        $t = parse_url(EM_URL);
+        $t = parse_url(TT_URL);
         $rw_rule = '<IfModule mod_rewrite.c>
                        RewriteEngine on
                        RewriteCond %{REQUEST_FILENAME} !-f
@@ -293,7 +293,7 @@ if ($action == 'seo_save') {
                        RewriteBase ' . $t['path'] . '
                        RewriteRule . ' . $t['path'] . 'index.php [L]
                     </IfModule>';
-        if (!file_put_contents(EM_ROOT . '/.htaccess', $rw_rule)) {
+        if (!file_put_contents(TT_ROOT . '/.htaccess', $rw_rule)) {
             Output::error('保存失败：根目录下的.htaccess不可写');
         }
     }
@@ -380,9 +380,9 @@ if ($action == 'mail_test') {
     $mail->From = $data['smtp_mail'];
     $mail->FromName = $data['smtp_from_name'];
     $mail->AddAddress($data['testTo']);
-    $mail->Subject = 'EMSHOP测试邮件';
+    $mail->Subject = 'TTSHOP测试邮件';
     $mail->isHTML();
-    $mail->Body = Notice::getMailTemplate('测试EMSHOP邮件发送');
+    $mail->Body = Notice::getMailTemplate('测试TTSHOP邮件发送');
 
     try {
         $res = $mail->Send();

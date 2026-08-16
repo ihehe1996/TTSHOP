@@ -2,7 +2,7 @@
 /**
  * author's articles
  *
- * @package EMLOG
+ * @package TTSHOP
  * @link https://www.emlog.net
  */
 

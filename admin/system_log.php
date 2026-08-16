@@ -1,7 +1,7 @@
 <?php
 /**
  * System log viewer
- * @package EMLOG
+ * @package TTSHOP
  */
 
 require_once 'globals.php';
@@ -138,12 +138,12 @@ if (empty($action)) {
     $pageurl = pagination($filteredCount, $perpage, $page, $pageUrl);
 
     $logBaseDisplay = $logBase;
-    if (strpos($logBaseDisplay, EM_ROOT) === 0) {
-        $logBaseDisplay = ltrim(str_replace(EM_ROOT, '', $logBaseDisplay), '/\\');
+    if (strpos($logBaseDisplay, TT_ROOT) === 0) {
+        $logBaseDisplay = ltrim(str_replace(TT_ROOT, '', $logBaseDisplay), '/\\');
     }
     $logFileDisplay = $logFile ? $logFile : '';
-    if ($logFileDisplay && strpos($logFileDisplay, EM_ROOT) === 0) {
-        $logFileDisplay = ltrim(str_replace(EM_ROOT, '', $logFileDisplay), '/\\');
+    if ($logFileDisplay && strpos($logFileDisplay, TT_ROOT) === 0) {
+        $logFileDisplay = ltrim(str_replace(TT_ROOT, '', $logFileDisplay), '/\\');
     }
 
     $br = '<a href="./">控制台</a><a href="./setting.php">系统管理</a><a><cite>系统日志</cite></a>';

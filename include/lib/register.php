@@ -5,13 +5,13 @@
 
 class Register {
 
-    const EMKEY_LEN = 32;
+    const TTKEY_LEN = 32;
 
     public static function isRegLocal() {
 
-        $emkey = getMyEmKey();
+        $ttkey = getMyTtKey();
 
-        if(empty($emkey) || strlen($emkey) != self::EMKEY_LEN){
+        if(empty($ttkey) || strlen($ttkey) != self::TTKEY_LEN){
             return false;
         }
         return true;
@@ -25,31 +25,31 @@ class Register {
         $sql = "select * from {$db_prefix}authorization where domain='{$host}'";
         $res = $db->once_fetch_array($sql);
         if($res){
-            return self::verifyEmKey($res['emkey']) ? $res['type'] : 0;
+            return self::verifyTtKey($res['ttkey']) ? $res['type'] : 0;
         }else{
             return 0;
         }
     }
 
     public static function isRegServer() {
-        $emkey = getMyEmKey();
-        return self::verifyEmKey($emkey);
+        $ttkey = getMyTtKey();
+        return self::verifyTtKey($ttkey);
     }
 
-    public static function doReg($emkey) {
-        if (empty($emkey)) {
+    public static function doReg($ttkey) {
+        if (empty($ttkey)) {
             return ['code' => 400, 'msg' => '请填写授权码'];
         }
 
-        if (strlen($emkey) !== self::EMKEY_LEN) {
+        if (strlen($ttkey) !== self::TTKEY_LEN) {
             return ['code' => 400, 'msg' => '该授权码不存在，请检查'];
         }
 
         $data = [
-            'emkey' => $emkey,
+            'ttkey' => $ttkey,
             'host' => getTopHost(),
         ];
-        $res = emCurl(EM_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=doReg', http_build_query($data), true, [], 6);
+        $res = ttCurl(TT_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=doReg', http_build_query($data), true, [], 6);
 
         if(empty($res)){
             return ['code' => 400, 'msg' => '官方授权接口请求失败，请更换其他线路或重试'];
@@ -67,16 +67,16 @@ class Register {
 
     }
 
-    public static function verifyEmKey($emkey) {
-        if (strlen($emkey) !== self::EMKEY_LEN) {
+    public static function verifyTtKey($ttkey) {
+        if (strlen($ttkey) !== self::TTKEY_LEN) {
             return false;
         }
 
         $data = [
-            'emkey' => $emkey,
+            'ttkey' => $ttkey,
             'host' => getTopHost(),
         ];
-        $res = emCurl(EM_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=verify', http_build_query($data), true, [], 5);
+        $res = ttCurl(TT_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=verify', http_build_query($data), true, [], 5);
 
         if(empty($res)){
             return true;
@@ -86,7 +86,7 @@ class Register {
 
         
         if ($res['code'] != 200) {
-            self::clean($emkey);
+            self::clean($ttkey);
             return false;
         }
 
@@ -99,7 +99,7 @@ class Register {
             'host' => getTopHost(),
             'plugin_id' => $plugin_id,
         ];
-        $res = emCurl(EM_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=verifyDownload', http_build_query($data), true, [], 6);
+        $res = ttCurl(TT_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=verifyDownload', http_build_query($data), true, [], 6);
 
         // var_dump($res);die;
 
@@ -116,10 +116,10 @@ class Register {
         }
     }
 
-    public static function clean($emkey) {
+    public static function clean($ttkey) {
         $db = Database::getInstance();
         $db_prefix = DB_PREFIX;
-        $sql = "DELETE FROM `{$db_prefix}authorization` WHERE `emkey` = '{$emkey}'";
+        $sql = "DELETE FROM `{$db_prefix}authorization` WHERE `ttkey` = '{$ttkey}'";
         $db->query($sql);
 
     }

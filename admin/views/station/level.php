@@ -1,4 +1,4 @@
-<?php defined('EM_ROOT') || exit('access denied!'); ?>
+<?php defined('TT_ROOT') || exit('access denied!'); ?>
 
 <table class="layui-hide" id="index" lay-filter="index"></table>
 <script type="text/html" id="toolbar">
@@ -163,7 +163,7 @@
                     title: '添加分站等级',
                     type: 2,
                     area: area,
-                    skin: 'em-modal',
+                    skin: 'tt-modal',
                     content: '?action=level_add',
                     fixed: false, // 不固定
                     maxmin: true,
@@ -261,7 +261,7 @@
                     title: '编辑',
                     type: 2,
                     area: area,
-                    skin: 'em-modal',
+                    skin: 'tt-modal',
                     content: '?action=level_edit&id=' + data.id,
                     fixed: false, // 不固定
                     maxmin: true,

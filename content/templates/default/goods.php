@@ -2,7 +2,7 @@
 /**
  * 商品详情页
  */
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 
 $minQty = isset($goods['min_qty']) ? (int)$goods['min_qty'] : 1;
 if ($minQty < 1) {
@@ -95,7 +95,7 @@ $maxQtyAttr = $maxQty > 0 ? 'max="' . $maxQty . '"' : '';
     <div class="card">
         <div class="row no-gutters">
             <div class="col-md-4" style="padding: 10px;">
-                <img class="goods-cover" src="<?= $goods['cover'] ?>" alt="" style="" onerror="this.src='<?= EM_URL ?>admin/views/images/cover.svg'; this.onerror=null;" />
+                <img class="goods-cover" src="<?= $goods['cover'] ?>" alt="" style="" onerror="this.src='<?= TT_URL ?>admin/views/images/cover.svg'; this.onerror=null;" />
             </div>
             <div class="col-md-8" style="padding-bottom: 1rem;">
                 <div class="card-body goods-attr" style="padding-bottom: 0;">
@@ -241,7 +241,7 @@ $maxQtyAttr = $maxQty > 0 ? 'max="' . $maxQty . '"' : '';
                             <!-- 提交订单 -->
                             <div class="drawer-footer">
                                 <div class="drawer-actions">
-                                    <a href="<?= EM_URL ?>" class="drawer-btn home-btn">
+                                    <a href="<?= TT_URL ?>" class="drawer-btn home-btn">
                                         <i class="fa fa-home"></i>
                                         <span>首页</span>
                                     </a>
@@ -262,7 +262,7 @@ $maxQtyAttr = $maxQty > 0 ? 'max="' . $maxQty . '"' : '';
 
 
     <div class="card" style="padding: 15px;">
-        <div class="markdown intro" id="emlogEchoLog"><?= $goods['content'] ?></div>
+        <div class="markdown intro" id="ttshopEchoLog"><?= $goods['content'] ?></div>
     </div>
 
 
@@ -282,12 +282,12 @@ $maxQtyAttr = $maxQty > 0 ? 'max="' . $maxQty . '"' : '';
         $('.intro img').each(function() {
             var img = this;
             img.onerror = function() {
-                img.src = '<?= EM_URL ?>admin/views/images/cover.svg';
+                img.src = '<?= TT_URL ?>admin/views/images/cover.svg';
                 img.onerror = null;
             };
             // 如果图片已经加载失败（针对缓存或快速加载的情况）
             if (img.complete && img.naturalWidth === 0) {
-                img.src = '<?= EM_URL ?>admin/views/images/cover.svg';
+                img.src = '<?= TT_URL ?>admin/views/images/cover.svg';
             }
         });
         form.on('submit(buy-submit)', function(data){

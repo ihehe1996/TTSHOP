@@ -1,7 +1,7 @@
 <?php
 /**
  * media sort model
- * @package EMLOG
+ * @package TTSHOP
  * @link https://www.emlog.net
  */
 

@@ -7,7 +7,7 @@
  *   $price_fields - 价格字段定义数组
  *   $sku_data - 已有的 SKU 数据（可选）
  *
- * @package EMSHOP
+ * @package TTSHOP
  */
 
 $price_fields = isset($price_fields) ? $price_fields : [];
@@ -15,7 +15,7 @@ $sku_data = isset($sku_data) ? $sku_data : [];
 ?>
 
 <div style="overflow: auto;">
-    <table class="layui-table" id="em-single-sku-table" lay-skin="line">
+    <table class="layui-table" id="tt-single-sku-table" lay-skin="line">
         <colgroup>
             <?php foreach ($price_fields as $field): ?>
             <col width="120">

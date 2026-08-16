@@ -82,13 +82,13 @@ class Cache {
     }
 
     public function cacheWrite($cacheData, $cacheName) {
-        $cacheFile = EM_ROOT . '/content/cache/' . $cacheName . '.php';
+        $cacheFile = TT_ROOT . '/content/cache/' . $cacheName . '.php';
         $cacheData = "<?php exit;//" . $cacheData;
 
-        isFolder(EM_ROOT . '/content/cache/', true);
+        isFolder(TT_ROOT . '/content/cache/', true);
 
         if (!file_put_contents($cacheFile, $cacheData)) {
-            emMsg('写入缓存失败，缓存目录(content/cache)不可写');
+            ttMsg('写入缓存失败，缓存目录(content/cache)不可写');
         }
 
         $this->{$cacheName . '_cache'} = null;
@@ -115,7 +115,7 @@ class Cache {
             return $this->{$cacheProperty};
         }
 
-        $cacheFile = EM_ROOT . '/content/cache/' . $cacheName . '.php';
+        $cacheFile = TT_ROOT . '/content/cache/' . $cacheName . '.php';
 
         if (!is_file($cacheFile) || filesize($cacheFile) <= 0) {
             if (method_exists($this, 'mc_' . $cacheName)) {

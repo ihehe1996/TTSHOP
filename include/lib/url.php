@@ -1,8 +1,8 @@
 <?php
 /**
  * URL
- * @package EMLOG
- * @link https://www.emlog.net
+ * @package TTSHOP
+ * @link https://ttshop.ihehe.me
  */
 
 class Url {
@@ -28,7 +28,7 @@ class Url {
                     $sort = !empty($sortAlias) ? $sortAlias : $sortName;
                     $sort .= '/';
                 }
-                $logUrl = EM_URL . $sort . urlencode($logAlias);
+                $logUrl = TT_URL . $sort . urlencode($logAlias);
                 //开启别名html后缀
                 if (Option::get('isalias_html') == 'y') {
                     $logUrl .= '.html';
@@ -39,16 +39,16 @@ class Url {
 
         switch ($urlMode) {
             case '0'://默认：动态
-                $logUrl = EM_URL . '?blog=' . $blogId;
+                $logUrl = TT_URL . '?blog=' . $blogId;
                 break;
             case '1'://静态
-                $logUrl = EM_URL . 'blog-' . $blogId . '.html';
+                $logUrl = TT_URL . 'blog-' . $blogId . '.html';
                 break;
             case '2'://目录
-                $logUrl = EM_URL . 'blog/' . $blogId;
+                $logUrl = TT_URL . 'blog/' . $blogId;
                 break;
             case '3'://目录
-                $logUrl = EM_URL . 'blog/' . $blogId;
+                $logUrl = TT_URL . 'blog/' . $blogId;
                 break;
             case '4'://分类
                 $Log_Model = new Log_Model();
@@ -56,11 +56,11 @@ class Url {
                 $sortName = isset($logInfo['sortname']) ? $logInfo['sortname'] : '';
                 $sortAlias = isset($logInfo['sort_alias']) ? $logInfo['sort_alias'] : '';
                 if (!empty($sortAlias)) {
-                    $logUrl = EM_URL . $sortAlias . '/' . $blogId;
+                    $logUrl = TT_URL . $sortAlias . '/' . $blogId;
                 } elseif (!empty($sortName)) {
-                    $logUrl = EM_URL . $sortName . '/' . $blogId;
+                    $logUrl = TT_URL . $sortName . '/' . $blogId;
                 } else {
-                    $logUrl = EM_URL . $blogId;
+                    $logUrl = TT_URL . $blogId;
                 }
                 $logUrl .= '.html';
                 break;
@@ -86,7 +86,7 @@ class Url {
                     $sort = !empty($sortAlias) ? $sortAlias : $sortName;
                     $sort .= '/';
                 }
-                $logUrl = EM_URL . $sort . urlencode($logAlias);
+                $logUrl = TT_URL . $sort . urlencode($logAlias);
                 //开启别名html后缀
                 if (Option::get('isalias_html') == 'y') {
                     $logUrl .= '.html';
@@ -97,16 +97,16 @@ class Url {
 
         switch ($urlMode) {
             case '0'://默认：动态
-                $logUrl = EM_URL . '?post=' . $blogId;
+                $logUrl = TT_URL . '?post=' . $blogId;
                 break;
             case '1'://静态
-                $logUrl = EM_URL . 'post-' . $blogId . '.html';
+                $logUrl = TT_URL . 'post-' . $blogId . '.html';
                 break;
             case '2'://目录①
-                $logUrl = EM_URL . 'post/' . $blogId;
+                $logUrl = TT_URL . 'post/' . $blogId;
                 break;
             case '3'://目录②
-                $logUrl = EM_URL . 'buy/' . $blogId;
+                $logUrl = TT_URL . 'buy/' . $blogId;
                 break;
             case '4'://分类
                 $Log_Model = new Log_Model();
@@ -114,11 +114,11 @@ class Url {
                 $sortName = isset($logInfo['sortname']) ? $logInfo['sortname'] : '';
                 $sortAlias = isset($logInfo['sort_alias']) ? $logInfo['sort_alias'] : '';
                 if (!empty($sortAlias)) {
-                    $logUrl = EM_URL . $sortAlias . '/' . $blogId;
+                    $logUrl = TT_URL . $sortAlias . '/' . $blogId;
                 } elseif (!empty($sortName)) {
-                    $logUrl = EM_URL . $sortName . '/' . $blogId;
+                    $logUrl = TT_URL . $sortName . '/' . $blogId;
                 } else {
-                    $logUrl = EM_URL . $blogId;
+                    $logUrl = TT_URL . $blogId;
                 }
                 $logUrl .= '.html';
                 break;
@@ -144,7 +144,7 @@ class Url {
                     $sort = !empty($sortAlias) ? $sortAlias : $sortName;
                     $sort .= '/';
                 }
-                $logUrl = EM_URL . $sort . urlencode($logAlias);
+                $logUrl = TT_URL . $sort . urlencode($logAlias);
                 //开启别名html后缀
                 if (Option::get('isalias_html') == 'y') {
                     $logUrl .= '.html';
@@ -155,13 +155,13 @@ class Url {
 
         switch ($urlMode) {
             case '0'://默认：动态
-                $logUrl = EM_URL . '?blog=' . $blogId;
+                $logUrl = TT_URL . '?blog=' . $blogId;
                 break;
             case '1'://静态
-                $logUrl = EM_URL . 'blog-' . $blogId . '.html';
+                $logUrl = TT_URL . 'blog-' . $blogId . '.html';
                 break;
             case '2'://目录
-                $logUrl = EM_URL . 'blog/' . $blogId;
+                $logUrl = TT_URL . 'blog/' . $blogId;
                 break;
             case '3'://分类
                 $Log_Model = new Log_Model();
@@ -169,11 +169,11 @@ class Url {
                 $sortName = isset($logInfo['sortname']) ? $logInfo['sortname'] : '';
                 $sortAlias = isset($logInfo['sort_alias']) ? $logInfo['sort_alias'] : '';
                 if (!empty($sortAlias)) {
-                    $logUrl = EM_URL . $sortAlias . '/' . $blogId;
+                    $logUrl = TT_URL . $sortAlias . '/' . $blogId;
                 } elseif (!empty($sortName)) {
-                    $logUrl = EM_URL . $sortName . '/' . $blogId;
+                    $logUrl = TT_URL . $sortName . '/' . $blogId;
                 } else {
-                    $logUrl = EM_URL . $blogId;
+                    $logUrl = TT_URL . $blogId;
                 }
                 $logUrl .= '.html';
                 break;
@@ -184,15 +184,15 @@ class Url {
     static function record($record, $page = null) {
         switch (Option::get('isurlrewrite')) {
             case '0':
-                $recordUrl = EM_URL . '?record=' . $record;
+                $recordUrl = TT_URL . '?record=' . $record;
                 if ($page) {
                     $recordUrl .= '&page=';
                 }
                 break;
             default:
-                $recordUrl = EM_URL . 'record/' . $record;
+                $recordUrl = TT_URL . 'record/' . $record;
                 if ($page) {
-                    $recordUrl = EM_URL . 'record/' . $record . '/page/';
+                    $recordUrl = TT_URL . 'record/' . $record . '/page/';
                 }
                 break;
         }
@@ -210,19 +210,19 @@ class Url {
 
         switch (Option::get('isurlrewrite')) {
             case '0':
-                $sortUrl = EM_URL . '?sort=' . $sortId;
+                $sortUrl = TT_URL . '?sort=' . $sortId;
                 if ($page) {
                     $sortUrl .= '&page=';
                 }
                 break;
             default:
                 if (is_numeric($sort_index)) {
-                    $sortUrl = EM_URL . 'sort/' . $sort_index;
+                    $sortUrl = TT_URL . 'sort/' . $sort_index;
                 } else {
                     if ($pAlias) {
-                        $sortUrl = EM_URL . 'sort/' . $pAlias . '/' . $sort_index;
+                        $sortUrl = TT_URL . 'sort/' . $pAlias . '/' . $sort_index;
                     } else {
-                        $sortUrl = EM_URL . 'sort/' . $sort_index;
+                        $sortUrl = TT_URL . 'sort/' . $sort_index;
                     }
                 }
 
@@ -245,19 +245,19 @@ class Url {
 
         switch (Option::get('isurlrewrite')) {
             case '0':
-                $sortUrl = EM_URL . '?blogsort=' . $sortId;
+                $sortUrl = TT_URL . '?blogsort=' . $sortId;
                 if ($page) {
                     $sortUrl .= '&page=';
                 }
                 break;
             default:
                 if (is_numeric($sort_index)) {
-                    $sortUrl = EM_URL . 'blogsort/' . $sort_index;
+                    $sortUrl = TT_URL . 'blogsort/' . $sort_index;
                 } else {
                     if ($pAlias) {
-                        $sortUrl = EM_URL . 'blogsort/' . $pAlias . '/' . $sort_index;
+                        $sortUrl = TT_URL . 'blogsort/' . $pAlias . '/' . $sort_index;
                     } else {
-                        $sortUrl = EM_URL . 'blogsort/' . $sort_index;
+                        $sortUrl = TT_URL . 'blogsort/' . $sort_index;
                     }
                 }
 
@@ -272,15 +272,15 @@ class Url {
     static function author($authorId, $page = null) {
         switch (Option::get('isurlrewrite')) {
             case '0':
-                $authorUrl = EM_URL . '?author=' . $authorId;
+                $authorUrl = TT_URL . '?author=' . $authorId;
                 if ($page) {
                     $authorUrl .= '&page=';
                 }
                 break;
             default:
-                $authorUrl = EM_URL . 'author/' . $authorId;
+                $authorUrl = TT_URL . 'author/' . $authorId;
                 if ($page) {
-                    $authorUrl = EM_URL . 'author/' . $authorId . '/page/';
+                    $authorUrl = TT_URL . 'author/' . $authorId . '/page/';
                 }
                 break;
         }
@@ -290,15 +290,15 @@ class Url {
     static function tag($tag, $page = null) {
         switch (Option::get('isurlrewrite')) {
             case '0':
-                $tagUrl = EM_URL . '?tag=' . $tag;
+                $tagUrl = TT_URL . '?tag=' . $tag;
                 if ($page) {
                     $tagUrl .= '&page=';
                 }
                 break;
             default:
-                $tagUrl = EM_URL . 'tag/' . $tag;
+                $tagUrl = TT_URL . 'tag/' . $tag;
                 if ($page) {
-                    $tagUrl = EM_URL . 'tag/' . $tag . '/page/';
+                    $tagUrl = TT_URL . 'tag/' . $tag . '/page/';
                 }
                 break;
         }
@@ -309,10 +309,10 @@ class Url {
         $posts = Option::get('home_page_id') > 0 ? 'posts/' : '';
         switch (Option::get('isurlrewrite')) {
             case '0':
-                $logPageUrl = EM_URL . $posts . '?page=';
+                $logPageUrl = TT_URL . $posts . '?page=';
                 break;
             default:
-                $logPageUrl = EM_URL . $posts . 'page/';
+                $logPageUrl = TT_URL . $posts . 'page/';
                 break;
         }
         return $logPageUrl;
@@ -353,7 +353,7 @@ class Url {
                 $url = self::art($typeId);
                 break;
             default:
-                $url = (strpos($url, 'http') === 0 ? '' : EM_URL) . $url;
+                $url = (strpos($url, 'http') === 0 ? '' : TT_URL) . $url;
                 break;
         }
         return $url;

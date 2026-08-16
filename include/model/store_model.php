@@ -5,7 +5,7 @@ class Store_Model {
 
 
     public function getList($type, $page, $pageNum, $keyword, $sid) {
-        $url = EM_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=store';
+        $url = TT_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=store';
         $data = [
             'type'      => $type,
             'keyword'   => $keyword,
@@ -13,10 +13,10 @@ class Store_Model {
             'pageNum'   => $pageNum,
             'sid'       => $sid,
             'host'    => getTopHost(),
-            'emkey'    => getMyEmkey(),
+            'ttkey'    => getMyTtKey(),
         ];
         
-        $res = emCurl($url, http_build_query($data), true, [], 6);
+        $res = ttCurl($url, http_build_query($data), true, [], 6);
         // echo $res;die;
         $res = json_decode($res, true);
 
@@ -61,18 +61,18 @@ class Store_Model {
     }
 
     public function reqEmStore($type, $keyword = '', $page = 1, $author_id = 0, $sid = 0) {
-        $emcurl = new EmCurl();
+        $ttcurl = new EmCurl();
 
         $db = Database::getInstance();
         $db_prefix = DB_PREFIX;
         $domain = getDomain();
         $sql = "select * from {$db_prefix}authorization where domain='{$domain}'";
         $res = $db->once_fetch_array($sql);
-        $emkey =  empty($res) ? false : $res['emkey'];
+        $ttkey =  empty($res) ? false : $res['ttkey'];
 
         $post_data = [
-            'emkey'     => $emkey,
-            'ver'       => Option::EM_VERSION,
+            'ttkey'     => $ttkey,
+            'ver'       => Option::TT_VERSION,
             'type'      => $type,
             'keyword'   => $keyword,
             'page'      => $page,
@@ -80,7 +80,7 @@ class Store_Model {
             'sid'       => $sid
         ];
 
-        $url = "EM_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=store'";
+        $url = "TT_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=store'";
 
 
 
@@ -115,17 +115,17 @@ class Store_Model {
     }
 
     public function reqEmStoreStation($type, $tag = '', $keyword = '', $page = 1, $author_id = 0, $sid = 0, $unique = 0) {
-        $emcurl = new EmCurl();
+        $ttcurl = new EmCurl();
 
         $db = Database::getInstance();
         $db_prefix = DB_PREFIX;
         $sql = "select * from {$db_prefix}authorization where type < 3 order by type desc";
         $res = $db->once_fetch_array($sql);
-        $emkey =  empty($res) ? false : $res['emkey'];
+        $ttkey =  empty($res) ? false : $res['ttkey'];
 
         $post_data = [
-            'emkey'     => $emkey,
-            'ver'       => Option::EM_VERSION,
+            'ttkey'     => $ttkey,
+            'ver'       => Option::TT_VERSION,
             'type'      => $type,
             'tag'       => $tag,
             'keyword'   => $keyword,
@@ -134,28 +134,28 @@ class Store_Model {
             'sid'       => $sid,
             'station_unique' => $unique
         ];
-        $emcurl->setPost($post_data);
-        $emcurl->request(EM_LINE[CURRENT_LINE]['value'] . 'api/store/index');
+        $ttcurl->setPost($post_data);
+        $ttcurl->request(TT_LINE[CURRENT_LINE]['value'] . 'api/store/index');
 
 
-        $retStatus = $emcurl->getHttpStatus();
+        $retStatus = $ttcurl->getHttpStatus();
 
         if ($retStatus !== MSGCODE_SUCCESS) {
-            emDirect("./store.php?action=error&error=1");
+            ttDirect("./store.php?action=error&error=1");
         }
 
-        $response = $emcurl->getRespone();
+        $response = $ttcurl->getRespone();
         $ret = json_decode($response, 1);
 
 
         if (empty($ret)) {
-            emDirect("./store.php?action=error&error=1");
+            ttDirect("./store.php?action=error&error=1");
         }
-        if ($ret['code'] === MSGCODE_EMKEY_INVALID) {
-            Option::updateOption('emkey', '');
+        if ($ret['code'] === MSGCODE_TTKEY_INVALID) {
+            Option::updateOption('ttkey', '');
             $CACHE = Cache::getInstance();
             $CACHE->updateCache('options');
-            emDirect("./auth.php?error_store=1");
+            ttDirect("./auth.php?error_store=1");
         }
 
         $data = [];

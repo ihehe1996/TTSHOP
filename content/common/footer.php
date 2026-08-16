@@ -2,7 +2,7 @@
 /**
  * 页面底部信息
  */
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 ?>
 
 <footer class="main-footer">
@@ -22,16 +22,16 @@ defined('EM_ROOT') || exit('access denied!');
 
 <!-- 底部导航 -->
 <nav class="footer-nav tel-footer" role="navigation" aria-label="移动端主导航">
-    <a href="<?= EM_URL ?>" class="nav-item" data-nav="home" aria-label="首页">
+    <a href="<?= TT_URL ?>" class="nav-item" data-nav="home" aria-label="首页">
         <i class="fa fa-home nav-icon" aria-hidden="true"></i>
         <span class="nav-text">首页</span>
     </a>
-    <a href="<?= EM_URL ?>user/visitors.php" class="nav-item" data-nav="order" aria-label="订单">
+    <a href="<?= TT_URL ?>user/visitors.php" class="nav-item" data-nav="order" aria-label="订单">
         <i class="fa fa-list-alt nav-icon" aria-hidden="true"></i>
         <span class="nav-text">订单</span>
     </a>
     <?php if(Option::get('login_switch') == 'y' && Option::get('register_switch') == 'y'): ?>
-    <a href="<?= EM_URL ?>user" class="nav-item" data-nav="user" aria-label="我的">
+    <a href="<?= TT_URL ?>user" class="nav-item" data-nav="user" aria-label="我的">
         <i class="fa fa-user nav-icon" aria-hidden="true"></i>
         <span class="nav-text">我的</span>
     </a>

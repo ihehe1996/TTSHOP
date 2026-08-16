@@ -7,19 +7,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8" />
     <meta http-equiv="Cache-Control" content="no-siteapp" />
-    <link href="<?= empty(Option::get('home_icon')) ? EM_URL . 'favicon.ico' : Option::get('home_icon'); ?>" rel="shortcut icon">
+    <link href="<?= empty(Option::get('home_icon')) ? TT_URL . 'favicon.ico' : Option::get('home_icon'); ?>" rel="shortcut icon">
 
 
-    <script src="<?= EM_URL ?>/admin/views/js/jquery.min.3.5.1.js"></script>
-    <link rel="stylesheet" href="<?= EM_URL ?>/admin/views/layui-v2.11.6/layui/css/layui.css">
-    <script src="<?= EM_URL ?>/admin/views/layui-v2.11.6/layui/layui.js"></script>
-    <script src="<?= EM_URL ?>/admin/views/components/clipboard.min.js?t=<?= Option::EM_VERSION_TIMESTAMP ?>"></script>
+    <script src="<?= TT_URL ?>/admin/views/js/jquery.min.3.5.1.js"></script>
+    <link rel="stylesheet" href="<?= TT_URL ?>/admin/views/layui-v2.11.6/layui/css/layui.css">
+    <script src="<?= TT_URL ?>/admin/views/layui-v2.11.6/layui/layui.js"></script>
+    <script src="<?= TT_URL ?>/admin/views/components/clipboard.min.js?t=<?= Option::TT_VERSION_TIMESTAMP ?>"></script>
 
-    <link rel="stylesheet" type="text/css" href="<?= EM_URL ?>/admin/views/font-awesome-4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="<?= EM_URL ?>/content/static/css/em.css">
+    <link rel="stylesheet" type="text/css" href="<?= TT_URL ?>/admin/views/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="<?= TT_URL ?>/content/static/css/em.css">
 
 
-    <script type="text/javascript" src="<?= EM_URL ?>/user/views/test/js/xadmin.js"></script>
+    <script type="text/javascript" src="<?= TT_URL ?>/user/views/test/js/xadmin.js"></script>
 
     <style>
         :root {
@@ -462,7 +462,7 @@
     </div>
 
     <div class="top-actions">
-        <a class="top-link" href="<?= EM_URL ?>">
+        <a class="top-link" href="<?= TT_URL ?>">
             <span>前台首页</span>
             <span class="top-dot"></span>
         </a>
@@ -486,7 +486,7 @@
 <!-- 中部开始 -->
 <!-- 左侧菜单开始 -->
 <div class="left-nav">
-    <a href="<?= EM_URL ?>" class="logo-text"><?= Option::get('blogname') ?></a>
+    <a href="<?= TT_URL ?>" class="logo-text"><?= Option::get('blogname') ?></a>
     <div id="side-nav">
         <ul id="nav">
             <li id="menu-index">

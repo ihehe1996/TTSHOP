@@ -1,4 +1,4 @@
-<?php defined('EM_ROOT') || exit('access denied!'); ?>
+<?php defined('TT_ROOT') || exit('access denied!'); ?>
 <style>
     #fairy-sku-table th, #fairy-sku-table td, #fairy-sku-table td input.layui-input{
         text-align: center;

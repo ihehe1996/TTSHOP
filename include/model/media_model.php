@@ -1,7 +1,7 @@
 <?php
 /**
  * media model
- * @package EMLOG
+ * @package TTSHOP
  * @link https://www.emlog.net
  */
 
@@ -121,10 +121,10 @@ class Media_Model {
         $filepath_thum = $attach['filepath'];
         $filepath = str_replace("thum-", "", $attach['filepath']);
         if (file_exists($filepath_thum)) {
-            @unlink($filepath_thum) or emMsg("删除失败!");
+            @unlink($filepath_thum) or ttMsg("删除失败!");
         }
         if (file_exists($filepath)) {
-            @unlink($filepath) or emMsg("删除失败!");
+            @unlink($filepath) or ttMsg("删除失败!");
         }
 
         doAction('del_media', $filepath);

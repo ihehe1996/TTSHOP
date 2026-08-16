@@ -104,16 +104,16 @@ class User {
 
         $request_uri = strtolower(substr(basename($_SERVER['SCRIPT_NAME']), 0, -4));
         if (ROLE === self::ROLE_WRITER && !in_array($request_uri, ['order', 'media', 'blogger', 'comment', 'index', 'article_save', 'plugin_user'])) {
-            emMsg('你所在的用户组无法使用该功能，请联系管理员', './');
+            ttMsg('你所在的用户组无法使用该功能，请联系管理员', './');
         }
         if (ROLE === self::ROLE_EDITOR && !in_array($request_uri, ['article', 'twitter', 'media', 'blogger', 'comment', 'index', 'article_save', 'plugin_user'])) {
-            emMsg('你所在的用户组无法使用该功能，请联系管理员', './');
+            ttMsg('你所在的用户组无法使用该功能，请联系管理员', './');
         }
     }
 
     static function getAvatar($avatar_path) {
         if (empty($avatar_path)) {
-            return EM_URL . 'admin/views/images/avatar.svg';
+            return TT_URL . 'admin/views/images/avatar.svg';
         }
         if (filter_var($avatar_path, FILTER_VALIDATE_URL)) {
             return $avatar_path;

@@ -74,16 +74,16 @@ class Plugin_Model {
     }
 
     function getPlugins($filter = '') {
-        global $emPlugins;
-        if (isset($emPlugins)) {
-            return $emPlugins;
+        global $ttPlugins;
+        if (isset($ttPlugins)) {
+            return $ttPlugins;
         }
-        $emPlugins = [];
+        $ttPlugins = [];
         $pluginFiles = [];
-        $pluginPath = EM_ROOT . '/content/plugins';
+        $pluginPath = TT_ROOT . '/content/plugins';
         $pluginDir = @dir($pluginPath);
         if (!$pluginDir) {
-            return $emPlugins;
+            return $ttPlugins;
         }
 
         while (($file = $pluginDir->read()) !== false) {
@@ -114,7 +114,7 @@ class Plugin_Model {
             }
         }
         if (!$pluginFiles) {
-            return $emPlugins;
+            return $ttPlugins;
         }
 
         $active_plugins = Option::get('active_plugins');
@@ -134,20 +134,20 @@ class Plugin_Model {
             $pluginData['alias'] = $plugin['file'];
             $pluginData['last_modified'] = $plugin['last_modified'];
             $pluginData['preview'] = $plugin['preview'];
-            $emPlugins[] = $pluginData;
+            $ttPlugins[] = $pluginData;
         }
 
         // Sort plugins by last modified time
-        usort($emPlugins, function ($a, $b) {
+        usort($ttPlugins, function ($a, $b) {
             return $b['last_modified'] - $a['last_modified'];
         });
 
-        return $emPlugins;
+        return $ttPlugins;
     }
 
 
     function getPluginData($pluginFile) {
-        $pluginPath = EM_ROOT . '/content/plugins/';
+        $pluginPath = TT_ROOT . '/content/plugins/';
         $content = file($pluginPath . $pluginFile);
         if (!$content) {
             return [];

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package EMSHOP
+ * @package TTSHOP
  */
 
 class Api_Controller {
@@ -224,7 +224,7 @@ class Api_Controller {
     /**
      * 获取店铺信息
      */
-    private function getEmInfo(){
+    private function getTtInfo(){
         $this->auth();
         $data = [
             'site_name' => Option::get('blogname'),
@@ -233,26 +233,26 @@ class Api_Controller {
     }
 
     /**
-     * 获取EM站点列表
+     * 获取站点列表
      */
-    private function getEmSites(){
+    private function getTtSites(){
         $this->auth();
-        if (!class_exists('EmApi')) {
-            require_once EM_ROOT . '/content/plugins/goods_em/lib/EmApi.php';
+        if (!class_exists('TtApi')) {
+            require_once TT_ROOT . '/content/plugins/goods_em/lib/EmApi.php';
         }
 
-        if (!function_exists('emGetSiteList')) {
-            Ret::error('EM对接插件未启用');
+        if (!function_exists('ttGetSiteList')) {
+            Ret::error('对接插件未启用');
         }
 
-        $sites = emGetSiteList();
+        $sites = ttGetSiteList();
         Ret::success('success', $sites);
     }
 
     /**
-     * 添加/更新EM站点
+     * 添加/更新站点
      */
-    private function saveEmSite(){
+    private function saveTtSite(){
         $this->auth();
         $post = [
             'id' => Input::postIntVar('id'),
@@ -261,15 +261,15 @@ class Api_Controller {
             'app_key' => Input::postStrVar('app_key'),
         ];
 
-        if (!class_exists('EmApi')) {
-            require_once EM_ROOT . '/content/plugins/goods_em/lib/EmApi.php';
+        if (!class_exists('TtApi')) {
+            require_once TT_ROOT . '/content/plugins/goods_em/lib/EmApi.php';
         }
 
-        if (!function_exists('emSaveSite')) {
-            Ret::error('EM对接插件未启用');
+        if (!function_exists('ttSaveSite')) {
+            Ret::error('对接插件未启用');
         }
 
-        $result = emSaveSite($post);
+        $result = ttSaveSite($post);
         if ($result['success']) {
             Ret::success($result['message'], ['id' => $result['id']]);
         } else {
@@ -278,21 +278,21 @@ class Api_Controller {
     }
 
     /**
-     * 删除EM站点
+     * 删除站点
      */
-    private function deleteEmSite(){
+    private function deleteTtSite(){
         $this->auth();
         $siteId = Input::postIntVar('site_id');
 
-        if (!class_exists('EmApi')) {
-            require_once EM_ROOT . '/content/plugins/goods_em/lib/EmApi.php';
+        if (!class_exists('TtApi')) {
+            require_once TT_ROOT . '/content/plugins/goods_em/lib/EmApi.php';
         }
 
-        if (!function_exists('emDeleteSite')) {
-            Ret::error('EM对接插件未启用');
+        if (!function_exists('ttDeleteSite')) {
+            Ret::error('对接插件未启用');
         }
 
-        $result = emDeleteSite($siteId);
+        $result = ttDeleteSite($siteId);
         if ($result) {
             Ret::success('删除成功');
         } else {
@@ -301,9 +301,9 @@ class Api_Controller {
     }
 
     /**
-     * 测试EM站点连接
+     * 测试站点连接
      */
-    private function testEmConnection(){
+    private function testTtConnection(){
         $this->auth();
         $post = [
             'domain' => Input::postStrVar('domain'),
@@ -311,11 +311,11 @@ class Api_Controller {
             'app_key' => Input::postStrVar('app_key'),
         ];
 
-        if (!class_exists('EmApi')) {
-            require_once EM_ROOT . '/content/plugins/goods_em/lib/EmApi.php';
+        if (!class_exists('TtApi')) {
+            require_once TT_ROOT . '/content/plugins/goods_em/lib/EmApi.php';
         }
 
-        $api = new EmApi($post['domain'], $post['app_id'], $post['app_key']);
+        $api = new TtApi($post['domain'], $post['app_id'], $post['app_key']);
         $result = $api->connect();
 
         if ($result) {
@@ -326,26 +326,26 @@ class Api_Controller {
     }
 
     /**
-     * 获取EM商品列表
+     * 获取商品列表
      */
-    private function getEmGoodsList(){
+    private function getTtGoodsList(){
         $this->auth();
         $siteId = Input::postIntVar('site_id');
 
-        if (!class_exists('EmApi')) {
-            require_once EM_ROOT . '/content/plugins/goods_em/lib/EmApi.php';
+        if (!class_exists('TtApi')) {
+            require_once TT_ROOT . '/content/plugins/goods_em/lib/EmApi.php';
         }
 
-        if (!function_exists('emGetSite')) {
-            Ret::error('EM对接插件未启用');
+        if (!function_exists('ttGetSite')) {
+            Ret::error('对接插件未启用');
         }
 
-        $site = emGetSite($siteId);
+        $site = ttGetSite($siteId);
         if (!$site) {
             Ret::error('站点不存在');
         }
 
-        $api = EmApi::fromSite($site);
+        $api = TtApi::fromSite($site);
         $items = $api->getItems();
 
         if ($items !== false) {
@@ -358,7 +358,7 @@ class Api_Controller {
     /**
      * 导入EM商品
      */
-    private function importEmGoods(){
+    private function importTtGoods(){
         $this->auth();
         $post = [
             'site_id' => Input::postIntVar('site_id'),
@@ -368,15 +368,15 @@ class Api_Controller {
             'raise_value' => floatval($_POST['raise_value'] ?? 10),
         ];
 
-        if (!class_exists('EmApi')) {
-            require_once EM_ROOT . '/content/plugins/goods_em/lib/EmApi.php';
+        if (!class_exists('TtApi')) {
+            require_once TT_ROOT . '/content/plugins/goods_em/lib/EmApi.php';
         }
 
-        if (!function_exists('emImportGoods')) {
-            Ret::error('EM对接插件未启用');
+        if (!function_exists('ttImportGoods')) {
+            Ret::error('对接插件未启用');
         }
 
-        $result = emImportGoods($post);
+        $result = ttImportGoods($post);
         Ret::success('导入完成', $result);
     }
 
@@ -663,7 +663,7 @@ class Api_Controller {
             'nickname'    => htmlspecialchars($this->curUserInfo['nickname']),
             'role'        => $this->curUserInfo['role'],
             'photo'       => $this->curUserInfo['photo'],
-            'avatar'      => $this->curUserInfo['photo'] ? EM_URL . str_replace("../", '', $this->curUserInfo['photo']) : '',
+            'avatar'      => $this->curUserInfo['photo'] ? TT_URL . str_replace("../", '', $this->curUserInfo['photo']) : '',
             'email'       => $this->curUserInfo['email'],
             'description' => htmlspecialchars($this->curUserInfo['description']),
             'ip'          => $this->curUserInfo['ip'],

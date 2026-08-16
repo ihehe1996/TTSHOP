@@ -2,7 +2,7 @@
 /**
  * MySQL PDO
  *
- * @package EMLOG
+ * @package TTSHOP
  * @link https://www.emlog.net
  */
 
@@ -32,7 +32,7 @@ class Mysqlpdo {
 
     private function __construct() {
         if (!class_exists('PDO')) {
-            emMsg('服务器空间PHP不支持PDO函数');
+            ttMsg('服务器空间PHP不支持PDO函数');
         }
 
         try {
@@ -44,7 +44,7 @@ class Mysqlpdo {
 
             $this->conn = $dbh;
         } catch (PDOException $e) {
-            emMsg("连接数据库失败，请检查数据库信息。错误原因：" . $e->getMessage());
+            ttMsg("连接数据库失败，请检查数据库信息。错误原因：" . $e->getMessage());
         }
 
     }
@@ -79,10 +79,10 @@ class Mysqlpdo {
             $this->result = $this->conn->query($sql);
             $this->queryCount++;
             if (!$ignore_err && 1046 == $this->geterrno()) {
-                emMsg("连接数据库失败，请填写数据库名");
+                ttMsg("连接数据库失败，请填写数据库名");
             }
             if (!$ignore_err && !$this->result) {
-                emMsg("SQL语句执行错误: {$sql}<br />" . $this->geterror());
+                ttMsg("SQL语句执行错误: {$sql}<br />" . $this->geterror());
             } else {
                 return $this->result;
             }
@@ -113,7 +113,7 @@ class Mysqlpdo {
             $resultDb = $result->fetchAll(PDO::FETCH_ASSOC);
             return isset($resultDb[0]) ? $resultDb[0] : [];
         } catch (\PDOException $e) {
-            emMsg($e->getMessage());
+            ttMsg($e->getMessage());
         }
 
     }

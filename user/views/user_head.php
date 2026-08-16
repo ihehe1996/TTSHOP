@@ -1,4 +1,4 @@
-<?php defined('EM_ROOT') || exit('access denied!'); ?>
+<?php defined('TT_ROOT') || exit('access denied!'); ?>
 <!doctype html>
 <html lang="zh-cn">
 <head>
@@ -9,7 +9,7 @@
     <title><?= $page_title ?></title>
 
 
-    <link href="<?= empty(Option::get('home_icon')) ? EM_URL . 'favicon.ico' : Option::get('home_icon'); ?>" rel="shortcut icon">
+    <link href="<?= empty(Option::get('home_icon')) ? TT_URL . 'favicon.ico' : Option::get('home_icon'); ?>" rel="shortcut icon">
 
     <link rel="stylesheet" href="../../../admin/views/layui-v2.11.6//layui/css/layui.css">
     <script src="../../../admin/views/layui-v2.11.6/layui/layui.js"></script>

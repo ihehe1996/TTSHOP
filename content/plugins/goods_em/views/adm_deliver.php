@@ -1,16 +1,16 @@
 <?php
 /**
- * EMSHOP 同系统对接 - 后台发货视图
+ * TTSHOP 同系统对接 - 后台发货视图
  */
 
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 
 // 获取发货记录
-$secrets = emGetOrderSecrets($child_order['id']);
+$secrets = ttGetOrderSecrets($child_order['id']);
 
 // 获取对接信息
-$emGoods = $db->once_fetch_array("SELECT * FROM " . $db_prefix . "em_goods WHERE goods_id = " . (int)$goods['id']);
-$site = $emGoods ? emGetSite($emGoods['site_id']) : null;
+$ttGoods = $db->once_fetch_array("SELECT * FROM " . $db_prefix . "em_goods WHERE goods_id = " . (int)$goods['id']);
+$site = $ttGoods ? ttGetSite($ttGoods['site_id']) : null;
 ?>
 <div class="layui-card" style="margin: 15px;">
     <div class="layui-card-header">
@@ -73,7 +73,7 @@ $site = $emGoods ? emGetSite($emGoods['site_id']) : null;
                         </tr>
                         <tr>
                             <td><strong>远程商品ID：</strong></td>
-                            <td><?php echo $emGoods ? $emGoods['remote_goods_id'] : '-'; ?></td>
+                            <td><?php echo $ttGoods ? $ttGoods['remote_goods_id'] : '-'; ?></td>
                         </tr>
                         <tr>
                             <td><strong>远程订单号：</strong></td>
@@ -145,7 +145,7 @@ $site = $emGoods ? emGetSite($emGoods['site_id']) : null;
 layui.use(['layer', 'jquery'], function(){
     var layer = layui.layer;
     var $ = layui.$;
-    var apiBase = '<?= EM_URL ?>?plugin=goods_em';
+    var apiBase = '<?= TT_URL ?>?plugin=goods_em';
 
     $('#queryRemoteBtn').click(function(){
         var orderListId = $(this).data('order-list-id');

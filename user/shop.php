@@ -70,8 +70,8 @@ if($action == 'xiadan'){
         }
 
         // 写入本地标识
-        if(isset($_COOKIE['EM_LOCAL'])){
-            $local = strip_tags($_COOKIE['EM_LOCAL']);
+        if(isset($_COOKIE['TT_LOCAL'])){
+            $local = strip_tags($_COOKIE['TT_LOCAL']);
             $orderModel->setLocal($res['out_trade_no'], $local);
         }
 

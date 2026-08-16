@@ -1,4 +1,4 @@
-<?php defined('EM_ROOT') || exit('access denied!'); ?>
+<?php defined('TT_ROOT') || exit('access denied!'); ?>
 <!doctype html>
 <html lang="zh-cn">
 <head>
@@ -8,26 +8,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name=renderer content=webkit>
     <title>管理中心 - <?= Option::get('blogname') ?></title>
-    <link rel="shortcut icon" href="<?= empty(Option::get('admin_icon')) ? EM_URL . 'favicon.ico' : Option::get('admin_icon'); ?>"/>
+    <link rel="shortcut icon" href="<?= empty(Option::get('admin_icon')) ? TT_URL . 'favicon.ico' : Option::get('admin_icon'); ?>"/>
 
-    <link rel="stylesheet" href="<?= EM_URL ?>admin/views/layui-v2.11.6//layui/css/layui.css">
-    <script src="<?= EM_URL ?>admin/views/layui-v2.11.6/layui/layui.js"></script>
+    <link rel="stylesheet" href="<?= TT_URL ?>admin/views/layui-v2.11.6//layui/css/layui.css">
+    <script src="<?= TT_URL ?>admin/views/layui-v2.11.6/layui/layui.js"></script>
 
 
     <!-- jquery v3.5.1 -->
-    <script src="<?= EM_URL ?>admin/views/js/jquery.min.3.5.1.js"></script>
+    <script src="<?= TT_URL ?>admin/views/js/jquery.min.3.5.1.js"></script>
 
 
 
     <!-- 字体 -->
-    <link rel="stylesheet" type="text/css" href="<?= EM_URL ?>admin/views/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="<?= TT_URL ?>admin/views/font-awesome-4.7.0/css/font-awesome.min.css">
 
 
 
-    <link rel="stylesheet" href="<?= EM_URL ?>admin/views/css/style.css?v=<?= time() ?>">
+    <link rel="stylesheet" href="<?= TT_URL ?>admin/views/css/style.css?v=<?= time() ?>">
 
 
-    <script src="<?= EM_URL ?>admin/views/js/common.js?t=<?= Option::EM_VERSION_TIMESTAMP ?>"></script>
+    <script src="<?= TT_URL ?>admin/views/js/common.js?t=<?= Option::TT_VERSION_TIMESTAMP ?>"></script>
 
     <script>
         $(function(){
@@ -233,7 +233,7 @@
 
 
     <nav class="menu-container" id="left-menu">
-        <a class="logo" href="<?= EM_URL ?>admin">
+        <a class="logo" href="<?= TT_URL ?>admin">
             <?= Option::get('blogname') ?>
         </a>
         <!-- 菜单搜索框 -->
@@ -244,7 +244,7 @@
         </div>
         <ul id="accordion" class="menu accordion">
             <li class="admin-menu-item" id="menu-dashboard">
-                <a href="<?= EM_URL ?>admin" class="menu-link"><i class="fa fa-one fa-dashboard"></i>控制台</a>
+                <a href="<?= TT_URL ?>admin" class="menu-link"><i class="fa fa-one fa-dashboard"></i>控制台</a>
             </li>
 
             <li class="admin-menu-item has-submenu" id="menu-goods">
@@ -252,10 +252,10 @@
                     <i class="fa fa-one fa-cube"></i><span>商品管理</span><i class="admin-arrow fa fa-angle-right"></i>
                 </div>
                 <ul class="submenu">
-                    <li id="menu-goods-list" class="admin-menu-item"><a href="<?= EM_URL ?>admin/goods.php" class="menu-link">商品列表</a></li>
-                    <li id="menu-sort-list" class="admin-menu-item"><a href="<?= EM_URL ?>admin/sort.php" class="menu-link">商品分类</a></li>
-                    <li id="menu-sku-list" class="admin-menu-item"><a href="<?= EM_URL ?>admin/sku.php" class="menu-link">商品规格</a></li>
-                    <li id="menu-coupon-index" class="admin-menu-item"><a href="<?= EM_URL ?>admin/coupon.php" class="menu-link">优惠券</a></li>
+                    <li id="menu-goods-list" class="admin-menu-item"><a href="<?= TT_URL ?>admin/goods.php" class="menu-link">商品列表</a></li>
+                    <li id="menu-sort-list" class="admin-menu-item"><a href="<?= TT_URL ?>admin/sort.php" class="menu-link">商品分类</a></li>
+                    <li id="menu-sku-list" class="admin-menu-item"><a href="<?= TT_URL ?>admin/sku.php" class="menu-link">商品规格</a></li>
+                    <li id="menu-coupon-index" class="admin-menu-item"><a href="<?= TT_URL ?>admin/coupon.php" class="menu-link">优惠券</a></li>
                 </ul>
             </li>
             <li class="admin-menu-item has-submenu" id="menu-order">
@@ -263,9 +263,9 @@
                     <i class="fa fa-one fa-list-ul"></i>订单管理<i class="admin-arrow fa fa-angle-right"></i>
                 </div>
                 <ul class="submenu">
-                    <li id="menu-order-goods" class="admin-menu-item"><a href="<?= EM_URL ?>admin/order.php" class="menu-link">商品订单</a></li>
-                    <li id="menu-order-withdraw" class="admin-menu-item"><a href="<?= EM_URL ?>admin/withdraw.php" class="menu-link">提现申请</a></li>
-                    <li id="menu-order-charge" class="admin-menu-item"><a href="<?= EM_URL ?>admin/charge.php" class="menu-link">充值订单</a></li>
+                    <li id="menu-order-goods" class="admin-menu-item"><a href="<?= TT_URL ?>admin/order.php" class="menu-link">商品订单</a></li>
+                    <li id="menu-order-withdraw" class="admin-menu-item"><a href="<?= TT_URL ?>admin/withdraw.php" class="menu-link">提现申请</a></li>
+                    <li id="menu-order-charge" class="admin-menu-item"><a href="<?= TT_URL ?>admin/charge.php" class="menu-link">充值订单</a></li>
                 </ul>
             </li>
 
@@ -274,8 +274,8 @@
                     <i class="fa fa-one fa-user"></i>用户管理<i class="admin-arrow fa fa-angle-right"></i>
                 </div>
                 <ul class="submenu">
-                    <li id="menu-user-default" class="admin-menu-item"><a href="<?= EM_URL ?>admin/user.php" class="menu-link">用户管理</a></li>
-                    <li id="menu-user-member" class="admin-menu-item"><a href="<?= EM_URL ?>admin/member.php" class="menu-link">会员等级</a></li>
+                    <li id="menu-user-default" class="admin-menu-item"><a href="<?= TT_URL ?>admin/user.php" class="menu-link">用户管理</a></li>
+                    <li id="menu-user-member" class="admin-menu-item"><a href="<?= TT_URL ?>admin/member.php" class="menu-link">会员等级</a></li>
                 </ul>
             </li>
             <li class="admin-menu-item has-submenu" id="menu-blog">
@@ -283,10 +283,10 @@
                     <i class="fa fa-one fa-columns"></i>博客管理<i class="admin-arrow fa fa-angle-right"></i>
                 </div>
                 <ul class="submenu">
-                    <li id="menu-blog-list" class="admin-menu-item"><a href="<?= EM_URL ?>admin/article.php" class="menu-link">文章列表</a></li>
-                    <li id="menu-blog-sort" class="admin-menu-item"><a href="<?= EM_URL ?>admin/sort.php?type=blog" class="menu-link">文章分类</a></li>
-                    <li id="menu-blog-widgets" class="admin-menu-item"><a href="<?= EM_URL ?>admin/widgets.php" class="menu-link">边栏管理</a></li>
-                    <li id="menu-blog-link" class="admin-menu-item"><a href="<?= EM_URL ?>admin/link.php" class="menu-link">友情链接</a></li>
+                    <li id="menu-blog-list" class="admin-menu-item"><a href="<?= TT_URL ?>admin/article.php" class="menu-link">文章列表</a></li>
+                    <li id="menu-blog-sort" class="admin-menu-item"><a href="<?= TT_URL ?>admin/sort.php?type=blog" class="menu-link">文章分类</a></li>
+                    <li id="menu-blog-widgets" class="admin-menu-item"><a href="<?= TT_URL ?>admin/widgets.php" class="menu-link">边栏管理</a></li>
+                    <li id="menu-blog-link" class="admin-menu-item"><a href="<?= TT_URL ?>admin/link.php" class="menu-link">友情链接</a></li>
                 </ul>
             </li>
             <li class="admin-menu-item has-submenu" id="menu-station">
@@ -294,9 +294,9 @@
                     <i class="fa fa-one fa-sitemap"></i>分站管理<i class="admin-arrow fa fa-angle-right"></i>
                 </div>
                 <ul class="submenu">
-                    <li id="menu-station-setting" class="admin-menu-item"><a href="<?= EM_URL ?>admin/station.php?action=setting" class="menu-link">基础配置</a></li>
-                    <li id="menu-station-level" class="admin-menu-item"><a href="<?= EM_URL ?>admin/station.php?action=level" class="menu-link">分站等级</a></li>
-                    <li id="menu-station-lists" class="admin-menu-item"><a href="<?= EM_URL ?>admin/station.php?action=lists" class="menu-link">分站列表</a></li>
+                    <li id="menu-station-setting" class="admin-menu-item"><a href="<?= TT_URL ?>admin/station.php?action=setting" class="menu-link">基础配置</a></li>
+                    <li id="menu-station-level" class="admin-menu-item"><a href="<?= TT_URL ?>admin/station.php?action=level" class="menu-link">分站等级</a></li>
+                    <li id="menu-station-lists" class="admin-menu-item"><a href="<?= TT_URL ?>admin/station.php?action=lists" class="menu-link">分站列表</a></li>
                 </ul>
             </li>
             <li class="admin-menu-item has-submenu" id="menu-appearance">
@@ -304,27 +304,27 @@
                     <i class="fa fa-one fa-inbox"></i>外观设置<i class="admin-arrow fa fa-angle-right"></i>
                 </div>
                 <ul class="submenu">
-                    <li id="menu-template" class="admin-menu-item"><a href="<?= EM_URL ?>admin/template.php" class="menu-link">模板管理</a></li>
-                    <li id="menu-navi" class="admin-menu-item"><a href="<?= EM_URL ?>admin/navbar.php" class="menu-link">导航管理</a></li>
-                    <li id="menu-page" class="admin-menu-item"><a href="<?= EM_URL ?>admin/page.php" class="menu-link">页面管理</a></li>
+                    <li id="menu-template" class="admin-menu-item"><a href="<?= TT_URL ?>admin/template.php" class="menu-link">模板管理</a></li>
+                    <li id="menu-navi" class="admin-menu-item"><a href="<?= TT_URL ?>admin/navbar.php" class="menu-link">导航管理</a></li>
+                    <li id="menu-page" class="admin-menu-item"><a href="<?= TT_URL ?>admin/page.php" class="menu-link">页面管理</a></li>
                 </ul>
             </li>
 
             <li id="menu-plugin" class="admin-menu-item">
-                <a href="<?= EM_URL ?>admin/plugin.php" class="menu-link"><i class="fa fa-one fa-sliders"></i>插件管理</a>
+                <a href="<?= TT_URL ?>admin/plugin.php" class="menu-link"><i class="fa fa-one fa-sliders"></i>插件管理</a>
             </li>
             <li class="admin-menu-item has-submenu" id="menu-system">
                 <div class="menu-link link">
                     <i class="fa fa-one fa-cog"></i>系统管理<i class="admin-arrow fa fa-angle-right"></i>
                 </div>
                 <ul class="submenu">
-                    <li id="menu-setting" class="admin-menu-item"><a href="<?= EM_URL ?>admin/setting.php" class="menu-link">基础设置</a></li>
-                    <li id="menu-media" class="admin-menu-item"><a href="<?= EM_URL ?>admin/media.php" class="menu-link">资源管理</a></li>
-                    <li id="menu-system-log" class="admin-menu-item"><a href="<?= EM_URL ?>admin/system_log.php" class="menu-link">系统日志</a></li>
+                    <li id="menu-setting" class="admin-menu-item"><a href="<?= TT_URL ?>admin/setting.php" class="menu-link">基础设置</a></li>
+                    <li id="menu-media" class="admin-menu-item"><a href="<?= TT_URL ?>admin/media.php" class="menu-link">资源管理</a></li>
+                    <li id="menu-system-log" class="admin-menu-item"><a href="<?= TT_URL ?>admin/system_log.php" class="menu-link">系统日志</a></li>
                 </ul>
             </li>
             <li id="menu-store" class="admin-menu-item">
-                <a href="<?= EM_URL ?>admin/store.php" class="menu-link">
+                <a href="<?= TT_URL ?>admin/store.php" class="menu-link">
                     <i class="fa fa-one fa-shopping-cart"></i>应用商店
                 </a>
             </li>
@@ -333,14 +333,14 @@
 
             <?php if (Register::isRegLocal()) : ?>
                 <li id="menu-auth" class="admin-menu-item">
-                    <a href="<?= EM_URL ?>admin/auth.php" class="menu-link">
+                    <a href="<?= TT_URL ?>admin/auth.php" class="menu-link">
                         <i class="fa fa-one fa-diamond"></i>正版授权
                     </a>
                 </li>
             <?php endif; ?>
             <?php if (!Register::isRegLocal()) : ?>
                 <li id="menu-auth" class="admin-menu-item">
-                    <a href="<?= EM_URL ?>admin/auth.php" class="menu-link">
+                    <a href="<?= TT_URL ?>admin/auth.php" class="menu-link">
                         <i class="fa fa-one fa-diamond"></i>正版授权
                     </a>
                 </li>
@@ -372,10 +372,10 @@
                     <li class="layui-nav-item" lay-unselect>
                         <a href="javascript:;" class="nav-link-line">
                             <i class="layui-icon layui-icon-website"></i>
-                            <span class="line-name"><?= EM_LINE[CURRENT_LINE]['name'] ?></span>
+                            <span class="line-name"><?= TT_LINE[CURRENT_LINE]['name'] ?></span>
                         </a>
                         <dl class="layui-nav-child layui-nav-child-c">
-                            <?php foreach(EM_LINE as $key => $line): ?>
+                            <?php foreach(TT_LINE as $key => $line): ?>
                             <dd class="<?= $key == CURRENT_LINE ? 'layui-this' : '' ?>">
                                 <a href="javascript:;" class="line-select" data-line="<?= $key ?>">
                                     <?php if($key == CURRENT_LINE): ?><i class="layui-icon layui-icon-ok"></i><?php endif; ?>
@@ -386,13 +386,13 @@
                         </dl>
                     </li>
                     <li class="layui-nav-item" lay-unselect>
-                        <a href="<?= EM_URL ?>" target="_blank" class="nav-link-home">
+                        <a href="<?= TT_URL ?>" target="_blank" class="nav-link-home">
                             <i class="layui-icon layui-icon-home"></i>
                             <span>网站首页</span>
                         </a>
                     </li>
                     <li class="layui-nav-item" lay-unselect>
-                        <a href="<?= EM_URL ?>admin/repair.php" class="nav-link-home">
+                        <a href="<?= TT_URL ?>admin/repair.php" class="nav-link-home">
                             <i class="fa fa-wrench"></i>
                             <span>修复系统</span>
                         </a>
@@ -403,10 +403,10 @@
                             <span class="nav-username"><?= $user['nickname'] ?></span>
                         </a>
                         <dl class="layui-nav-child layui-nav-child-c">
-                            <dd><a href="<?= EM_URL ?>admin/blogger.php"><i class="layui-icon layui-icon-set"></i>个人信息</a></dd>
+                            <dd><a href="<?= TT_URL ?>admin/blogger.php"><i class="layui-icon layui-icon-set"></i>个人信息</a></dd>
                             <dd><a href="javascript:;" class="delete-cache"><i class="layui-icon layui-icon-refresh"></i>清除缓存</a></dd>
                             <dd class="nav-divider"></dd>
-                            <dd><a href="<?= EM_URL ?>admin/account.php?action=logout" class="nav-logout"><i class="layui-icon layui-icon-release"></i>退出登录</a></dd>
+                            <dd><a href="<?= TT_URL ?>admin/account.php?action=logout" class="nav-logout"><i class="layui-icon layui-icon-release"></i>退出登录</a></dd>
                         </dl>
                     </li>
                 </ul>
@@ -424,11 +424,11 @@
                 <div class="mobile-dropdown">
                     <a href="javascript:;" class="mobile-dropdown-toggle nav-link-line">
                         <i class="layui-icon layui-icon-website"></i>
-                        <span><?= EM_LINE[CURRENT_LINE]['name'] ?></span>
+                        <span><?= TT_LINE[CURRENT_LINE]['name'] ?></span>
                         <i class="layui-icon layui-icon-down"></i>
                     </a>
                     <div class="mobile-dropdown-menu">
-                        <?php foreach(EM_LINE as $key => $line): ?>
+                        <?php foreach(TT_LINE as $key => $line): ?>
                         <a href="javascript:;" class="mobile-dropdown-item line-select <?= $key == CURRENT_LINE ? 'active' : '' ?>" data-line="<?= $key ?>">
                             <?= $line['name'] ?>
                             <?php if($key == CURRENT_LINE): ?><i class="layui-icon layui-icon-ok"></i><?php endif; ?>
@@ -443,20 +443,20 @@
                         <i class="layui-icon layui-icon-down"></i>
                     </a>
                     <div class="mobile-dropdown-menu mobile-dropdown-right">
-                        <a href="<?= EM_URL ?>" class="mobile-dropdown-item">
+                        <a href="<?= TT_URL ?>" class="mobile-dropdown-item">
                             <i class="layui-icon layui-icon-home"></i>网站首页
                         </a>
-                        <a href="<?= EM_URL ?>admin/blogger.php" class="mobile-dropdown-item">
+                        <a href="<?= TT_URL ?>admin/blogger.php" class="mobile-dropdown-item">
                             <i class="layui-icon layui-icon-set"></i>个人信息
                         </a>
-                        <a href="<?= EM_URL ?>admin/repair.php" class="mobile-dropdown-item">
+                        <a href="<?= TT_URL ?>admin/repair.php" class="mobile-dropdown-item">
                             <i class="fa fa-wrench"></i>修复系统
                         </a>
                         <a href="javascript:;" class="mobile-dropdown-item delete-cache">
                             <i class="layui-icon layui-icon-refresh"></i>清除缓存
                         </a>
                         <div class="mobile-dropdown-divider"></div>
-                        <a href="<?= EM_URL ?>admin/account.php?action=logout" class="mobile-dropdown-item nav-logout">
+                        <a href="<?= TT_URL ?>admin/account.php?action=logout" class="mobile-dropdown-item nav-logout">
                             <i class="layui-icon layui-icon-release"></i>退出登录
                         </a>
                     </div>
@@ -526,7 +526,7 @@
                 layer.load(2);
                 $.ajax({
                     type: "POST",
-                    url: "<?= EM_URL ?>admin/index.php?action=update_line",
+                    url: "<?= TT_URL ?>admin/index.php?action=update_line",
                     data: { line: line },
                     dataType: "json",
                     success: function (e) {
@@ -555,7 +555,7 @@
                 layer.load(2);
                 $.ajax({
                     type: "POST",
-                    url: "<?= EM_URL ?>admin/index.php?action=delete_cache",
+                    url: "<?= TT_URL ?>admin/index.php?action=delete_cache",
                     data: { type: 'cache' },
                     dataType: "json",
                     success: function (e) {

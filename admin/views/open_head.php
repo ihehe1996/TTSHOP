@@ -1,4 +1,4 @@
-<?php defined('EM_ROOT') || exit('access denied!'); ?>
+<?php defined('TT_ROOT') || exit('access denied!'); ?>
 <!doctype html>
 <html lang="zh-cn">
 <head>
@@ -13,7 +13,7 @@
     <!-- jquery v3.5.1 -->
     <script src="/admin/views/js/jquery.min.3.5.1.js"></script>
 
-    <script src="<?= EM_URL ?>content/static/js/clipboard.min.js"></script>
+    <script src="<?= TT_URL ?>content/static/js/clipboard.min.js"></script>
 
     <link rel="stylesheet" href="/admin/views/css/style.css?v=<?= time() ?>">
 

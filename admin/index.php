@@ -144,11 +144,11 @@ if ($action === 'add_shortcut') {
     }
     Option::updateOption('shortcut', json_encode($shortcutSet, JSON_UNESCAPED_UNICODE));
     $CACHE->updateCache('options');
-    emDirect("./index.php?add_shortcut_suc=1");
+    ttDirect("./index.php?add_shortcut_suc=1");
 }
 
 if($action == 'delete_cache'){
-    $dir = EM_ROOT . "/content/cache";
+    $dir = TT_ROOT . "/content/cache";
     // 检查目录是否存在
     if (!is_dir($dir)) {
         output::error('缓存目录不存在');
@@ -191,7 +191,7 @@ if($action == 'delete_cache'){
 if($action == 'update_line'){
     $line = Input::postIntVar('line');
 
-    Option::updateOption('em_line', $line);
+    Option::updateOption('tt_line', $line);
     $CACHE->updateCache('options');
     Ret::success('操作成功');
 }
@@ -205,11 +205,11 @@ if($action == 'admin_index'){
     $data = [
         'service_token' => $service_token,
     ];
-    $url = EM_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=admin_index';
+    $url = TT_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=admin_index';
 
 //    echo $url;die;
 
-    $res = emCurl($url, $data, true, [], 10);
+    $res = ttCurl($url, $data, true, [], 10);
     if(empty($res)){
         Log::warning('本次更新服务连通失败，如多次遇到此问题，建议更换其他线路重试！');
         Ret::error('网络请求超时，请重试或更换其他线路');
@@ -232,7 +232,7 @@ if($action == 'get_em_buy_info'){
     $data = [
         'service_token' => $service_token
     ];
-    $res = emCurl(EM_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=get_em_buy_info', $data, true, [], 10);
+    $res = ttCurl(TT_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=get_em_buy_info', $data, true, [], 10);
     // var_dump($res);die;
     if(empty($res)){
         Ret::error('网络请求超时，请重试或更换其他线路');
@@ -248,7 +248,7 @@ if($action == 'get_download_url'){
     $data = [
         'service_token' => $service_token
     ];
-    $res = emCurl(EM_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=get_em_buy_info', $data, true, [], 10);
+    $res = ttCurl(TT_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=get_em_buy_info', $data, true, [], 10);
     if(empty($res)){
         Ret::error('网络请求超时，请重试或更换其他线路');
     }

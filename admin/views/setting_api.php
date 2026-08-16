@@ -1,4 +1,4 @@
-<?php defined('EM_ROOT') || exit('access denied!'); ?>
+<?php defined('TT_ROOT') || exit('access denied!'); ?>
 <?php if (isset($_GET['ok_reset'])): ?>
     <div class="alert alert-success">接口秘钥重置成功</div><?php endif ?>
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -36,7 +36,7 @@
         </form>
         <div class="alert alert-warning">
             <b>API接口列表：</b><br><br>
-            1. 文章发布 (可用于对接内容发布软件，文章发布接口URL：<?= EM_URL ?>?rest-api=article_post)<br>
+            1. 文章发布 (可用于对接内容发布软件，文章发布接口URL：<?= TT_URL ?>?rest-api=article_post)<br>
             2. 分类列表<br>
             3. 微语发布<br>
             4. 微语列表<br>

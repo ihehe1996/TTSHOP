@@ -1,4 +1,4 @@
-<?php defined('EM_ROOT') || exit('access denied!'); ?>
+<?php defined('TT_ROOT') || exit('access denied!'); ?>
 <style>
     html, body{
         height: 100%;
@@ -90,15 +90,15 @@
 <form class="layui-form " action="sort.php?action=save" id="form">
     <div id="open-box">
         <div class="agreement-content">
-        <h1 style="text-align: center;">EMSHOP商城用户协议</h1>
-        <p style="text-align: center;" class="form-tips">欢迎使用EMSHOP开源商城系统（严禁用于违法违规行为）</p>
+        <h1 style="text-align: center;">TTSHOP商城用户协议</h1>
+        <p style="text-align: center;" class="form-tips">欢迎使用TTSHOP开源商城系统（严禁用于违法违规行为）</p>
         <p style="text-align: center;" class="form-tips">协议更新时间：2025年10月</p>
         <div class="layui-timeline">
             <div class="layui-timeline-item">
                 <i class="layui-icon layui-timeline-axis"></i>
                 <div class="layui-timeline-content layui-text">
                     <h3 class="layui-timeline-title">协议概述</h3>
-                    <p>EMSHOP商城是一个完全开源的数字产品销售系统，致力于为用户提供安全、便捷的在线购物体验。在使用本系统前，请仔细阅读并同意以下用户协议。</p>
+                    <p>TTSHOP商城是一个完全开源的数字产品销售系统，致力于为用户提供安全、便捷的在线购物体验。在使用本系统前，请仔细阅读并同意以下用户协议。</p>
                 </div>
             </div>
             <div class="layui-timeline-item">
@@ -106,7 +106,7 @@
                 <div class="layui-timeline-content layui-text">
                     <h3 class="layui-timeline-title">一、服务说明</h3>
                     <h4>1.1 系统介绍</h4>
-                    <p>EMSHOP商城是一个基于PHP + MySQL开发的数字产品销售系统，提供完整的在线商城解决方案，包括商品管理、订单处理、用户管理、支付集成、应用市场等功能。</p>
+                    <p>TTSHOP商城是一个基于PHP + MySQL开发的数字产品销售系统，提供完整的在线商城解决方案，包括商品管理、订单处理、用户管理、支付集成、应用市场等功能。</p>
                     <h4>1.2 开源协议</h4>
                     <p>本系统采用 GPLv3 开源协议发布，所有核心代码均为开源代码。</p>
                     <ul>
@@ -222,7 +222,7 @@
         var element = layui.element;
         form.on('submit(submit)', function(data){
 
-            layer.confirm('您确定已仔细阅读并同意《EMSHOP商城用户协议》的所有条款？', {
+            layer.confirm('您确定已仔细阅读并同意《TTSHOP商城用户协议》的所有条款？', {
                 btn: ['我确定', '去阅读'],
                 title: '温馨提示'
             }, function(){

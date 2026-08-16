@@ -2,7 +2,7 @@
 /**
  * homepage & article detail
  *
- * @package EMLOG
+ * @package TTSHOP
  * @link https://www.emlog.net
  */
 
@@ -77,7 +77,7 @@ class Cart_Controller {
 
         //comments
         $Comment_Model = new Comment_Model();
-        $verifyCode = ISLOGIN == false && $comment_code == 'y' ? "<img src=\"" . EM_URL . "include/lib/checkcode.php\" id=\"captcha\" /><input name=\"imgcode\" type=\"text\" class=\"input\" size=\"5\" tabindex=\"5\" />" : '';
+        $verifyCode = ISLOGIN == false && $comment_code == 'y' ? "<img src=\"" . TT_URL . "include/lib/checkcode.php\" id=\"captcha\" /><input name=\"imgcode\" type=\"text\" class=\"input\" size=\"5\" tabindex=\"5\" />" : '';
         $ckname = isset($_COOKIE['commentposter']) ? htmlspecialchars(stripslashes($_COOKIE['commentposter'])) : '';
         $ckmail = isset($_COOKIE['postermail']) ? htmlspecialchars($_COOKIE['postermail']) : '';
         $ckurl = isset($_COOKIE['posterurl']) ? htmlspecialchars($_COOKIE['posterurl']) : '';
@@ -87,7 +87,7 @@ class Cart_Controller {
 
         if (filter_var($link, FILTER_VALIDATE_URL)) {
             doAction('log_direct_link', $link);
-            emDirect($link);
+            ttDirect($link);
         }
 
         include View::getView('header');

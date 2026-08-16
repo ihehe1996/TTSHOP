@@ -1,7 +1,7 @@
 <?php
 /**
  * sort manager
- * @package EMLOG
+ * @package TTSHOP
  * @link https://www.emlog.net
  */
 
@@ -294,7 +294,7 @@ if ($action == 'save') {
 
 
     if (empty($type)) {
-        emDirect("./sku.php?error_a=1");
+        ttDirect("./sku.php?error_a=1");
     }
 
 
@@ -308,7 +308,7 @@ if ($action == 'save') {
     doAction('save_sku', $sid, $sort_data);
 
     $CACHE->updateCache(['sort', 'logsort', 'navi']);
-    emDirect("./sku.php?active_save=1");
+    ttDirect("./sku.php?active_save=1");
 }
 
 if ($action == 'del') {
@@ -318,21 +318,21 @@ if ($action == 'del') {
 
     $Sort_Model->deleteSort($sid);
     $CACHE->updateCache(['sort', 'logsort', 'navi']);
-    emDirect("./sort.php?active_del=1");
+    ttDirect("./sort.php?active_del=1");
 }
 
 if ($action == 'delAttrValue') {
     $value_id = Input::getIntVar('id');
     LoginAuth::checkToken();
     $type_id = $skuModel->deleteSkuValue($value_id);
-    emDirect("./sku.php?action=detail&type_id=" . $type_id);
+    ttDirect("./sku.php?action=detail&type_id=" . $type_id);
 }
 
 if($action == 'del_sku_attr'){
     $type_id = Input::getIntVar('type_id');
     $id = Input::getIntVar('id');
     $skuModel->deleteSkuAttr($id);
-    emDirect("./sku.php?action=detail&type_id=" . $type_id);
+    ttDirect("./sku.php?action=detail&type_id=" . $type_id);
 }
 
 if($action == 'del_sku_cate'){
@@ -349,7 +349,7 @@ if($action == 'edit_sku_value'){
     $type_id = Input::getStrVar('type_id');
     $id = Input::getStrVar('id');
     $skuModel->editSkuValue($id, $content);
-    emDirect("./sku.php?action=detail&type_id=" . $type_id);
+    ttDirect("./sku.php?action=detail&type_id=" . $type_id);
 }
 
 if($action == 'update_sku_attr'){
@@ -357,14 +357,14 @@ if($action == 'update_sku_attr'){
     $type_id = Input::getStrVar('type_id');
     $id = Input::getStrVar('id');
     $skuModel->updateSkuAttr($id, $content);
-    emDirect("./sku.php?action=detail&type_id=" . $type_id);
+    ttDirect("./sku.php?action=detail&type_id=" . $type_id);
 }
 
 if($action == 'update_sku'){
     $content = Input::getStrVar('content');
     $id = Input::getStrVar('id');
     $skuModel->updateSku($id, $content);
-    emDirect("./sku.php");
+    ttDirect("./sku.php");
 }
 
 if($action == 'add_sku_value'){
@@ -372,7 +372,7 @@ if($action == 'add_sku_value'){
     $type_id = Input::getStrVar('type_id');
     $id = Input::getStrVar('id');
     $skuModel->addSkuValue($id, $content);
-    emDirect("./sku.php?action=detail&type_id=" . $type_id);
+    ttDirect("./sku.php?action=detail&type_id=" . $type_id);
 }
 
 if($action == 'add_sku_attr'){
@@ -383,5 +383,5 @@ if($action == 'add_sku_attr'){
         'title' => $content
     ];
     $skuModel->addSkuAttr($data);
-    emDirect("./sku.php?action=detail&type_id=" . $type_id);
+    ttDirect("./sku.php?action=detail&type_id=" . $type_id);
 }

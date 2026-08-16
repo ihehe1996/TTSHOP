@@ -1,4 +1,4 @@
-<?php defined('EM_ROOT') || exit('access denied!'); ?>
+<?php defined('TT_ROOT') || exit('access denied!'); ?>
 <form class="layui-form" style="float: right;">
     <div class="layui-form-item">
         <div class="layui-inline">

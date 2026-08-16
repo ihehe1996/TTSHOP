@@ -3,7 +3,7 @@
 /**
  * 阅读文章页面
  */
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 ?>
 <article class="container log-con blog-container">
     <span class="back-top mh" onclick="history.go(-1);">&laquo;</span>
@@ -14,7 +14,7 @@ defined('EM_ROOT') || exit('access denied!');
         <span class="m-r-5">阅读：<?= $views ?></span>
     </p>
     <hr class="bottom-5" />
-    <div class="markdown" id="emlogEchoLog"><?= $log_content ?></div>
+    <div class="markdown" id="ttshopEchoLog"><?= $log_content ?></div>
 
     <?php doAction('log_related', $logData) ?>
 

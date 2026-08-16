@@ -161,7 +161,7 @@ if ($action == 'seo_save') {
     ];
 
     if ($permalink != '0' || $isalias == 'y') {
-        $t = parse_url(EM_URL);
+        $t = parse_url(TT_URL);
         $rw_rule = '<IfModule mod_rewrite.c>
                        RewriteEngine on
                        RewriteCond %{REQUEST_FILENAME} !-f
@@ -169,7 +169,7 @@ if ($action == 'seo_save') {
                        RewriteBase ' . $t['path'] . '
                        RewriteRule . ' . $t['path'] . 'index.php [L]
                     </IfModule>';
-        if (!file_put_contents(EM_ROOT . '/.htaccess', $rw_rule)) {
+        if (!file_put_contents(TT_ROOT . '/.htaccess', $rw_rule)) {
             Output::error('保存失败：根目录下的.htaccess不可写');
         }
     }

@@ -126,14 +126,14 @@ if ($action === 'setwg') {
             break;
     }
     $CACHE->updateCache('options');
-    emDirect("./widgets.php?activated=1");
+    ttDirect("./widgets.php?activated=1");
 }
 
 if ($action === 'compages') {
     $widgets = isset($_POST['widgets']) ? addslashes(serialize($_POST['widgets'])) : '';
     Option::updateOption("widgets1", $widgets);
     $CACHE->updateCache('options');
-    emDirect("./widgets.php?activated=1");
+    ttDirect("./widgets.php?activated=1");
 }
 
 if ($action === 'reset') {
@@ -146,5 +146,5 @@ if ($action === 'reset') {
     Option::updateOption("widgets1", $default_widget);
 
     $CACHE->updateCache('options');
-    emDirect("./widgets.php?activated=1");
+    ttDirect("./widgets.php?activated=1");
 }

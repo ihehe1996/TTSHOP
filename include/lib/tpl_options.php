@@ -8,7 +8,7 @@ Author: 驳手
 Author URL:
 */
 
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 
 /**
  * 模板设置类
@@ -347,7 +347,7 @@ class TplOptions
                 'buildImageUrl'
             ), $path);
         }
-        return preg_match('{(https?|ftp)://}i', $path) ? $path : EM_URL . $path;
+        return preg_match('{(https?|ftp)://}i', $path) ? $path : TT_URL . $path;
     }
 
     /**

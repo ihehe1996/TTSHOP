@@ -1,7 +1,7 @@
-<?php defined('EM_ROOT') || exit('access denied!'); ?>
+<?php defined('TT_ROOT') || exit('access denied!'); ?>
 
 <!-- 内嵌提现表单 -->
-<link rel="stylesheet" href="<?= EM_URL ?>/user/views/test/css/withdraw-modal.css">
+<link rel="stylesheet" href="<?= TT_URL ?>/user/views/test/css/withdraw-modal.css">
 <div class="withdraw-modal-content">
     <div class="withdraw-modal-close" id="close-withdraw">
         <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/></svg>

@@ -1,5 +1,5 @@
 <?php
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 ?>
 <form class="layui-form" style="float: right;">
     <div class="layui-form-item">
@@ -161,7 +161,7 @@ defined('EM_ROOT') || exit('access denied!');
                     title: '添加文章',
                     type: 2,
                     area: area,
-                    skin: 'em-modal',
+                    skin: 'tt-modal',
                     content: '?action=write',
                     fixed: false,
                     scrollbar: false,
@@ -258,7 +258,7 @@ defined('EM_ROOT') || exit('access denied!');
                     title: '编辑文章 - ' + data.title,
                     type: 2,
                     area: area,
-                    skin: 'em-modal',
+                    skin: 'tt-modal',
                     content: '?action=edit&gid=' + data.gid,
                     fixed: false,
                     scrollbar: false,

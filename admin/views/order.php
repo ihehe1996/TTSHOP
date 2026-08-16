@@ -1,5 +1,5 @@
 <?php
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 ?>
 <style>
 .order-search-wrapper {
@@ -517,7 +517,7 @@ defined('EM_ROOT') || exit('access denied!');
                     title: '订单详情',
                     type: 2,
                     area: area,
-                    skin: 'em-modal',
+                    skin: 'tt-modal',
                     content: 'order.php?action=detail&order_id=' + data.id,
                     fixed: false,
                     scrollbar: false,

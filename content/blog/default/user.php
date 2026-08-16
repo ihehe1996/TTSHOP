@@ -3,7 +3,7 @@
 /**
  * 前台用户中心
  */
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 
 /*
 
@@ -44,4 +44,4 @@ include View::getView('footer')
 
 */
 
-emDirect('/');
+ttDirect('/');

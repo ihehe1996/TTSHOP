@@ -1,6 +1,6 @@
 <?php
 /**
- * EMSHOP 同系统对接 - 后台 API
+ * TTSHOP 同系统对接 - 后台 API
  */
 
 require_once '../../../init.php';
@@ -13,31 +13,31 @@ if (ROLE !== 'admin' && ROLE !== 'editor') {
 $action = $_GET['action'] ?? '';
 
 switch ($action) {
-    case 'emTestConnection':
+    case 'ttTestConnection':
         testConnection();
         break;
 
-    case 'emSaveSite':
+    case 'ttSaveSite':
         saveSite();
         break;
 
-    case 'emDeleteSite':
+    case 'ttDeleteSite':
         deleteSite();
         break;
 
-    case 'emRefreshBalance':
+    case 'ttRefreshBalance':
         refreshBalance();
         break;
 
-    case 'emImportGoods':
+    case 'ttImportGoods':
         importGoods();
         break;
 
-    case 'emSyncStock':
+    case 'ttSyncStock':
         syncStock();
         break;
 
-    case 'emQueryRemoteOrder':
+    case 'ttQueryRemoteOrder':
         queryRemoteOrder();
         break;
 
@@ -78,7 +78,7 @@ function testConnection()
         $domain = 'https://' . $domain;
     }
 
-    $api = new EmApi($domain, $appId, $appKey);
+    $api = new TtApi($domain, $appId, $appKey);
     $result = $api->connect();
 
     if ($result) {
@@ -100,7 +100,7 @@ function saveSite()
         'app_key' => Input::postStrVar('app_key')
     ];
 
-    $result = emSaveSite($data);
+    $result = ttSaveSite($data);
 
     if ($result['success']) {
         outputJson(0, $result['message'], ['id' => $result['id']]);
@@ -116,7 +116,7 @@ function deleteSite()
 {
     $siteId = Input::postIntVar('site_id');
 
-    if (emDeleteSite($siteId)) {
+    if (ttDeleteSite($siteId)) {
         outputJson(0, '删除成功');
     } else {
         outputJson(1, '删除失败，该站点可能有关联商品');
@@ -128,7 +128,7 @@ function deleteSite()
  */
 function refreshBalance()
 {
-    emGetSiteList(true);
+    ttGetSiteList(true);
     outputJson(0, '刷新成功');
 }
 
@@ -145,7 +145,7 @@ function importGoods()
         'raise_value' => floatval($_POST['raise_value'] ?? 10)
     ];
 
-    $result = emImportGoods($params);
+    $result = ttImportGoods($params);
     outputJson(0, '导入完成', $result);
 }
 
@@ -163,7 +163,7 @@ function syncStock()
         outputJson(1, '商品不存在');
     }
 
-    if (emSyncSku($goods)) {
+    if (ttSyncSku($goods)) {
         outputJson(0, '同步成功');
     } else {
         outputJson(1, '同步失败');
@@ -192,24 +192,24 @@ function queryRemoteOrder()
     }
 
     // 获取对接信息
-    $emGoods = $db->once_fetch_array("SELECT * FROM " . DB_PREFIX . "em_goods WHERE goods_id = " . (int)$goods['id']);
-    if (!$emGoods) {
+    $ttGoods = $db->once_fetch_array("SELECT * FROM " . DB_PREFIX . "em_goods WHERE goods_id = " . (int)$goods['id']);
+    if (!$ttGoods) {
         outputJson(1, '对接信息不存在');
     }
 
-    $site = emGetSite($emGoods['site_id']);
+    $site = ttGetSite($ttGoods['site_id']);
     if (!$site) {
         outputJson(1, '对接站点不存在');
     }
 
     // 查询远程订单（如果远程系统支持）
-    $api = EmApi::fromSite($site);
+    $api = TtApi::fromSite($site);
     $result = $api->query($childOrder['remote_trade_no']);
 
     if ($result) {
         // 如果远程订单已发货，更新本地状态
         if (isset($result['status']) && $result['status'] == 2 && !empty($result['secret'])) {
-            $secrets = EmApi::parseSecrets($result['secret']);
+            $secrets = TtApi::parseSecrets($result['secret']);
             $timestamp = time();
 
             foreach ($secrets as $secret) {

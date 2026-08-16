@@ -122,7 +122,7 @@ if ($action == 'del') {
         $goodsModel->hideSwitch($id, 'y');
     }
     $CACHE->updateCache();
-    emDirect("./goods.php?&active_del=1");
+    ttDirect("./goods.php?&active_del=1");
 }
 
 if ($action == 'operate_goods') {
@@ -136,10 +136,10 @@ if ($action == 'operate_goods') {
     LoginAuth::checkToken();
 
     if (!$operate) {
-        emDirect("./goods.php?draft=$draft&error_b=1");
+        ttDirect("./goods.php?draft=$draft&error_b=1");
     }
     if (empty($logs) && empty($id)) {
-        emDirect("./goods.php?draft=$draft&error_a=1");
+        ttDirect("./goods.php?draft=$draft&error_a=1");
     }
 
     switch ($operate) {
@@ -150,32 +150,32 @@ if ($action == 'operate_goods') {
                 doAction('del_product', $val);
             }
             $CACHE->updateCache();
-            emDirect("./goods.php?draft=1&active_del=1&draft=$draft");
+            ttDirect("./goods.php?draft=1&active_del=1&draft=$draft");
             break;
         case 'top':
             foreach ($logs as $val) {
                 $goodsModel->updateLog(array('top' => 'y'), $val);
             }
-            emDirect("./goods.php?active_up=1&draft=$draft");
+            ttDirect("./goods.php?active_up=1&draft=$draft");
             break;
         case 'sortop':
             foreach ($logs as $val) {
                 $goodsModel->updateLog(array('sortop' => 'y'), $val);
             }
-            emDirect("./goods.php?active_up=1&draft=$draft");
+            ttDirect("./goods.php?active_up=1&draft=$draft");
             break;
         case 'notop':
             foreach ($logs as $val) {
                 $goodsModel->updateLog(array('top' => 'n', 'sortop' => 'n'), $val);
             }
-            emDirect("./goods.php?active_down=1&draft=$draft");
+            ttDirect("./goods.php?active_down=1&draft=$draft");
             break;
         case 'hide':
             foreach ($logs as $val) {
                 $goodsModel->hideSwitch($val, 'y');
             }
             $CACHE->updateCache();
-            emDirect("./goods.php?active_hide=1&draft=$draft");
+            ttDirect("./goods.php?active_hide=1&draft=$draft");
             break;
         case 'pub':
             foreach ($logs as $val) {
@@ -185,7 +185,7 @@ if ($action == 'operate_goods') {
                 }
             }
             $CACHE->updateCache();
-            emDirect("./goods.php?draft=1&active_post=1&draft=$draft");
+            ttDirect("./goods.php?draft=1&active_post=1&draft=$draft");
             break;
         case 'move':
             foreach ($logs as $val) {
@@ -193,21 +193,21 @@ if ($action == 'operate_goods') {
                 $goodsModel->updateLog(array('sortid' => $sort), $val);
             }
             $CACHE->updateCache(array('sort', 'logsort'));
-            emDirect("./goods.php?active_move=1&draft=$draft");
+            ttDirect("./goods.php?active_move=1&draft=$draft");
             break;
         case 'change_author':
             if (!User::haveEditPermission()) {
-                emMsg('权限不足！', './');
+                ttMsg('权限不足！', './');
             }
             foreach ($logs as $val) {
                 $goodsModel->updateLog(array('author' => $author), $val);
             }
             $CACHE->updateCache('sta');
-            emDirect("./goods.php?active_change_author=1&draft=$draft");
+            ttDirect("./goods.php?active_change_author=1&draft=$draft");
             break;
         case 'check':
             if (!User::haveEditPermission()) {
-                emMsg('权限不足！', './');
+                ttMsg('权限不足！', './');
             }
             if ($logs) {
                 foreach ($logs as $id) {
@@ -217,11 +217,11 @@ if ($action == 'operate_goods') {
                 $goodsModel->checkSwitch($id, 'y');
             }
             $CACHE->updateCache();
-            emDirect("./goods.php?active_ck=1&draft=$draft");
+            ttDirect("./goods.php?active_ck=1&draft=$draft");
             break;
         case 'uncheck':
             if (!User::haveEditPermission()) {
-                emMsg('权限不足！', './');
+                ttMsg('权限不足！', './');
             }
             if ($logs) {
                 $feedback = '';
@@ -234,7 +234,7 @@ if ($action == 'operate_goods') {
                 $goodsModel->unCheck($id, $feedback);
             }
             $CACHE->updateCache();
-            emDirect("./goods.php?active_unck=1&draft=$draft");
+            ttDirect("./goods.php?active_unck=1&draft=$draft");
             break;
     }
 }

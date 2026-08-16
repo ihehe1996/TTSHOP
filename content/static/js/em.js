@@ -20,10 +20,10 @@ var em = (function() {
 
     // 获取或创建容器
     function getContainer() {
-        var container = document.querySelector('.em-toast-container');
+        var container = document.querySelector('.tt-toast-container');
         if (!container) {
             container = document.createElement('div');
-            container.className = 'em-toast-container';
+            container.className = 'tt-toast-container';
             document.body.appendChild(container);
         }
         return container;
@@ -32,16 +32,16 @@ var em = (function() {
     // 创建toast元素
     function createToast(content, type) {
         var toast = document.createElement('div');
-        toast.className = 'em-toast em-toast-' + type;
+        toast.className = 'tt-toast tt-toast-' + type;
         toast.innerHTML =
-            '<div class="em-toast-icon">' + icons[type] + '</div>' +
-            '<div class="em-toast-content">' + content + '</div>';
+            '<div class="tt-toast-icon">' + icons[type] + '</div>' +
+            '<div class="tt-toast-content">' + content + '</div>';
         return toast;
     }
 
     // 移除toast
     function removeToast(toast) {
-        toast.classList.add('em-toast-out');
+        toast.classList.add('tt-toast-out');
         setTimeout(function() {
             if (toast.parentNode) {
                 toast.parentNode.removeChild(toast);
@@ -525,7 +525,7 @@ function validateQuantity(notify) {
 
 $(function(){
     /* 弹窗事件 */
-    $("body").on("click", ".em-modal", function(){
+    $("body").on("click", ".tt-modal", function(){
         var modal = $(this).data('modal');
         $('#'+modal).fadeIn(300);
         $('body').css('overflow', 'hidden');
@@ -539,7 +539,7 @@ $(function(){
     // 绑定关闭事件
     $('.close-modal-btn').on('click', function() {
         var modal = $(this).data('modal');
-        hideEmModal(modal);
+        hideTtModal(modal);
     });
 
     // 抽屉内数量选择
@@ -644,7 +644,7 @@ $(function(){
 
 
     
-function hideEmModal(modal){
+function hideTtModal(modal){
     $('#'+modal).fadeOut(300);
     $('body').css('overflow', 'auto');
 } 

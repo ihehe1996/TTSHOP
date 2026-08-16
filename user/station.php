@@ -16,7 +16,7 @@ $db_prefix = DB_PREFIX;
 
 $station_switch = Option::get('station_switch');
 if ($station_switch === 'n') {
-    emMsg('分站系统已关闭');
+    ttMsg('分站系统已关闭');
 }
 
 $default_premium = Option::get('station_default_premium');
@@ -86,7 +86,7 @@ if (empty($action)) {
 if($action == 'bill'){ // 店铺账单
     global $userData;
     if (empty($userData['station'])) {
-        emMsg('您还未开通分站，请先开通分站');
+        ttMsg('您还未开通分站，请先开通分站');
     }
 
     $station_id = $userData['station']['id'];

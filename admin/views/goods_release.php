@@ -1,4 +1,4 @@
-<?php defined('EM_ROOT') || exit('access denied!'); ?>
+<?php defined('TT_ROOT') || exit('access denied!'); ?>
 <?php
 $payment = getPayment(false);
 //d($payment);die;
@@ -604,9 +604,9 @@ $qtyDiscountConfig = $goodsConfig['qty_discount'] ?? [];
 
 
 
-<script src="./tinymce/tinymce.min.js?t=<?= Option::EM_VERSION_TIMESTAMP ?>"></script>
+<script src="./tinymce/tinymce.min.js?t=<?= Option::TT_VERSION_TIMESTAMP ?>"></script>
 
-<script src="./views/js/views/goods.js?t=<?= Option::EM_VERSION_TIMESTAMP ?>"></script>
+<script src="./views/js/views/goods.js?t=<?= Option::TT_VERSION_TIMESTAMP ?>"></script>
 
 
 <script>
@@ -656,19 +656,19 @@ $qtyDiscountConfig = $goodsConfig['qty_discount'] ?? [];
             submitBtn.text(disabled ? submitLoadingText : submitReadyText);
         }
 
-        $(document).on('emSku:status.goodsRelease', function (event, status) {
+        $(document).on('ttSku:status.goodsRelease', function (event, status) {
             syncSubmitButton(status);
         });
 
-        if (typeof EmSku !== 'undefined' && typeof EmSku.getStatus === 'function') {
-            syncSubmitButton(EmSku.getStatus());
+        if (typeof TtSku !== 'undefined' && typeof TtSku.getStatus === 'function') {
+            syncSubmitButton(TtSku.getStatus());
         } else {
             syncSubmitButton();
         }
 
         form.on('submit(submit)', function(){
-            if (typeof EmSku !== 'undefined' && typeof EmSku.getStatus === 'function') {
-                syncSubmitButton(EmSku.getStatus());
+            if (typeof TtSku !== 'undefined' && typeof TtSku.getStatus === 'function') {
+                syncSubmitButton(TtSku.getStatus());
             }
             if (skuStatus.busy) {
                 layer.msg(skuStatus.message || '规格信息加载中，请稍候再提交');
@@ -774,7 +774,7 @@ $qtyDiscountConfig = $goodsConfig['qty_discount'] ?? [];
                 title: '选择历史图片',
                 type: 2,
                 area: area,
-                skin: 'em-modal',
+                skin: 'tt-modal',
                 content: 'media.php?action=history&target=' + encodeURIComponent(targetId),
                 fixed: false,
                 scrollbar: false,

@@ -67,7 +67,7 @@ class Api {
         if(self::$resp == 'api'){
             Ret::error($msg);
         }else{
-            emMsg($msg);
+            ttMsg($msg);
         }
     }
 }

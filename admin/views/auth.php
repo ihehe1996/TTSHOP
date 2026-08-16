@@ -1,4 +1,4 @@
-<?php defined('EM_ROOT') || exit('access denied!'); ?>
+<?php defined('TT_ROOT') || exit('access denied!'); ?>
 
 <style>
 #accordion > .active .menu-link{
@@ -186,7 +186,7 @@
                 <div style="width: 60px; height: 60px; background: #f0f5ff; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: #165DFF;">
                     <i class="layui-icon layui-icon-auz" style="font-size: 32px;"></i>
                 </div>
-                <div class="form-title">激活正版 EMSHOP</div>
+                <div class="form-title">激活正版 TTSHOP</div>
                 <div class="form-subtitle">请输入您的授权许可证密钥以开启完整服务</div>
             </div>
 
@@ -194,7 +194,7 @@
                 <div class="custom-field">
                     <label class="custom-label">授权许可证 (License Key)</label>
                     <div class="input-wrapper">
-                        <input type="text" name="emkey" placeholder="请输入您的授权码" autocomplete="off">
+                        <input type="text" name="ttkey" placeholder="请输入您的授权码" autocomplete="off">
                         <i class="layui-icon layui-icon-key"></i>
                     </div>
                 </div>
@@ -207,25 +207,25 @@
                 
                 <div class="link-group">
                     <span style="color: #999;">还没有授权码？</span> 
-                    <span class="link-btn get-em-buy-info">获取正版授权 &rarr;</span>
+                    <span class="link-btn get-tt-buy-info">获取正版授权 &rarr;</span>
                 </div>
             </form>
 
         <?php else: ?>
             <!-- 已授权信息 -->
             <div class="form-header">
-                <div class="form-title">EMSHOP 正版授权</div>
+                <div class="form-title">TTSHOP 正版授权</div>
                 <div class="form-subtitle">感谢您的支持，系统各项服务运行中</div>
             </div>
 
             <div class="success-info">
                 <div class="info-row">
                     <span class="info-label">系统版本</span>
-                    <span class="info-val">v<?= Option::EM_VERSION ?></span>
+                    <span class="info-val">v<?= Option::TT_VERSION ?></span>
                 </div>
                 <div class="info-row">
                     <span class="info-label">授权类型</span>
-                    <span class="info-val" style="color: #165DFF;"><?= $emkey_type ?></span>
+                    <span class="info-val" style="color: #165DFF;"><?= $ttkey_type ?></span>
                 </div>
                 <div class="info-row">
                     <span class="info-label">授权域名</span>
@@ -233,12 +233,12 @@
                 </div>
                 <div class="info-row">
                     <span class="info-label">授权密钥</span>
-                    <span class="info-val"><?= substr($emkey, 0, 8) . '****' . substr($emkey, -4) ?></span>
+                    <span class="info-val"><?= substr($ttkey, 0, 8) . '****' . substr($ttkey, -4) ?></span>
                 </div>
             </div>
 
             <div style="margin-top: 30px;">
-                <a href="<?= EM_LINE[0]['value'] ?>" target="_blank" class="btn-action">
+                <a href="<?= TT_LINE[0]['value'] ?>" target="_blank" class="btn-action">
                     进入官方网站
                 </a>
                 <div style="margin-top: 15px; font-size: 13px; color: #999; text-align: center; line-height: 1.6;">

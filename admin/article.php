@@ -116,11 +116,11 @@ if ($action == 'tag') {
     $tagsStr = strip_tags(Input::postStrVar('tag'));
 
     if (!User::haveEditPermission()) {
-        emMsg('权限不足！', './');
+        ttMsg('权限不足！', './');
     }
 
     $Tag_Model->updateTag($tagsStr, $gid);
-    emDirect("./article.php");
+    ttDirect("./article.php");
 }
 
 if ($action === 'pub') {
@@ -132,7 +132,7 @@ if ($action === 'pub') {
     }
 
     $CACHE->updateCache();
-    emDirect("./article.php?draft=1&active_post=1&draft=1");
+    ttDirect("./article.php?draft=1&active_post=1&draft=1");
 }
 
 if ($action == 'operate_log') {
@@ -146,10 +146,10 @@ if ($action == 'operate_log') {
     LoginAuth::checkToken();
 
     if (!$operate) {
-        emDirect("./article.php?draft=$draft&error_b=1");
+        ttDirect("./article.php?draft=$draft&error_b=1");
     }
     if (empty($logs) && empty($gid)) {
-        emDirect("./article.php?draft=$draft&error_a=1");
+        ttDirect("./article.php?draft=$draft&error_a=1");
     }
 
     switch ($operate) {
@@ -160,32 +160,32 @@ if ($action == 'operate_log') {
                 doAction('del_log', $val);
             }
             $CACHE->updateCache();
-            emDirect("./article.php?draft=$draft");
+            ttDirect("./article.php?draft=$draft");
             break;
         case 'top':
             foreach ($logs as $val) {
                 $Log_Model->updateLog(array('top' => 'y'), $val);
             }
-            emDirect("./article.php?active_up=1&draft=$draft");
+            ttDirect("./article.php?active_up=1&draft=$draft");
             break;
         case 'sortop':
             foreach ($logs as $val) {
                 $Log_Model->updateLog(array('sortop' => 'y'), $val);
             }
-            emDirect("./article.php?active_up=1&draft=$draft");
+            ttDirect("./article.php?active_up=1&draft=$draft");
             break;
         case 'notop':
             foreach ($logs as $val) {
                 $Log_Model->updateLog(array('top' => 'n', 'sortop' => 'n'), $val);
             }
-            emDirect("./article.php?active_down=1&draft=$draft");
+            ttDirect("./article.php?active_down=1&draft=$draft");
             break;
         case 'hide':
             foreach ($logs as $val) {
                 $Log_Model->hideSwitch($val, 'y');
             }
             $CACHE->updateCache();
-            emDirect("./article.php?active_hide=1&draft=$draft");
+            ttDirect("./article.php?active_hide=1&draft=$draft");
             break;
         case 'pub':
             foreach ($logs as $val) {
@@ -195,7 +195,7 @@ if ($action == 'operate_log') {
                 }
             }
             $CACHE->updateCache();
-            emDirect("./article.php?draft=1&active_post=1&draft=$draft");
+            ttDirect("./article.php?draft=1&active_post=1&draft=$draft");
             break;
         case 'move':
             foreach ($logs as $val) {
@@ -203,21 +203,21 @@ if ($action == 'operate_log') {
                 $Log_Model->updateLog(array('sortid' => $sort), $val);
             }
             $CACHE->updateCache(array('sort', 'logsort'));
-            emDirect("./article.php?active_move=1&draft=$draft");
+            ttDirect("./article.php?active_move=1&draft=$draft");
             break;
         case 'change_author':
             if (!User::haveEditPermission()) {
-                emMsg('权限不足！', './');
+                ttMsg('权限不足！', './');
             }
             foreach ($logs as $val) {
                 $Log_Model->updateLog(array('author' => $author), $val);
             }
             $CACHE->updateCache('sta');
-            emDirect("./article.php?active_change_author=1&draft=$draft");
+            ttDirect("./article.php?active_change_author=1&draft=$draft");
             break;
         case 'check':
             if (!User::haveEditPermission()) {
-                emMsg('权限不足！', './');
+                ttMsg('权限不足！', './');
             }
             if ($logs) {
                 foreach ($logs as $id) {
@@ -227,11 +227,11 @@ if ($action == 'operate_log') {
                 $Log_Model->checkSwitch($gid, 'y');
             }
             $CACHE->updateCache();
-            emDirect("./article.php?active_ck=1&draft=$draft");
+            ttDirect("./article.php?active_ck=1&draft=$draft");
             break;
         case 'uncheck':
             if (!User::haveEditPermission()) {
-                emMsg('权限不足！', './');
+                ttMsg('权限不足！', './');
             }
             if ($logs) {
                 $feedback = '';
@@ -244,7 +244,7 @@ if ($action == 'operate_log') {
                 $Log_Model->unCheck($gid, $feedback);
             }
             $CACHE->updateCache();
-            emDirect("./article.php?active_unck=1&draft=$draft");
+            ttDirect("./article.php?active_unck=1&draft=$draft");
             break;
     }
 }
@@ -284,7 +284,7 @@ if ($action === 'write') {
     $fields = [];
 
     if (!Register::isRegLocal() && $sta_cache['lognum'] > 50) {
-        emDirect("auth.php?error_article=1");
+        ttDirect("auth.php?error_article=1");
     }
 
 

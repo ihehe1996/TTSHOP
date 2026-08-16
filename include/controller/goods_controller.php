@@ -20,7 +20,7 @@ class Goods_Controller {
         $templateModel = new Template_Model();
         $templateInfo = $templateModel->getCurrentTemplate();
         
-        if(empty($templateInfo)) emMsg('当前使用的模板已被删除或损坏，请登录后台更换其他模板。');
+        if(empty($templateInfo)) ttMsg('当前使用的模板已被删除或损坏，请登录后台更换其他模板。');
 
         if($templateInfo['header_and_footer'] == 'common'){
             include View::getCommonView('header');
@@ -65,8 +65,8 @@ class Goods_Controller {
         }
         $goods = $goodsModel->getOneGoodsForHome($goods_id, UID, LEVEL, [], 0);
         if(empty($goods)){
-            $em_url = EM_URL;
-            emMsg('该商品已下架或被删除', "javascript:location.replace('{$em_url}');");
+            $tt_url = TT_URL;
+            ttMsg('该商品已下架或被删除', "javascript:location.replace('{$tt_url}');");
         }
 
         $payment = getPayment(true, $goods['payment']);
@@ -95,7 +95,7 @@ class Goods_Controller {
         $templateModel = new Template_Model();
         $templateInfo = $templateModel->getCurrentTemplate();
 
-        if(empty($templateInfo)) emMsg('当前使用的模板已被删除或损坏，请登录后台更换其他模板。');
+        if(empty($templateInfo)) ttMsg('当前使用的模板已被删除或损坏，请登录后台更换其他模板。');
 
         $template = !empty($template) && file_exists(TEMPLATE_PATH . $template . '.php') ? $template : 'goods';
         if($templateInfo['header_and_footer'] == 'common'){
@@ -122,7 +122,7 @@ class Goods_Controller {
         // 查询最近的订单
         $db = Database::getInstance();
         $prefix = DB_PREFIX;
-        $em_local = $db->escape_string(EM_LOCAL);
+        $em_local = $db->escape_string(TT_LOCAL);
         $sql = "SELECT contact, pwd FROM {$prefix}order WHERE em_local = '{$em_local}' AND pay_time IS NOT NULL and delete_time is null ORDER BY id DESC LIMIT 1";
         $latest_order = $db->once_fetch_array($sql);
 

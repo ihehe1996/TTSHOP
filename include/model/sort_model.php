@@ -1,6 +1,6 @@
 <?php
 /**
- * @package EMSHOP
+ * @package TTSHOP
  */
 
 class Sort_Model {

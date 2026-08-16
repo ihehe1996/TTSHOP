@@ -1,4 +1,4 @@
-<?php defined('EM_ROOT') || exit('access denied!'); ?>
+<?php defined('TT_ROOT') || exit('access denied!'); ?>
 
 <!-- 内嵌提现表单 -->
 <div id="withdraw-modal" class="withdraw-modal-wrapper" style="display: none;">

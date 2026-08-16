@@ -1,5 +1,5 @@
 <?php
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 
 /*
  * 插件前台展示页面
@@ -10,7 +10,7 @@ $out_trade_no = Input::getStrVar('out_trade_no');
 $qr_code = Input::getStrVar('qr_code');
 
 if (empty($out_trade_no)) {
-    emMsg('非法请求');
+    ttMsg('非法请求');
 }
 
 // 充值订单使用 charge 表，其它订单使用 order 表
@@ -26,7 +26,7 @@ if (strpos($out_trade_no, 'cz') === 0) {
 }
 
 if (empty($order_info)) {
-    emMsg('订单不存在或已失效');
+    ttMsg('订单不存在或已失效');
 }
 
 
@@ -43,11 +43,11 @@ $home_icon = Option::get('home_icon');
     <title>支付宝扫码支付</title>
     <meta name="keywords" content=""/>
     <meta name="description" content=""/>
-    <link href="<?= empty($home_icon) ? (empty(_g('favicon')) ? EM_URL . 'favicon.ico' : _g('favicon')) : $home_icon; ?>" rel="icon">
-    <link rel="alternate" title="RSS" href="<?= EM_URL ?>rss.php" type="application/rss+xml"/>
+    <link href="<?= empty($home_icon) ? (empty(_g('favicon')) ? TT_URL . 'favicon.ico' : _g('favicon')) : $home_icon; ?>" rel="icon">
+    <link rel="alternate" title="RSS" href="<?= TT_URL ?>rss.php" type="application/rss+xml"/>
 
     <script src="../../../admin/views/js/jquery.min.3.5.1.js"></script>
-    <script src="../../../admin/views/js/bootstrap.bundle.min.4.6.js?t=<?= Option::EM_VERSION_TIMESTAMP ?>"></script>
+    <script src="../../../admin/views/js/bootstrap.bundle.min.4.6.js?t=<?= Option::TT_VERSION_TIMESTAMP ?>"></script>
 
     <style>
         * {
@@ -173,7 +173,7 @@ $home_icon = Option::get('home_icon');
 </div>
 
 
-<script src="<?= EM_URL ?>/content/static/js/qrcode.min.js?t=<?= Option::EM_VERSION_TIMESTAMP ?>"></script>
+<script src="<?= TT_URL ?>/content/static/js/qrcode.min.js?t=<?= Option::TT_VERSION_TIMESTAMP ?>"></script>
 
 <script>
     new QRCode(document.getElementById("qrcode"), "<?= $qr_code ?>", {

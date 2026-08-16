@@ -49,13 +49,13 @@ if ($action == 'checkUpdates') {
         ];
     }
 
-    $emkey = getMyEmkey();
+    $ttkey = getMyTtKey();
     $post_data = [
-        'emkey' => $emkey,
+        'ttkey' => $ttkey,
         'apps'  => json_encode($check),
     ];
-    $res = emCurl(
-        EM_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=is_plugin_upgrade', 
+    $res = ttCurl(
+        TT_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=is_plugin_upgrade', 
         http_build_query($post_data), 1, [], 10
     );
     $res = json_decode($res, 1);
@@ -130,12 +130,12 @@ if ($action == 'setting') {
     if (!empty($_POST)) {
         require_once "../content/plugins/$plugin/{$plugin}_setting.php";
         if (false === plugin_setting()) {
-            emDirect("./plugin.php?plugin={$plugin}&error=1");
+            ttDirect("./plugin.php?plugin={$plugin}&error=1");
         } else {
-            emDirect("./plugin.php?plugin={$plugin}&setting=1");
+            ttDirect("./plugin.php?plugin={$plugin}&setting=1");
         }
     } else {
-        emDirect("./plugin.php?plugin={$plugin}&error=1");
+        ttDirect("./plugin.php?plugin={$plugin}&error=1");
     }
 }
 
@@ -149,7 +149,7 @@ if ($action == 'del') {
     $Plugin_Model->rmCallback($plugin);
     $path = preg_replace("/^([\w-]+)\/[\w-]+\.php$/i", "$1", $plugin);
 
-    if ($path && true === emDeleteFile('../content/plugins/' . $path)) {
+    if ($path && true === ttDeleteFile('../content/plugins/' . $path)) {
         $CACHE->updateCache('options');
         output::ok('删除成功');
     } else {
@@ -165,15 +165,15 @@ if ($action === 'upgrade') {
         output::error('当前程序未授权，无法更新！');
     }
 
-    $url = EM_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=downloadPlugin&host=' . getTopHost() . '&plugin_id=' . $plugin_id;
+    $url = TT_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=downloadPlugin&host=' . getTopHost() . '&plugin_id=' . $plugin_id;
     // echo $url;die;
-    $temp_file = emFetchFile($url);
+    $temp_file = ttFetchFile($url);
     // var_dump($temp_file);die;
     if (!$temp_file) {
         output::error('未购买该插件或更新失败！');
     }
     $unzip_path = '../content/plugins/';
-    $ret = emUnZip($temp_file, $unzip_path, 'plugin');
+    $ret = ttUnZip($temp_file, $unzip_path, 'plugin');
     @unlink($temp_file);
     switch ($ret) {
         case 0:

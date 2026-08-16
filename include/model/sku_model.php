@@ -1,7 +1,7 @@
 <?php
 /**
  * article sort model
- * @package EMLOG
+ * @package TTSHOP
  * @link https://www.emlog.net
  */
 

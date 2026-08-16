@@ -1,5 +1,5 @@
 <?php
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 
 $db = Database::getInstance();
 $db_prefix = DB_PREFIX;
@@ -20,8 +20,8 @@ if (empty($user) && !empty($order['user_id'])) {
 }
 
 $attrSpec = $child_order['attr_spec'] ?? '';
-if (in_array($goods['type'] ?? '', ['em_auto', 'em_manual']) && function_exists('emFormatSkuOptionIds')) {
-    $attrSpec = emFormatSkuOptionIds($child_order['goods_id'], $child_order['sku'] ?? '');
+if (in_array($goods['type'] ?? '', ['em_auto', 'em_manual']) && function_exists('ttFormatSkuOptionIds')) {
+    $attrSpec = ttFormatSkuOptionIds($child_order['goods_id'], $child_order['sku'] ?? '');
 }
 $attrSpec = $attrSpec ?: '默认规格';
 
@@ -37,8 +37,8 @@ if (!empty($child_order['attach_user'])) {
 $attachText = $attachText ?: '无';
 
 $remoteTradeNo = $child_order['remote_trade_no'] ?? '';
-$emGoods = $db->once_fetch_array("SELECT * FROM {$db_prefix}em_goods WHERE goods_id = " . (int)$goods['id']);
-$site = $emGoods ? $db->once_fetch_array("SELECT * FROM {$db_prefix}em_site WHERE id = " . (int)$emGoods['site_id']) : null;
+$ttGoods = $db->once_fetch_array("SELECT * FROM {$db_prefix}em_goods WHERE goods_id = " . (int)$goods['id']);
+$site = $ttGoods ? $db->once_fetch_array("SELECT * FROM {$db_prefix}em_site WHERE id = " . (int)$ttGoods['site_id']) : null;
 
 $secretSql = "SELECT content, create_time AS deliver_time
               FROM {$db_prefix}stock_usage
@@ -80,13 +80,13 @@ if ($rawStatus === 1) {
         background: #f6f8fa;
     }
 
-    .em-order-detail {
+    .tt-order-detail {
         padding: 20px;
         display: grid;
         gap: 16px;
     }
 
-    .em-header {
+    .tt-header {
         background: linear-gradient(135deg, #4C7D71 0%, #6BA596 100%);
         border-radius: 14px;
         padding: 20px 24px;
@@ -94,7 +94,7 @@ if ($rawStatus === 1) {
         box-shadow: 0 10px 24px rgba(76, 125, 113, 0.25);
     }
 
-    .em-header-top {
+    .tt-header-top {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -102,13 +102,13 @@ if ($rawStatus === 1) {
         flex-wrap: wrap;
     }
 
-    .em-header-title h2 {
+    .tt-header-title h2 {
         margin: 0 0 6px;
         font-size: 18px;
         font-weight: 600;
     }
 
-    .em-header-title p {
+    .tt-header-title p {
         margin: 0;
         font-size: 13px;
         opacity: 0.9;
@@ -132,39 +132,39 @@ if ($rawStatus === 1) {
     .status-partial { background: rgba(99, 102, 241, 0.2); color: #c7d2fe; }
     .status-cancelled { background: rgba(239, 68, 68, 0.2); color: #fecaca; }
 
-    .em-stats {
+    .tt-stats {
         margin-top: 14px;
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
         gap: 12px;
     }
 
-    .em-stat {
+    .tt-stat {
         background: rgba(255, 255, 255, 0.16);
         border-radius: 10px;
         padding: 10px 12px;
     }
 
-    .em-stat .label {
+    .tt-stat .label {
         font-size: 12px;
         opacity: 0.8;
         margin-bottom: 4px;
     }
 
-    .em-stat .value {
+    .tt-stat .value {
         font-size: 14px;
         font-weight: 600;
         word-break: break-all;
     }
 
-    .em-card {
+    .tt-card {
         background: #ffffff;
         border-radius: 12px;
         box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
         overflow: hidden;
     }
 
-    .em-card-header {
+    .tt-card-header {
         padding: 12px 18px;
         background: #f8fafc;
         border-bottom: 1px solid #eef2f5;
@@ -176,7 +176,7 @@ if ($rawStatus === 1) {
         color: #334155;
     }
 
-    .em-card-body {
+    .tt-card-body {
         padding: 14px 18px;
     }
 
@@ -205,7 +205,7 @@ if ($rawStatus === 1) {
         word-break: break-all;
     }
 
-    .em-required {
+    .tt-required {
         display: grid;
         gap: 8px;
     }
@@ -333,41 +333,41 @@ if ($rawStatus === 1) {
     }
 </style>
 
-<div class="em-order-detail">
-    <div class="em-header">
-        <div class="em-header-top">
-            <div class="em-header-title">
+<div class="tt-order-detail">
+    <div class="tt-header">
+        <div class="tt-header-top">
+            <div class="tt-header-title">
                 <h2><?= htmlspecialchars($goods['title'] ?? '商品') ?></h2>
                 <p>订单号：<?= htmlspecialchars($order['out_trade_no'] ?? '-') ?></p>
             </div>
             <span class="status-pill <?= $statusClass ?>"><?= htmlspecialchars($orderStatusText) ?></span>
         </div>
-        <div class="em-stats">
-            <div class="em-stat">
+        <div class="tt-stats">
+            <div class="tt-stat">
                 <div class="label">订单金额</div>
                 <div class="value">￥<?= $orderAmount ?></div>
             </div>
-            <div class="em-stat">
+            <div class="tt-stat">
                 <div class="label">购买数量</div>
                 <div class="value"><?= $quantity ?> 件</div>
             </div>
-            <div class="em-stat">
+            <div class="tt-stat">
                 <div class="label">支付方式</div>
                 <div class="value"><?= htmlspecialchars($order['payment'] ?? '-') ?></div>
             </div>
-            <div class="em-stat">
+            <div class="tt-stat">
                 <div class="label">下单IP</div>
                 <div class="value"><?= htmlspecialchars($order['client_ip'] ?? '-') ?></div>
             </div>
         </div>
     </div>
 
-    <div class="em-card">
-        <div class="em-card-header">
+    <div class="tt-card">
+        <div class="tt-card-header">
             <i class="layui-icon layui-icon-user"></i>
             用户 & 订单信息
         </div>
-        <div class="em-card-body">
+        <div class="tt-card-body">
             <div class="info-grid">
                 <div class="info-item">
                     <span>用户昵称</span>
@@ -413,12 +413,12 @@ if ($rawStatus === 1) {
         </div>
     </div>
 
-    <div class="em-card">
-        <div class="em-card-header">
+    <div class="tt-card">
+        <div class="tt-card-header">
             <i class="layui-icon layui-icon-note"></i>
             附加选项
         </div>
-        <div class="em-card-body">
+        <div class="tt-card-body">
             <div class="required-item"><?= htmlspecialchars($attachText) ?></div>
         </div>
     </div>

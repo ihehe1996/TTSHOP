@@ -1,4 +1,4 @@
-<?php defined('EM_ROOT') || exit('access denied!'); ?>
+<?php defined('TT_ROOT') || exit('access denied!'); ?>
 <?php
 function em_h($value) {
     return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');

@@ -25,14 +25,14 @@ if (empty($action)) {
 
 if ($action == 'index') {
 
-    $emPage = new Log_Model();
+    $ttPage = new Log_Model();
 
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
     $sqlSegment = ' ORDER BY date DESC';
 
-    $pages = $emPage->getLogsForAdmin($sqlSegment, '', $page, 'page');
-    $pageNum = $emPage->getLogNum('', '', 'page', 1);
+    $pages = $ttPage->getLogsForAdmin($sqlSegment, '', $page, 'page');
+    $pageNum = $ttPage->getLogNum('', '', 'page', 1);
 
 
     output::data($pages, $pageNum);
@@ -70,14 +70,14 @@ if ($action == 'new') {
 }
 
 if ($action == 'mod') {
-    $emPage = new Log_Model();
+    $ttPage = new Log_Model();
 
     $Template_Model = new Template_Model();
     $customTemplates = $Template_Model->getCustomTemplates('page');
 
     $containertitle = '编辑页面';
     $pageId = isset($_GET['id']) ? (int)$_GET['id'] : '';
-    $pageData = $emPage->getOneLogForAdmin($pageId);
+    $pageData = $ttPage->getOneLogForAdmin($pageId);
     extract($pageData);
 
     //media
@@ -99,7 +99,7 @@ if ($action == 'mod') {
 }
 
 if ($action == 'save') {
-    $emPage = new Log_Model();
+    $ttPage = new Log_Model();
     $Navi_Model = new Navi_Model();
 
     $title = isset($_POST['title']) ? addslashes(trim($_POST['title'])) : '';
@@ -117,7 +117,7 @@ if ($action == 'save') {
 
     if (!empty($alias)) {
         $logalias_cache = $CACHE->readCache('logalias');
-        $alias = $emPage->checkAlias($alias, $logalias_cache, $pageId);
+        $alias = $ttPage->checkAlias($alias, $logalias_cache, $pageId);
     }
 
     $logData = array(
@@ -136,10 +136,10 @@ if ($action == 'save') {
 
     $directUrl = '';
     if ($pageId > 0) {
-        $emPage->updateLog($logData, $pageId);
+        $ttPage->updateLog($logData, $pageId);
         $directUrl = './page.php?active_pubpage=1';
     } else {
-        $pageId = $emPage->addlog($logData);
+        $pageId = $ttPage->addlog($logData);
         $directUrl = './page.php?active_hide_n=1';
     }
 
@@ -158,7 +158,7 @@ if ($action == 'save') {
             echo "autosave_gid:{$pageId}_df:0_";
             break;
         case 'save':
-            emDirect($directUrl);
+            ttDirect($directUrl);
             break;
     }
 }
@@ -166,10 +166,10 @@ if ($action == 'save') {
 if($action == 'del'){
     $ids = Input::postStrVar('ids');
     $ids = explode(',', $ids);
-    $emPage = new Log_Model();
+    $ttPage = new Log_Model();
     $home_page_id = Option::get('home_page_id');
     foreach ($ids as $value) {
-        $emPage->deleteLog($value);
+        $ttPage->deleteLog($value);
         // 如果被删除的页面是首页，需要恢复默认首页
         if ($home_page_id == $value) {
             Option::updateOption('home_page_id', 0);
@@ -185,17 +185,17 @@ if ($action == 'operate_page') {
 
     LoginAuth::checkToken();
 
-    $emPage = new Log_Model();
+    $ttPage = new Log_Model();
 
     switch ($operate) {
         case 'hide':
         case 'pub':
             $ishide = $operate == 'hide' ? 'y' : 'n';
             foreach ($pages as $value) {
-                $emPage->hideSwitch($value, $ishide);
+                $ttPage->hideSwitch($value, $ishide);
             }
             $CACHE->updateCache(array('options', 'sta', 'comment'));
-            emDirect("./page.php?active_hide_" . $ishide . "=1");
+            ttDirect("./page.php?active_hide_" . $ishide . "=1");
             break;
     }
 }

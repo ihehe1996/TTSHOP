@@ -1,6 +1,6 @@
 <?php
 /**
- * @package EMSHOP
+ * @package TTSHOP
  */
 
 class Order_Model {
@@ -706,8 +706,8 @@ sql;
                         $attach_user .= $k . '：' . $v . '；';
                     }
                     $row['attach_user'] = empty($attach_user) ? '无' : $attach_user;
-                    if (in_array($row['type'], ['em_auto', 'em_manual']) && function_exists('emFormatSkuOptionIds')) {
-                        $row['attr_spec'] = emFormatSkuOptionIds($row['goods_id'], $row['sku'] ?? '');
+                    if (in_array($row['type'], ['em_auto', 'em_manual']) && function_exists('ttFormatSkuOptionIds')) {
+                        $row['attr_spec'] = ttFormatSkuOptionIds($row['goods_id'], $row['sku'] ?? '');
                     } else {
                         $row['attr_spec'] = empty($row['attr_spec']) ? '默认规格' : $row['attr_spec'];
                     }

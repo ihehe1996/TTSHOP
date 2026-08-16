@@ -2,7 +2,7 @@
 /**
  * 独立卡密库存管理 API
  *
- * @package EMSHOP
+ * @package TTSHOP
  */
 
 require_once '../../../init.php';

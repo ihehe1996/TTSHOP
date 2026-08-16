@@ -6,7 +6,7 @@
  * 详见官网文档-模板开发：https://www.emlog.net/docs/dev/template
  */
 
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 
 $options = [
     'TplOptionsNavi' => [

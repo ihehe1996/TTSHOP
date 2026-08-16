@@ -32,15 +32,15 @@ class Download_Controller {
 
         $this->Media_Model->incrDownloadCount($r['aid']);
 
-        $this->download($r['filepath'], $r['filename'], EM_URL, getUA());
+        $this->download($r['filepath'], $r['filename'], TT_URL, getUA());
     }
 
     private function download($file_path, $file_name, $referer = '', $user_agent = '') {
         if (filter_var($file_path, FILTER_VALIDATE_URL)) {
             $file_url = $file_path;
-            emDirect($file_url);
+            ttDirect($file_url);
         } else {
-            $file_url = EM_ROOT . ltrim($file_path, '.');
+            $file_url = TT_ROOT . ltrim($file_path, '.');
         }
         $options = [
             'http' => [

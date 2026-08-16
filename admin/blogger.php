@@ -2,7 +2,7 @@
 /**
  * user profile
  *
- * @package EMLOG
+ * @package TTSHOP
  * @link https://www.emlog.net
  */
 

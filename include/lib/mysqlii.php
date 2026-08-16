@@ -27,7 +27,7 @@ class MySqlii {
 
     private function __construct() {
         if (!class_exists('mysqli')) {
-            emMsg('服务器PHP不支持mysqli函数');
+            ttMsg('服务器PHP不支持mysqli函数');
         }
 
         mysqli_report(MYSQLI_REPORT_ERROR);
@@ -37,18 +37,18 @@ class MySqlii {
             switch ($this->conn->connect_errno) {
                 case 1044:
                 case 1045:
-                    emMsg("连接MySQL数据库失败，数据库用户名或密码错误");
+                    ttMsg("连接MySQL数据库失败，数据库用户名或密码错误");
                     break;
                 case 1049:
-                    emMsg("连接MySQL数据库失败，未找到你填写的数据库");
+                    ttMsg("连接MySQL数据库失败，未找到你填写的数据库");
                     break;
                 case 2003:
                 case 2005:
                 case 2006:
-                    emMsg("连接MySQL数据库失败，数据库地址错误或者数据库服务器不可用");
+                    ttMsg("连接MySQL数据库失败，数据库地址错误或者数据库服务器不可用");
                     break;
                 default :
-                    emMsg("连接MySQL数据库失败，请检查数据库信息。错误信息：" . $this->conn->connect_error);
+                    ttMsg("连接MySQL数据库失败，请检查数据库信息。错误信息：" . $this->conn->connect_error);
                     break;
             }
         }
@@ -72,13 +72,13 @@ class MySqlii {
         $this->result = $this->conn->query($sql);
         $this->queryCount++;
         if (!$ignore_err && 1046 == $this->getErrNo()) {
-            emMsg("连接数据库失败，请填写数据库名");
+            ttMsg("连接数据库失败，请填写数据库名");
         }
         if (!$ignore_err && 1115 == $this->getErrNo()) {
-            emMsg("MySQL缺少utf8mb4字符集，请升级到MySQL5.6或更高版本");
+            ttMsg("MySQL缺少utf8mb4字符集，请升级到MySQL5.6或更高版本");
         }
         if (!$ignore_err && !$this->result) {
-            emMsg("$sql<br /><br />error: " . $this->getErrNo() . ' , ' . $this->getError());
+            ttMsg("$sql<br /><br />error: " . $this->getErrNo() . ' , ' . $this->getError());
         } else {
 			 
             return $this->result;

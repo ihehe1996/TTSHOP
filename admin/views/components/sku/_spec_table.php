@@ -6,18 +6,18 @@
  * 所需变量:
  *   $specs - 规格数据数组 [{id, title, options: [{id, title}], value: [已选中的ID]}]
  *
- * @package EMSHOP
+ * @package TTSHOP
  */
 
 $specs = isset($specs) ? $specs : [];
 ?>
 
 <?php if (empty($specs)): ?>
-<div class="em-sku-empty">
+<div class="tt-sku-empty">
     当前规格模板没有规格属性
 </div>
 <?php else: ?>
-<table class="layui-table" id="em-spec-select-table" lay-skin="line">
+<table class="layui-table" id="tt-spec-select-table" lay-skin="line">
     <colgroup>
         <col width="120">
         <col>
@@ -45,7 +45,7 @@ $specs = isset($specs) ? $specs : [];
                            value="<?= $opt['id'] ?>"
                            data-spec-id="<?= $spec['id'] ?>"
                            title="<?= htmlspecialchars($opt['title']) ?>"
-                           lay-filter="em-spec-checkbox"
+                           lay-filter="tt-spec-checkbox"
                            <?= $checked ?>>
                     <?php endforeach; ?>
                 </div>

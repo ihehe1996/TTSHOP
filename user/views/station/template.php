@@ -1,5 +1,5 @@
 <?php
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 ?>
 <style>
     .template-page {
@@ -131,7 +131,7 @@ defined('EM_ROOT') || exit('access denied!');
 <script type="text/html" id="cover">
     <div class="layui-clear-space">
         <a href="javascript:;" data-id="{{ d.tplfile }}" lay-event="img">
-            <img onerror="this.onerror=null; this.src='<?= EM_URL ?>admin/views/images/null.png'" class="cover" data-img="{{ d.preview }}" src="{{ d.preview }}" />
+            <img onerror="this.onerror=null; this.src='<?= TT_URL ?>admin/views/images/null.png'" class="cover" data-img="{{ d.preview }}" src="{{ d.preview }}" />
         </a>
     </div>
 </script>
@@ -266,7 +266,7 @@ defined('EM_ROOT') || exit('access denied!');
                     title: '配置',
                     type: 2,
                     area: area,
-                    skin: 'em-modal',
+                    skin: 'tt-modal',
                     content: '/user/template.php?action=setting_page&tpl=' + data.tplfile,
                     fixed: false,
                     scrollbar: false,

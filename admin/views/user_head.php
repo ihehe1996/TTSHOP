@@ -1,4 +1,4 @@
-<?php defined('EM_ROOT') || exit('access denied!'); ?>
+<?php defined('TT_ROOT') || exit('access denied!'); ?>
 <!doctype html>
 <html lang="zh-cn">
 <head>
@@ -17,11 +17,11 @@
     <script src="./views/js/jquery.min.3.5.1.js"></script>
 
 
-    <script src="./views/js/common.js?v=<?= Option::EM_VERSION_TIMESTAMP ?>"></script>
+    <script src="./views/js/common.js?v=<?= Option::TT_VERSION_TIMESTAMP ?>"></script>
 
-    <link rel="stylesheet" href="../../content/static/css/em.css?v=<?= Option::EM_VERSION_TIMESTAMP ?>">
+    <link rel="stylesheet" href="../../content/static/css/em.css?v=<?= Option::TT_VERSION_TIMESTAMP ?>">
 
-    <script src="../../content/static/js/em.js?v=<?= Option::EM_VERSION_TIMESTAMP ?>"></script>
+    <script src="../../content/static/js/em.js?v=<?= Option::TT_VERSION_TIMESTAMP ?>"></script>
 
 
     <?php doAction('login_head') ?>

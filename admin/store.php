@@ -28,7 +28,7 @@ $plugin_type_arr = [
 
 if (empty($action)) {
     Register::isRegServer();
-    $emkey = getMyEmKey();
+    $ttkey = getMyTtKey();
     $br = '<a href="./">控制台</a><a href="./store.php">应用商店</a><a><cite>全部应用</cite></a>';
     include View::getAdmView('header');
     require_once(View::getAdmView('store'));
@@ -37,7 +37,7 @@ if (empty($action)) {
 }
 if ($action === 'plu') {
     Register::isRegServer();
-    $emkey = getMyEmKey();
+    $ttkey = getMyTtKey();
     $br = '<a href="./">控制台</a><a href="./store.php">应用商店</a><a><cite>扩展插件</cite></a>';
 
     $plugin_type = Input::getStrVar('plugin_type', 0);
@@ -49,7 +49,7 @@ if ($action === 'plu') {
 }
 if ($action === 'tpl') {
     Register::isRegServer();
-    $emkey = getMyEmKey();
+    $ttkey = getMyTtKey();
     $br = '<a href="./">控制台</a><a href="./store.php">应用商店</a><a><cite>模板主题</cite></a>';
 
     include View::getAdmView('header');
@@ -159,9 +159,9 @@ if ($action === 'install') {
         Ret::error('您当前未购买过此插件，禁止安装');
     }
 
-    $url = EM_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=downloadPlugin&host=' . getTopHost() . '&plugin_id=' . $plugin_id;
+    $url = TT_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=downloadPlugin&host=' . getTopHost() . '&plugin_id=' . $plugin_id;
     // echo $url;die;
-    $temp_file = emFetchFile($url);
+    $temp_file = ttFetchFile($url);
 
     
     if (!$temp_file) {
@@ -176,7 +176,7 @@ if ($action === 'install') {
         $suc_url = 'plugin.php';
     }
 
-    $ret = emUnZip($temp_file, $unzip_path, $source_type);
+    $ret = ttUnZip($temp_file, $unzip_path, $source_type);
     @unlink($temp_file);
     switch ($ret) {
         case 0:

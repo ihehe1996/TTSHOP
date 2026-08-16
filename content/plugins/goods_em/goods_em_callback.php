@@ -1,9 +1,9 @@
 <?php
 /**
- * EMSHOP 同系统对接插件 - 生命周期回调
+ * TTSHOP 同系统对接插件 - 生命周期回调
  */
 
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 
 /**
  * 开启插件时执行该函数

@@ -391,7 +391,7 @@ if($action == 'repair_stock_yishou_once'){
     if(!$isConfigField){
         createTableField('goods_once', 'repair_version', ['type' => 'varchar', 'default' => '0', 'length' => 10]);
     }
-    if(EM_URL == 'https://email666.com/'){
+    if(TT_URL == 'https://email666.com/'){
         $t = strtotime(date('2026-01-01 00:00:00'));
         $sql = "select * from {$db_prefix}goods_once where sale_time > $t and order_list_id != 0 and repair_version = '0' order by id asc limit 50";
     }else{
@@ -608,7 +608,7 @@ if($action == 'repair_stock_weishou_general'){
             $general_id = $val['id'];
             $sql = "select * from {$db_prefix}product_sku where option_ids = '{$sku}' and goods_id = {$goods_id} limit 1";
             $product_sku = $db->once_fetch_array($sql);
-//            if(EM_URL == 'https://70zh.com/'){
+//            if(TT_URL == 'https://70zh.com/'){
 //                d($product_sku);die;
 //            }
             if(!empty($product_sku)){

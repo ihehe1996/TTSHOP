@@ -1,4 +1,4 @@
-<?php defined('EM_ROOT') || exit('access denied!'); ?>
+<?php defined('TT_ROOT') || exit('access denied!'); ?>
 
 <div class="layui-tabs" style="margin-bottom: 12px;" lay-options="{trigger: false}">
     <ul class="layui-tabs-header">
@@ -57,7 +57,7 @@
             </div>
 
             <div id="testMailTemplate" style="display:none;">
-                <div class="layui-form em-testmail-form">
+                <div class="layui-form tt-testmail-form">
                     
                     <div class="layui-form-item">
                         <label class="layui-form-label">接收邮箱</label>
@@ -65,7 +65,7 @@
                             <input class="layui-input" type="email" name="testTo" placeholder="输入接收邮箱">
                         </div>
                     </div>
-                    <div class="em-testmail-msg" role="status" aria-live="polite"></div>
+                    <div class="tt-testmail-msg" role="status" aria-live="polite"></div>
                 </div>
             </div>
 
@@ -128,7 +128,7 @@
                 } else if (type === 'info') {
                     icon = 'layui-icon-tips';
                 }
-                var html = '<div class="em-testmail-alert em-testmail-' + type + '">' +
+                var html = '<div class="tt-testmail-alert tt-testmail-' + type + '">' +
                     '<i class="layui-icon ' + icon + '"></i>' +
                     '<span></span>' +
                     '</div>';
@@ -162,7 +162,7 @@
                     shade: 0.3,
                     area: isMobile ? '92%' : '460px',
                     content: contentHtml,
-                    skin: 'em-layer-testmail',
+                    skin: 'tt-layer-testmail',
                     btn: ['发送', '关闭'],
                     btnAlign: 'c',
                     zIndex: 19891015,
@@ -182,10 +182,10 @@
                         });
                         layero.find('.layui-layer-btn0').addClass('layui-btn layui-btn-blue');
                         layero.find('.layui-layer-btn1').addClass('layui-btn');
-                        setTestMailMessage(layero.find('.em-testmail-msg'), 'info', '请输入接收邮箱并点击发送');
+                        setTestMailMessage(layero.find('.tt-testmail-msg'), 'info', '请输入接收邮箱并点击发送');
                     },
                     yes: function(index, layero){
-                        var $msg = layero.find('.em-testmail-msg');
+                        var $msg = layero.find('.tt-testmail-msg');
                         var $input = layero.find('input[name="testTo"]');
                         var testToVal = $.trim($input.val());
                         if (!testToVal) {
@@ -237,31 +237,31 @@
     });
 </script>
 <style>
-    .em-layer-testmail {
+    .tt-layer-testmail {
         border-radius: 14px !important;
         overflow: hidden;
     }
-    .em-layer-testmail .layui-layer-title {
+    .tt-layer-testmail .layui-layer-title {
         background: var(--admin-primary);
         color: #fff;
         border-bottom: none;
     }
-    .em-layer-testmail .layui-layer-content {
+    .tt-layer-testmail .layui-layer-content {
         padding: 0;
     }
-    .em-layer-testmail .layui-layer-btn {
+    .tt-layer-testmail .layui-layer-btn {
         padding: 12px 20px 18px;
         text-align: center;
     }
-    .em-layer-testmail .layui-layer-btn a {
+    .tt-layer-testmail .layui-layer-btn a {
         min-width: 92px;
         border-radius: 10px;
     }
 
-    .em-testmail-form {
+    .tt-testmail-form {
         padding: 18px 20px 8px;
     }
-    .em-testmail-hint {
+    .tt-testmail-hint {
         display: flex;
         align-items: flex-start;
         gap: 8px;
@@ -273,15 +273,15 @@
         font-size: 12px;
         margin-bottom: 16px;
     }
-    .em-testmail-hint .layui-icon {
+    .tt-testmail-hint .layui-icon {
         font-size: 16px;
         margin-top: 2px;
     }
-    .em-testmail-msg {
+    .tt-testmail-msg {
         min-height: 38px;
         margin-top: 6px;
     }
-    .em-testmail-alert {
+    .tt-testmail-alert {
         display: flex;
         align-items: center;
         gap: 8px;
@@ -290,21 +290,21 @@
         font-size: 13px;
         line-height: 1.4;
     }
-    .em-testmail-alert .layui-icon {
+    .tt-testmail-alert .layui-icon {
         font-size: 16px;
     }
-    .em-testmail-alert.em-testmail-success {
+    .tt-testmail-alert.tt-testmail-success {
         background: rgba(16, 185, 129, 0.12);
         color: #0f766e;
         border: 1px solid rgba(16, 185, 129, 0.28);
     }
-    .em-testmail-alert.em-testmail-error {
+    .tt-testmail-alert.tt-testmail-error {
         background: rgba(239, 68, 68, 0.1);
         color: #b91c1c;
         border: 1px solid rgba(239, 68, 68, 0.28);
     }
-    .em-testmail-alert.em-testmail-loading,
-    .em-testmail-alert.em-testmail-info {
+    .tt-testmail-alert.tt-testmail-loading,
+    .tt-testmail-alert.tt-testmail-info {
         background: rgba(15, 118, 110, 0.08);
         color: var(--admin-primary-strong);
         border: 1px dashed rgba(15, 118, 110, 0.25);

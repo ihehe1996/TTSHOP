@@ -1,4 +1,4 @@
-<?php defined('EM_ROOT') || exit('access denied!'); ?>
+<?php defined('TT_ROOT') || exit('access denied!'); ?>
 <?php if (isset($_GET['active_del'])): ?>
     <div class="alert alert-success">删除成功</div><?php endif ?>
 <?php if (isset($_GET['active_show'])): ?>

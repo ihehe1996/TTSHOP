@@ -9,7 +9,7 @@
  *   $sku_data - 已有的 SKU 数据，以 sku 字符串为键
  *   $spec_names - 规格属性名称数组 ['颜色', '尺码']
  *
- * @package EMSHOP
+ * @package TTSHOP
  */
 
 $sku_combinations = isset($sku_combinations) ? $sku_combinations : [];
@@ -19,12 +19,12 @@ $spec_names = isset($spec_names) ? $spec_names : [];
 ?>
 
 <?php if (empty($sku_combinations)): ?>
-<div class="em-sku-empty">
+<div class="tt-sku-empty">
     请先选择规格值，系统将自动生成SKU组合
 </div>
 <?php else: ?>
 <div style="overflow: auto;">
-    <table class="layui-table" id="em-multi-sku-table" lay-skin="line">
+    <table class="layui-table" id="tt-multi-sku-table" lay-skin="line">
         <colgroup>
             <?php foreach ($spec_names as $name): ?>
             <col width="100">
@@ -42,7 +42,7 @@ $spec_names = isset($spec_names) ? $spec_names : [];
                 <th>
                     <?= htmlspecialchars($field['label']) ?>
                     <?php if ($field['name'] !== 'sales'): ?>
-                    <i class="layui-icon layui-icon-edit em-batch-fill" data-field="<?= htmlspecialchars($field['name']) ?>" title="批量填充"></i>
+                    <i class="layui-icon layui-icon-edit tt-batch-fill" data-field="<?= htmlspecialchars($field['name']) ?>" title="批量填充"></i>
                     <?php endif; ?>
                 </th>
                 <?php endforeach; ?>

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package EMSHOP
+ * @package TTSHOP
  */
 
 class Pay_Controller {
@@ -10,7 +10,7 @@ class Pay_Controller {
      */
     function index() {
         $out_trade_no = Input::getStrVar('out_trade_no');
-        if(empty($out_trade_no)) emMsg('非法请求');
+        if(empty($out_trade_no)) ttMsg('非法请求');
 
         $db = Database::getInstance();
         $db_prefix = DB_PREFIX;
@@ -28,7 +28,7 @@ class Pay_Controller {
 
         $sql = "select * from {$db_prefix}order where out_trade_no = '{$out_trade_no}' limit 1";
         $order = $db->once_fetch_array($sql);
-        if(empty($order)) emMsg('非法请求');
+        if(empty($order)) ttMsg('非法请求');
 
         $sql = "select * from {$db_prefix}order_list where order_id={$order['id']}";
         $child_order = $db->fetch_all($sql);
@@ -43,7 +43,7 @@ class Pay_Controller {
                 $user = $db->once_fetch_array($sql);
                 $order_money = $order['amount'] / 100;
                 if($user['money'] < $order_money){
-                    emMsg('您的余额不足，请联系客服充值');
+                    ttMsg('您的余额不足，请联系客服充值');
                 }
                 $sql = "update {$db_prefix}user set money = money - {$order_money} where uid=" . UID;
                 $db->query($sql);
@@ -72,15 +72,15 @@ class Pay_Controller {
                 // 发货完成，订单流程结束。跳转到用户订单页面
                 $pay_redirect = Option::get('pay_redirect') ? Option::get('pay_redirect') : 'list';
                 if($pay_redirect == 'kami'){
-                    $url = EM_URL . "user/order.php?action=detail&out_trade_no={$out_trade_no}";
+                    $url = TT_URL . "user/order.php?action=detail&out_trade_no={$out_trade_no}";
                 }else{
-                    $url = EM_URL . 'user/order.php';
+                    $url = TT_URL . 'user/order.php';
                 }
                 header('location: ' . $url);
                 die;
 
             }else{
-                emMsg('未登录用户无法购买免费商品，请先登录~');
+                ttMsg('未登录用户无法购买免费商品，请先登录~');
             }
         }else{
             $pay_func($order, $child_order);
@@ -116,7 +116,7 @@ class Pay_Controller {
             // 判断是否是充值订单（cz开头）
             if(strpos($out_trade_no, 'cz') === 0){
                 sleep(2); // 睡眠2秒，等待异步回调
-                header("location: " . EM_URL . "user/balance.php");die;
+                header("location: " . TT_URL . "user/balance.php");die;
             }
 
             $order_update = [
@@ -126,12 +126,12 @@ class Pay_Controller {
             if($order['pay_status'] == 1){
                 $pay_redirect = Option::get('pay_redirect') ? Option::get('pay_redirect') : 'list';
                 if($pay_redirect == 'kami'){
-                    $url = EM_URL . "user/order.php?action=detail&out_trade_no={$order['out_trade_no']}";
+                    $url = TT_URL . "user/order.php?action=detail&out_trade_no={$order['out_trade_no']}";
                 }else{
                     if(ISLOGIN){
-                        $url = EM_URL . 'user/order.php';
+                        $url = TT_URL . 'user/order.php';
                     }else{
-                        $url = EM_URL . 'user/visitors.php';
+                        $url = TT_URL . 'user/visitors.php';
                     }
                 }
                 header("location: {$url}");
@@ -141,12 +141,12 @@ class Pay_Controller {
                 if($res == false){
                     $pay_redirect = Option::get('pay_redirect') ? Option::get('pay_redirect') : 'list';
                     if($pay_redirect == 'kami'){
-                        $url = EM_URL . "user/order.php?action=detail&out_trade_no={$order['out_trade_no']}";
+                        $url = TT_URL . "user/order.php?action=detail&out_trade_no={$order['out_trade_no']}";
                     }else{
                         if(ISLOGIN){
-                            $url = EM_URL . 'user/order.php';
+                            $url = TT_URL . 'user/order.php';
                         }else{
-                            $url = EM_URL . 'user/visitors.php';
+                            $url = TT_URL . 'user/visitors.php';
                         }
                     }
                     header("location: {$url}");
@@ -166,9 +166,9 @@ class Pay_Controller {
             $orderModel->deliver($order['id']);
 
             if(ISLOGIN){
-                header("location: " . EM_URL . 'user/order.php');
+                header("location: " . TT_URL . 'user/order.php');
             }else{
-                $url = EM_URL . 'user/visitors.php';
+                $url = TT_URL . 'user/visitors.php';
                 header("location: {$url}");
             }
 
@@ -289,7 +289,7 @@ class Pay_Controller {
         // $res = true;
         $res = $orderModel->updateOrderPayStatus($order_info['id'], $order_update); // 修改订单的支付状态
         if(!$res){ // 重复通知
-            emMsg('请勿重复补单，该订单状态为已支付！');
+            ttMsg('请勿重复补单，该订单状态为已支付！');
         }
 
         // 去发货
@@ -310,7 +310,7 @@ class Pay_Controller {
             $chargeModel = new Charge_Model();
             $order = $chargeModel->getChargeInfo($out_trade_no);
             if($order['pay_status'] == 1){
-                $url = EM_URL . "user/balance.php";
+                $url = TT_URL . "user/balance.php";
                 die(json_encode([
                     'code' => 200, 'msg' => 'Paid', 'data' => [
                         'is_pay' => true,
@@ -335,9 +335,9 @@ class Pay_Controller {
             $sql = "SELECT * FROM `" . DB_PREFIX . "order_list` WHERE `order_id` = {$order_info['id']} LIMIT 1";
             $pay_redirect = Option::get('pay_redirect') ? Option::get('pay_redirect') : 'list';
             if(ISLOGIN){
-                $url = EM_URL . 'user/order.php';
+                $url = TT_URL . 'user/order.php';
             }else{
-                $url = EM_URL . 'user/visitors.php';
+                $url = TT_URL . 'user/visitors.php';
             }
 
 

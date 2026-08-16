@@ -1,4 +1,4 @@
-<?php defined('EM_ROOT') || exit('access denied!'); ?>
+<?php defined('TT_ROOT') || exit('access denied!'); ?>
 
 <div class="layui-tabs" style="margin-bottom: 12px;" lay-options="{trigger: false}">
     <ul class="layui-tabs-header">
@@ -352,7 +352,7 @@
             title: '选择历史图片',
             type: 2,
             area: area,
-            skin: 'em-modal',
+            skin: 'tt-modal',
             content: 'media.php?action=history&target=' + encodeURIComponent(targetId),
             fixed: false,
             scrollbar: false,

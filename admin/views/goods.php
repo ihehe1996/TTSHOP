@@ -1,5 +1,5 @@
 <?php
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 ?>
 <style>
 .goods-search-wrapper {
@@ -213,7 +213,7 @@ defined('EM_ROOT') || exit('access denied!');
 <script type="text/html" id="operate">
     <div class="layui-clear-space">
         <a class="layui-btn" lay-event="edit">编辑</a>
-        <a class="layui-btn layui-btn-blue em-modal" data-modal="stock-modal" data-id="{{ d.id }}" lay-event="stock">库存</a>
+        <a class="layui-btn layui-btn-blue tt-modal" data-modal="stock-modal" data-id="{{ d.id }}" lay-event="stock">库存</a>
         <a class="layui-btn layui-btn-red" lay-event="del">删除</a>
     </div>
 </script>
@@ -419,7 +419,7 @@ defined('EM_ROOT') || exit('access denied!');
                     title: '添加商品',
                     type: 2,
                     area: area,
-                    skin: 'em-modal',
+                    skin: 'tt-modal',
                     content: 'goods.php?action=release',
                     fixed: false,
                     scrollbar: false,
@@ -589,7 +589,7 @@ defined('EM_ROOT') || exit('access denied!');
                     title: '编辑商品 - ' + data.title,
                     type: 2,
                     area: area,
-                    skin: 'em-modal',
+                    skin: 'tt-modal',
                     content: 'goods.php?action=edit&id=' + data.id,
                     fixed: false,
                     scrollbar: false,
@@ -605,7 +605,7 @@ defined('EM_ROOT') || exit('access denied!');
                     title: '库存管理 - ' + data.title,
                     type: 2,
                     area: area,
-                    skin: 'em-modal',
+                    skin: 'tt-modal',
                     content: 'stock.php?action=index&goods_id=' + data.id,
                     fixed: false, // 不固定
                     scrollbar: false,

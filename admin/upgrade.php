@@ -9,11 +9,11 @@ require_once 'globals.php';
 
 // 检测更新
 if ($action === 'check_update') {
-    $url = EM_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=is_new_version';
+    $url = TT_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=is_new_version';
     $data = [
-        'version'   => Option::EM_VERSION,
+        'version'   => Option::TT_VERSION,
     ];
-    $res = emCurl($url, http_build_query($data), true);
+    $res = ttCurl($url, http_build_query($data), true);
     header('Content-Type: application/json; charset=UTF-8');
     die($res);
 }
@@ -24,11 +24,11 @@ if ($action === 'update' && User::isAdmin()) {
         Ret::error('未授权域名，无法使用在线更新服务');
     }
     // 下载更新包和sql文件
-    $temp_sql_file = emFetchFile(EM_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=update_sql&domain=' . getDomain());
+    $temp_sql_file = ttFetchFile(TT_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=update_sql&domain=' . getDomain());
     if (!$temp_sql_file) {
         Ret::error('数据库更新文件下载失败');
     }
-    $temp_zip_file = emFetchFile(EM_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=update_zip&domain=' . getDomain());
+    $temp_zip_file = ttFetchFile(TT_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=update_zip&domain=' . getDomain());
     if (!$temp_zip_file) {
         Ret::error('更新包下载失败');
     }
@@ -48,7 +48,7 @@ if ($action === 'update' && User::isAdmin()) {
         if (!empty($value) && $value[0] == '#') {
             preg_match("/#\s(version\s[\.\d]+)/i", $value, $v);
             $ver = isset($v[1]) ? trim($v[1]) : '';
-            if (version_compare('version ' . Option::EM_VERSION, $ver) > 0) {
+            if (version_compare('version ' . Option::TT_VERSION, $ver) > 0) {
                 break;
             }
         }
@@ -72,7 +72,7 @@ if ($action === 'update' && User::isAdmin()) {
     $CACHE->updateCache();
     @unlink($temp_sql_file);
     
-    $ret = emUnZip($temp_zip_file, '../', 'update');
+    $ret = ttUnZip($temp_zip_file, '../', 'update');
     switch ($ret) {
         case 1:
         case 2:
@@ -81,10 +81,10 @@ if ($action === 'update' && User::isAdmin()) {
             Ret::error('解压更新失败，可能是您的php未安装zip扩展（ZipArchive）');
     }
     @unlink($temp_zip_file);
-    $url = EM_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=app_upgrade_num_inc';
+    $url = TT_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=app_upgrade_num_inc';
     $data = [
-        'version'   => Option::EM_VERSION,
+        'version'   => Option::TT_VERSION,
     ];
-    emCurl($url, http_build_query($data), true);
+    ttCurl($url, http_build_query($data), true);
     Ret::success('', '更新成功');
 }

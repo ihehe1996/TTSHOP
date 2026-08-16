@@ -3,15 +3,16 @@
 ob_start();
 header('Content-Type: text/html; charset=UTF-8');
 
-const EM_ROOT = __DIR__;
+const TT_ROOT = __DIR__;
+const EM_ROOT = __DIR__; // 保留旧常量，兼容其他模板/插件
 
-require_once EM_ROOT . '/config.php';
-require_once EM_ROOT . '/base.php';
-require_once EM_ROOT . '/include/lib/common.php';
+require_once TT_ROOT . '/config.php';
+require_once TT_ROOT . '/base.php';
+require_once TT_ROOT . '/include/lib/common.php';
 
 
 
-if (getenv('EM_ENV') === 'develop' || (defined('ENVIRONMENT') && ENVIRONMENT === 'develop')) {
+if (getenv('TT_ENV') === 'develop' || (defined('ENVIRONMENT') && ENVIRONMENT === 'develop')) {
     // 显示所有错误（包括警告、通知等）
     error_reporting(E_ALL);
 } else {
@@ -24,7 +25,7 @@ if (extension_loaded('mbstring')) {
     mb_internal_encoding('UTF-8');
 }
 
-spl_autoload_register("emAutoload");
+spl_autoload_register("ttAutoload");
 
 $CACHE = Cache::getInstance();
 $userData = [];
@@ -43,8 +44,8 @@ define('ROLE', ISLOGIN === true ? $userData['role'] : User::ROLE_VISITOR);
 define('UID', ISLOGIN === true ? (int)$userData['uid'] : 0);
 define('LEVEL', ISLOGIN === true ? $userData['level'] : -1); // 用户等级
 
-define('EM_URL', realUrl()); // 当前网址
-define('EM_DOMAIN', getDomain()); // 当前域名
+define('TT_URL', realUrl()); // 当前网址
+define('TT_DOMAIN', getDomain()); // 当前域名
 define('TIMESTAMP', time()); // 当前时间戳
 
 
@@ -52,22 +53,22 @@ define('TIMESTAMP', time()); // 当前时间戳
 
 
 // 保存本地身份标识
-if(isset($_COOKIE['EM_LOCAL'])){
-    define('EM_LOCAL', strip_tags($_COOKIE['EM_LOCAL']));
+if(isset($_COOKIE['TT_LOCAL'])){
+    define('TT_LOCAL', strip_tags($_COOKIE['TT_LOCAL']));
 }else{
-    define('EM_LOCAL', generateUUIDv4());
+    define('TT_LOCAL', generateUUIDv4());
 }
 // 每次访问都更新cookie过期时间
-setcookie('EM_LOCAL', EM_LOCAL, time() + 3600*24*365, '/');
+setcookie('TT_LOCAL', TT_LOCAL, time() + 3600*24*365, '/');
 
 
 
 
-const TPLS_PATH = EM_ROOT . '/content/templates/';
+const TPLS_PATH = TT_ROOT . '/content/templates/';
 const TPLS_STATION_PATH = TPLS_PATH;
-const PLUGIN_URL = EM_URL . 'content/plugins/';
-const PLUGIN_PATH = EM_ROOT . '/content/plugins/';
-const LOG_PATH = EM_ROOT . '/content/log/';
+const PLUGIN_URL = TT_URL . 'content/plugins/';
+const PLUGIN_PATH = TT_ROOT . '/content/plugins/';
+const LOG_PATH = TT_ROOT . '/content/log/';
 
 $stationModel = new Station_Model();
 
@@ -76,11 +77,11 @@ define('STATION_DATA', $stationModel->getStationInfo());
 
 if(STATION_DATA){
     $nonce_templet = isMobile() ? STATION_DATA['tel_tpl']: STATION_DATA['pc_tpl'];
-    define("TPLS_URL", EM_URL . 'content/templates/');
+    define("TPLS_URL", TT_URL . 'content/templates/');
     define('TEMPLATE_PATH', TPLS_PATH . $nonce_templet . '/');
 }else{
     $nonce_templet = isMobile() ? Option::get('nonce_templet_tel') : Option::get('nonce_templet');
-    define("TPLS_URL", EM_URL . 'content/templates/');
+    define("TPLS_URL", TT_URL . 'content/templates/');
     define('TEMPLATE_PATH', TPLS_PATH . $nonce_templet . '/');
 }
 
@@ -90,33 +91,33 @@ if(STATION_DATA){
 define('DYNAMIC_BLOGURL', Option::get('blogurl'));
 //当前模板的URL
 define('TEMPLATE_URL', TPLS_URL . $nonce_templet . '/');
-define('BLOG_TEMPLATE_URL', EM_URL . 'content/blog/default/');
+define('BLOG_TEMPLATE_URL', TT_URL . 'content/blog/default/');
 //后台模板的绝对路径
-define('ADMIN_TEMPLATE_PATH', EM_ROOT . '/admin/views/');
-define('USER_TEMPLATE_PATH', EM_ROOT . '/user/views/');
+define('ADMIN_TEMPLATE_PATH', TT_ROOT . '/admin/views/');
+define('USER_TEMPLATE_PATH', TT_ROOT . '/user/views/');
 //前台模板的绝对路径
 
-define('BLOG_TEMPLATE_PATH', EM_ROOT . '/content/blog/default/');
-define('COMMON_TEMPLATE_PATH', EM_ROOT . '/content/common/');
+define('BLOG_TEMPLATE_PATH', TT_ROOT . '/content/blog/default/');
+define('COMMON_TEMPLATE_PATH', TT_ROOT . '/content/common/');
 
-const MSGCODE_EMKEY_INVALID = 1001;
+const MSGCODE_TTKEY_INVALID = 1001;
 const MSGCODE_NO_UPUPDATE = 1002;
 const MSGCODE_SUCCESS = 200;
 
-const EM_LINE = [
+const TT_LINE = [
     ['name' => '官方线路', 'value' => 'https://emshop.ihehe.me/'],
     ['name' => '备用线路', 'value' => 'http://154.44.8.63:10000/'],
 //    ['name' => '测试线路(无效)', 'value' => 'http://admin.em.cc/'],
 ];
 $options_cache = $CACHE->readCache('options');
-define('CURRENT_LINE', empty($options_cache['em_line']) || empty(EM_LINE[$options_cache['em_line']]) ? 0 : $options_cache['em_line']);
+define('CURRENT_LINE', empty($options_cache['tt_line']) || empty(TT_LINE[$options_cache['tt_line']]) ? 0 : $options_cache['tt_line']);
 
 $active_plugins = Option::get('active_plugins');
-$emHooks = [];
+$ttHooks = [];
 if ($active_plugins && is_array($active_plugins)) {
     foreach ($active_plugins as $plugin) {
         if (true === checkPlugin($plugin)) {
-            include_once(EM_ROOT . '/content/plugins/' . $plugin);
+            include_once(TT_ROOT . '/content/plugins/' . $plugin);
         }
     }
 }
@@ -181,7 +182,7 @@ if(defined('DEMO_MODE') && DEMO_MODE === true && $_SERVER['REQUEST_METHOD'] === 
     }
     $filename = Input::getStrVar('filename');
     if(!empty($filename) || $action == 'download'){
-        emMsg('当前演示站禁止该操作', 'javascript:window.close();');
+        ttMsg('当前演示站禁止该操作', 'javascript:window.close();');
     }
 
 }

@@ -1,7 +1,7 @@
 <?php
 /**
  * router
- * @package EMLOG
+ * @package TTSHOP
  * @link https://www.emlog.net
  */
 
@@ -137,7 +137,7 @@ class Dispatcher {
         //for iis6
         $path = str_ireplace('index.php', '', $path);
         //for subdirectory
-        $t = parse_url(EM_URL);
+        $t = parse_url(TT_URL);
         $path = str_replace($t['path'], '/', $path);
 
         return $path;

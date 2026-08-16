@@ -1,29 +1,29 @@
 <?php
 /**
- * EMSHOP 同系统对接 - 库存管理首页
+ * TTSHOP 同系统对接 - 库存管理首页
  */
 
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 
-$specInfo = function_exists('emGetRemoteSpecInfo') ? emGetRemoteSpecInfo($goods['id']) : null;
+$specInfo = function_exists('ttGetRemoteSpecInfo') ? ttGetRemoteSpecInfo($goods['id']) : null;
 ?>
 <style>
     body {
         background: #f3f5f8;
     }
-    .em-stock-card {
+    .tt-stock-card {
         background: #fff;
         border-radius: 10px;
         box-shadow: 0 8px 28px rgba(22, 28, 45, 0.08);
         overflow: hidden;
     }
-    .em-meta {
+    .tt-meta {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 12px;
         margin-bottom: 18px;
     }
-    .em-meta-item {
+    .tt-meta-item {
         background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
         border: 1px solid #eef1f6;
         border-radius: 10px;
@@ -31,49 +31,49 @@ $specInfo = function_exists('emGetRemoteSpecInfo') ? emGetRemoteSpecInfo($goods[
         color: #2b3445;
         box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
     }
-    .em-meta-item strong {
+    .tt-meta-item strong {
         color: #667085;
         display: inline-block;
         min-width: 72px;
     }
-    .em-table-wrap {
+    .tt-table-wrap {
         border: 1px solid #eef1f6;
         border-radius: 10px;
         overflow: hidden;
         background: #fff;
     }
-    .em-table-wrap .layui-table {
+    .tt-table-wrap .layui-table {
         margin: 0;
     }
-    .em-table-wrap .layui-table thead tr {
+    .tt-table-wrap .layui-table thead tr {
         background: #f6f8fb;
     }
-    .em-table-wrap .layui-table tbody tr:hover {
+    .tt-table-wrap .layui-table tbody tr:hover {
         background: #f9fbff;
     }
-    .em-table-wrap .layui-table td,
-    .em-table-wrap .layui-table th {
+    .tt-table-wrap .layui-table td,
+    .tt-table-wrap .layui-table th {
         border-color: #eef1f6;
     }
     @media (max-width: 768px) {
-        .em-meta { grid-template-columns: 1fr; }
+        .tt-meta { grid-template-columns: 1fr; }
     }
 </style>
 <div class="layui-card">
-    <div class="em-stock-card">
+    <div class="tt-stock-card">
         <div class="layui-card-body">
-            <div class="em-meta">
-                <div class="em-meta-item"><strong>商品类型：</strong><?php echo $goods['type'] == 'em_auto' ? 'EM对接(自动发货)' : 'EM对接(人工发货)'; ?></div>
-                <div class="em-meta-item"><strong>对接站点：</strong><?php echo $site ? htmlspecialchars($site['sitename']) : '站点不存在'; ?></div>
+            <div class="tt-meta">
+                <div class="tt-meta-item"><strong>商品类型：</strong><?php echo $goods['type'] == 'em_auto' ? 'EM对接(自动发货)' : 'EM对接(人工发货)'; ?></div>
+                <div class="tt-meta-item"><strong>对接站点：</strong><?php echo $site ? htmlspecialchars($site['sitename']) : '站点不存在'; ?></div>
                 <?php if ($site): ?>
-                <div class="em-meta-item"><strong>站点余额：</strong><?php echo number_format($site['balance'], 2); ?> 元</div>
+                <div class="tt-meta-item"><strong>站点余额：</strong><?php echo number_format($site['balance'], 2); ?> 元</div>
                 <?php endif; ?>
-                <?php if ($emGoods): ?>
-                <div class="em-meta-item"><strong>远程商品ID：</strong><?php echo $emGoods['remote_goods_id']; ?></div>
+                <?php if ($ttGoods): ?>
+                <div class="tt-meta-item"><strong>远程商品ID：</strong><?php echo $ttGoods['remote_goods_id']; ?></div>
                 <?php endif; ?>
             </div>
 
-            <div class="em-table-wrap">
+            <div class="tt-table-wrap">
             <table class="layui-table" lay-skin="line">
                 <colgroup>
                     <col width="200">
@@ -91,15 +91,15 @@ $specInfo = function_exists('emGetRemoteSpecInfo') ? emGetRemoteSpecInfo($goods[
                     <th>销量</th>
                 </tr>
             </thead>
-            <tbody id="em-stock-body">
+            <tbody id="tt-stock-body">
                 <?php foreach ($skus as $sku): ?>
                 <tr>
                     <td>
                         <?php
                         if ($sku['option_ids'] == '0') {
                             echo '默认';
-                        } else if (function_exists('emFormatSkuOptionIds') && !empty($specInfo)) {
-                            echo htmlspecialchars(rtrim(emFormatSkuOptionIds($goods['id'], $sku['option_ids']), '；'));
+                        } else if (function_exists('ttFormatSkuOptionIds') && !empty($specInfo)) {
+                            echo htmlspecialchars(rtrim(ttFormatSkuOptionIds($goods['id'], $sku['option_ids']), '；'));
                         } else {
                             echo htmlspecialchars($sku['option_ids']);
                         }
@@ -127,7 +127,7 @@ $specInfo = function_exists('emGetRemoteSpecInfo') ? emGetRemoteSpecInfo($goods[
 layui.use(['layer', 'jquery'], function(){
     var layer = layui.layer;
     var $ = layui.$;
-    var apiBase = '<?= EM_URL ?>?plugin=goods_em';
+    var apiBase = '<?= TT_URL ?>?plugin=goods_em';
 
     function syncStock(auto) {
         var goodsId = <?php echo (int)$goods['id']; ?>;
@@ -156,7 +156,7 @@ layui.use(['layer', 'jquery'], function(){
                     '<td>' + item.sales + '</td>' +
                     '</tr>';
             });
-            $('#em-stock-body').html(html);
+            $('#tt-stock-body').html(html);
         }, 'json');
     }
 

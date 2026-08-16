@@ -1,13 +1,13 @@
 /**
- * EmSku - 简化版 SKU 组件
+ * TtSku - 简化版 SKU 组件
  * 约定优于配置
  *
  * 用法:
- *   EmSku.init({ goods_id: 123, type_id: 0 });
+ *   TtSku.init({ goods_id: 123, type_id: 0 });
  *
- * @package EMSHOP
+ * @package TTSHOP
  */
-const EmSku = (function() {
+const TtSku = (function() {
     'use strict';
 
     const API_URL = './sku_api.php';
@@ -79,7 +79,7 @@ const EmSku = (function() {
                     renderSpecTable();
                     renderMultiSkuTable();
                 } else {
-                    $('#em-sku-table').html('<div class="em-sku-empty">请先选择规格模板</div>');
+                    $('#tt-sku-table').html('<div class="tt-sku-empty">请先选择规格模板</div>');
                 }
             } else {
                 renderTemplateSelect();
@@ -109,7 +109,7 @@ const EmSku = (function() {
             const selected = t.id == state.type_id ? 'selected' : '';
             html += '<option value="' + t.id + '" ' + selected + '>' + escapeHtml(t.title) + '</option>';
         });
-        $('#em-template-select').html(html);
+        $('#tt-template-select').html(html);
         form.render('select');
     }
 
@@ -126,9 +126,9 @@ const EmSku = (function() {
      * 显示单规格模式 UI
      */
     function showSingleMode() {
-        $('#em-sku-mode').show();
-        $('#em-sku-template').hide();
-        $('#em-sku-spec-wrap').hide();
+        $('#tt-sku-mode').show();
+        $('#tt-sku-template').hide();
+        $('#tt-sku-spec-wrap').hide();
         state.mode = 'single';
     }
 
@@ -136,8 +136,8 @@ const EmSku = (function() {
      * 显示多规格模式 UI
      */
     function showMultiMode() {
-        $('#em-sku-mode').show();
-        $('#em-sku-template').show();
+        $('#tt-sku-mode').show();
+        $('#tt-sku-template').show();
         state.mode = 'multi';
     }
 
@@ -145,14 +145,14 @@ const EmSku = (function() {
      * 显示对接商品模式 UI（隐藏规格相关选项）
      */
     function showRemoteMode() {
-        $('#em-sku-mode').hide();
-        $('#em-sku-template').hide();
-        $('#em-sku-spec-wrap').hide();
+        $('#tt-sku-mode').hide();
+        $('#tt-sku-template').hide();
+        $('#tt-sku-spec-wrap').hide();
         // 禁用原来的 radio 按钮，防止被提交
         $('input[name="is_sku"]').prop('disabled', true);
         // 添加隐藏字段保持 group_id = -1（对接商品标识）
         if ($('input[name="group_id"][type="hidden"]').length === 0) {
-            $('#em-sku-widget').append('<input type="hidden" name="group_id" value="-1" />');
+            $('#tt-sku-widget').append('<input type="hidden" name="group_id" value="-1" />');
         }
     }
 
@@ -162,14 +162,14 @@ const EmSku = (function() {
     function renderSingleSkuTable() {
         const singleData = state.sku_data['0'] || {};
         beginLoading('规格信息加载中...');
-        $('#em-sku-table').html('<div class="em-sku-empty">加载中...</div>');
+        $('#tt-sku-table').html('<div class="tt-sku-empty">加载中...</div>');
 
         $.get(API_URL + '?action=render_single', {
             price_fields: JSON.stringify(state.price_fields),
             sku_data: JSON.stringify(singleData)
         }, function(html) {
             state.last_error = '';
-            $('#em-sku-table').html(html);
+            $('#tt-sku-table').html(html);
             form.render();
         }).fail(function() {
             state.last_error = '规格信息加载失败，请刷新页面后重试';
@@ -185,8 +185,8 @@ const EmSku = (function() {
      */
     function renderSpecTable() {
         if (state.spec.length === 0) {
-            $('#em-sku-spec-wrap').hide();
-            $('#em-sku-spec').html('');
+            $('#tt-sku-spec-wrap').hide();
+            $('#tt-sku-spec').html('');
             return;
         }
 
@@ -195,8 +195,8 @@ const EmSku = (function() {
             specs: JSON.stringify(state.spec)
         }, function(html) {
             state.last_error = '';
-            $('#em-sku-spec-wrap').show();
-            $('#em-sku-spec').html(html);
+            $('#tt-sku-spec-wrap').show();
+            $('#tt-sku-spec').html(html);
             form.render('checkbox');
         }).fail(function() {
             state.last_error = '规格信息加载失败，请刷新页面后重试';
@@ -214,7 +214,7 @@ const EmSku = (function() {
         const combinations = generateCombinations();
 
         if (combinations.length === 0) {
-            $('#em-sku-table').html('<div class="em-sku-empty">请先选择规格值，系统将自动生成SKU组合</div>');
+            $('#tt-sku-table').html('<div class="tt-sku-empty">请先选择规格值，系统将自动生成SKU组合</div>');
             return;
         }
 
@@ -223,7 +223,7 @@ const EmSku = (function() {
             .map(function(s) { return s.title; });
 
         beginLoading('规格信息加载中...');
-        $('#em-sku-table').html('<div class="em-sku-empty">加载中...</div>');
+        $('#tt-sku-table').html('<div class="tt-sku-empty">加载中...</div>');
         $.post(API_URL, {
             action: 'render_multi',
             combinations: JSON.stringify(combinations),
@@ -232,7 +232,7 @@ const EmSku = (function() {
             spec_names: JSON.stringify(specNames)
         }, function(html) {
             state.last_error = '';
-            $('#em-sku-table').html(html);
+            $('#tt-sku-table').html(html);
             form.render();
         }).fail(function() {
             state.last_error = '规格信息加载失败，请刷新页面后重试';
@@ -252,16 +252,16 @@ const EmSku = (function() {
             // 单规格对接商品
             const singleData = state.sku_data['0'] || {};
             beginLoading('规格信息加载中...');
-            $('#em-sku-table').html('<div class="em-sku-empty">加载中...</div>');
+            $('#tt-sku-table').html('<div class="tt-sku-empty">加载中...</div>');
             $.get(API_URL + '?action=render_single', {
                 price_fields: JSON.stringify(state.price_fields),
                 sku_data: JSON.stringify(singleData)
             }, function(html) {
                 state.last_error = '';
-                $('#em-sku-table').html(html);
+                $('#tt-sku-table').html(html);
                 // 添加隐藏字段 is_sku = n（先移除可能存在的旧字段）
                 $('input[name="is_sku"][type="hidden"]').remove();
-                $('#em-sku-table').prepend('<input type="hidden" name="is_sku" value="n" />');
+                $('#tt-sku-table').prepend('<input type="hidden" name="is_sku" value="n" />');
                 form.render();
             }).fail(function() {
                 state.last_error = '规格信息加载失败，请刷新页面后重试';
@@ -273,7 +273,7 @@ const EmSku = (function() {
         } else {
             // 多规格对接商品
             beginLoading('规格信息加载中...');
-            $('#em-sku-table').html('<div class="em-sku-empty">加载中...</div>');
+            $('#tt-sku-table').html('<div class="tt-sku-empty">加载中...</div>');
             $.post(API_URL, {
                 action: 'render_multi',
                 combinations: JSON.stringify(state.remote_skus),
@@ -282,10 +282,10 @@ const EmSku = (function() {
                 spec_names: JSON.stringify(state.remote_spec_names.length > 0 ? state.remote_spec_names : ['规格'])
             }, function(html) {
                 state.last_error = '';
-                $('#em-sku-table').html(html);
+                $('#tt-sku-table').html(html);
                 // 添加隐藏字段 is_sku = y（先移除可能存在的旧字段）
                 $('input[name="is_sku"][type="hidden"]').remove();
-                $('#em-sku-table').prepend('<input type="hidden" name="is_sku" value="y" />');
+                $('#tt-sku-table').prepend('<input type="hidden" name="is_sku" value="y" />');
                 form.render();
             }).fail(function() {
                 state.last_error = '规格信息加载失败，请刷新页面后重试';
@@ -348,7 +348,7 @@ const EmSku = (function() {
      */
     function preserveFormData() {
         // 保存单规格数据
-        $('#em-single-sku-table tbody tr').each(function() {
+        $('#tt-single-sku-table tbody tr').each(function() {
             const data = {};
             $(this).find('input').each(function() {
                 const name = $(this).attr('name');
@@ -368,7 +368,7 @@ const EmSku = (function() {
         });
 
         // 保存多规格数据
-        $('#em-multi-sku-table tbody tr').each(function() {
+        $('#tt-multi-sku-table tbody tr').each(function() {
             const sku = $(this).data('sku');
             if (!sku) return;
 
@@ -404,15 +404,15 @@ const EmSku = (function() {
         }
 
         // 规格类型切换（单规格/多规格）
-        form.on('radio(em-sku-mode)', function(data) {
+        form.on('radio(tt-sku-mode)', function(data) {
             if (data.value === 'y') {
                 showMultiMode();
                 if (state.type_id > 0) {
                     renderSpecTable();
                     renderMultiSkuTable();
                 } else {
-                    $('#em-sku-spec-wrap').hide();
-                    $('#em-sku-table').html('<div class="em-sku-empty">请先选择规格模板</div>');
+                    $('#tt-sku-spec-wrap').hide();
+                    $('#tt-sku-table').html('<div class="tt-sku-empty">请先选择规格模板</div>');
                 }
             } else {
                 preserveFormData();
@@ -422,20 +422,20 @@ const EmSku = (function() {
         });
 
         // 模板切换
-        form.on('select(em-template-select)', function(data) {
+        form.on('select(tt-template-select)', function(data) {
             state.type_id = parseInt(data.value) || 0;
 
             if (state.type_id === 0) {
                 state.spec = [];
-                $('#em-sku-spec-wrap').hide();
-                $('#em-sku-spec').html('');
-                $('#em-sku-table').html('<div class="em-sku-empty">请先选择规格模板</div>');
+                $('#tt-sku-spec-wrap').hide();
+                $('#tt-sku-spec').html('');
+                $('#tt-sku-table').html('<div class="tt-sku-empty">请先选择规格模板</div>');
                 return;
             }
 
             // 加载新模板的规格数据
             beginLoading('规格信息加载中...');
-            $('#em-sku-table').html('<div class="em-sku-empty">加载中...</div>');
+            $('#tt-sku-table').html('<div class="tt-sku-empty">加载中...</div>');
             $.get(API_URL + '?action=load_spec', {
                 type_id: state.type_id,
                 goods_id: state.goods_id
@@ -460,7 +460,7 @@ const EmSku = (function() {
         });
 
         // 规格值勾选（使用 Layui 表单事件）
-        form.on('checkbox(em-spec-checkbox)', function(data) {
+        form.on('checkbox(tt-spec-checkbox)', function(data) {
             const $this = $(data.elem);
             const specId = $this.data('spec-id');
             const valueId = String(data.value);
@@ -492,7 +492,7 @@ const EmSku = (function() {
      * 绑定批量填充事件
      */
     function bindBatchFillEvent() {
-        $(document).off('click.embatch').on('click.embatch', '.em-batch-fill', function() {
+        $(document).off('click.embatch').on('click.embatch', '.tt-batch-fill', function() {
             const field = $(this).data('field');
             const fieldLabel = $(this).parent().text().trim();
 
@@ -546,13 +546,13 @@ const EmSku = (function() {
 
     function notifyStatus() {
         const status = getStatus();
-        const $widget = $('#em-sku-widget');
+        const $widget = $('#tt-sku-widget');
         if ($widget.length) {
             $widget.attr('data-loading', status.busy ? '1' : '0');
             $widget.attr('aria-busy', status.busy ? 'true' : 'false');
         }
         if ($) {
-            $(document).trigger('emSku:status', [status]);
+            $(document).trigger('ttSku:status', [status]);
         }
     }
 

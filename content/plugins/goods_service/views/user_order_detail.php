@@ -1,4 +1,4 @@
-<?php defined('EM_ROOT') || exit('access denied!');
+<?php defined('TT_ROOT') || exit('access denied!');
 
 // Normalize parameter order (controller calls orderDetailOnce with mismatched args).
 $viewOrder = $order ?? [];

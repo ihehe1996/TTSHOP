@@ -29,7 +29,7 @@ if($action == 'show_file'){
 
 
 
-    $parsedUrl = parse_url(EM_URL);
+    $parsedUrl = parse_url(TT_URL);
 
     $host = isset($parsedUrl['host']) ? $parsedUrl['host'] : '';
 
@@ -47,7 +47,7 @@ if($action == 'show_file'){
         die('禁止外链');
     }
 
-    $filepath = EM_ROOT . ltrim($filepath, '.');
+    $filepath = TT_ROOT . ltrim($filepath, '.');
 
     // d($filepath);die;
 

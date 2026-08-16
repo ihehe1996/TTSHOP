@@ -1,7 +1,7 @@
 <?php
 /**
  * links
- * @package EMLOG
+ * @package TTSHOP
  * @link https://www.emlog.net
  */
 
@@ -137,7 +137,7 @@ if ($action == 'hide') {
     $Link_Model->updateLink(['hide' => 'y'], $linkId);
 
     $CACHE->updateCache('link');
-    emDirect('./link.php');
+    ttDirect('./link.php');
 }
 
 if ($action == 'show') {
@@ -146,5 +146,5 @@ if ($action == 'show') {
     $Link_Model->updateLink(['hide' => 'n'], $linkId);
 
     $CACHE->updateCache('link');
-    emDirect('./link.php');
+    ttDirect('./link.php');
 }

@@ -3,7 +3,7 @@
 /**
  * 页面底部信息
  */
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 ?>
 <footer class="blog-footer">
     <div class="container footinfo">

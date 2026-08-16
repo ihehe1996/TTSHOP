@@ -54,7 +54,7 @@ class Template_Model {
         $nonce_template = Option::get('nonce_templet');
 
         $templates = [];
-        $handle = @opendir(TPLS_PATH) or die('emshop template path error!');
+        $handle = @opendir(TPLS_PATH) or die('ttshop template path error!');
         while ($file = @readdir($handle)) {
             if (!file_exists(TPLS_PATH . $file . '/header.php')) {
                 continue;
@@ -88,7 +88,7 @@ class Template_Model {
 
     function getStationTemplates($userData, $includeAll = false){
         $templates = [];
-        $tpl_url = EM_URL . 'content/templates/';
+        $tpl_url = TT_URL . 'content/templates/';
         $handle = @opendir(TPLS_PATH);
         if ($handle === false) {
             die('模板路径错误');

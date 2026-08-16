@@ -47,7 +47,7 @@ if ($action === 'form') {
     if ($id > 0) {
         $coupon = $db->once_fetch_array("SELECT * FROM `{$db_prefix}coupon` WHERE id={$id} LIMIT 1");
         if (empty($coupon)) {
-            emMsg('未找到优惠券');
+            ttMsg('未找到优惠券');
         }
     }
     $sorts = $CACHE->readCache('sort');

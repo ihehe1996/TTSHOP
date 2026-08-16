@@ -1,9 +1,9 @@
 <?php
 /**
- * EMSHOP 同系统对接 - 发货记录（已售）
+ * TTSHOP 同系统对接 - 发货记录（已售）
  */
 
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 
 $db = Database::getInstance();
 $goodsId = Input::getIntVar('id');

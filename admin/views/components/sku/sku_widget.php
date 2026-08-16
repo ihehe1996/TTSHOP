@@ -9,7 +9,7 @@
  *   $sku_goods_type = $goods['type'] ?? '';
  *   include View::getAdmView('components/sku/sku_widget');
  *
- * @package EMSHOP
+ * @package TTSHOP
  */
 
 $sku_goods_id = isset($sku_goods_id) ? (int)$sku_goods_id : 0;
@@ -19,7 +19,7 @@ $sku_mode = isset($sku_mode) ? $sku_mode : 'single';
 ?>
 
 <style>
-#em-sku-widget .em-sku-empty {
+#tt-sku-widget .tt-sku-empty {
     padding: 30px;
     text-align: center;
     color: #999;
@@ -27,58 +27,58 @@ $sku_mode = isset($sku_mode) ? $sku_mode : 'single';
     border: 1px dashed #ddd;
     border-radius: 4px;
 }
-#em-sku-widget .em-batch-fill {
+#tt-sku-widget .tt-batch-fill {
     cursor: pointer;
     color: #1e9fff;
     margin-left: 5px;
 }
-#em-sku-widget .em-batch-fill:hover {
+#tt-sku-widget .tt-batch-fill:hover {
     color: #009688;
 }
-#em-sku-widget #em-sku-table .layui-input {
+#tt-sku-widget #tt-sku-table .layui-input {
     height: 32px;
     min-width: 80px;
 }
-#em-sku-widget #em-spec-select-table .layui-form-checkbox {
+#tt-sku-widget #tt-spec-select-table .layui-form-checkbox {
     margin: 3px 5px 3px 0;
 }
 </style>
 
-<div id="em-sku-widget" class="layui-form"
+<div id="tt-sku-widget" class="layui-form"
      data-goods-id="<?= $sku_goods_id ?>"
      data-type-id="<?= $sku_type_id ?>"
      data-goods-type="<?= htmlspecialchars($sku_goods_type) ?>">
 
     <!-- 规格类型选择：单规格/多规格 -->
-    <div class="layui-form-item" id="em-sku-mode">
+    <div class="layui-form-item" id="tt-sku-mode">
         <label class="layui-form-label">规格类型</label>
         <div class="layui-input-block">
-            <input type="radio" name="is_sku" value="n" lay-filter="em-sku-mode" title="单规格" checked>
-            <input type="radio" name="is_sku" value="y" lay-filter="em-sku-mode" title="多规格">
+            <input type="radio" name="is_sku" value="n" lay-filter="tt-sku-mode" title="单规格" checked>
+            <input type="radio" name="is_sku" value="y" lay-filter="tt-sku-mode" title="多规格">
         </div>
     </div>
 
     <!-- 规格模板选择（仅多规格时显示） -->
-    <div class="layui-form-item" id="em-sku-template" style="display:none;">
+    <div class="layui-form-item" id="tt-sku-template" style="display:none;">
         <label class="layui-form-label">规格模板</label>
         <div class="layui-input-block">
-            <select name="group_id" id="em-template-select" lay-filter="em-template-select">
+            <select name="group_id" id="tt-template-select" lay-filter="tt-template-select">
                 <option value="">请选择规格模板</option>
             </select>
         </div>
     </div>
 
     <!-- 规格值选择（选择模板后显示） -->
-    <div class="layui-form-item" id="em-sku-spec-wrap" style="display:none;">
+    <div class="layui-form-item" id="tt-sku-spec-wrap" style="display:none;">
         <label class="layui-form-label">选择规格</label>
-        <div class="layui-input-block" id="em-sku-spec"></div>
+        <div class="layui-input-block" id="tt-sku-spec"></div>
     </div>
 
     <!-- SKU 价格表格 -->
-    <div class="layui-form-item" id="em-sku-table-wrap">
+    <div class="layui-form-item" id="tt-sku-table-wrap">
         <label class="layui-form-label">设置价格信息</label>
-        <div class="layui-input-block" id="em-sku-table">
-            <div class="em-sku-empty">加载中...</div>
+        <div class="layui-input-block" id="tt-sku-table">
+            <div class="tt-sku-empty">加载中...</div>
         </div>
     </div>
 
@@ -88,7 +88,7 @@ $sku_mode = isset($sku_mode) ? $sku_mode : 'single';
 <script>
 layui.use(['form', 'layer'], function() {
     // Layui 加载完成后初始化 SKU 组件
-    EmSku.init({
+    TtSku.init({
         goods_id: <?= $sku_goods_id ?>,
         type_id: <?= $sku_type_id ?>,
         goods_type: '<?= addslashes($sku_goods_type) ?>'

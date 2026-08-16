@@ -4,7 +4,7 @@
  * 模板预设的文章自定义字段
  */
 
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 
 /*
 $custom_fields = [

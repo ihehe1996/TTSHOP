@@ -1,17 +1,17 @@
 <?php
 
-const EM_ROOT = __DIR__;
+const TT_ROOT = __DIR__;
 
-require_once EM_ROOT . '/include/lib/common.php';
-require_once EM_ROOT . '/base.php';
+require_once TT_ROOT . '/include/lib/common.php';
+require_once TT_ROOT . '/base.php';
 header('Content-Type: text/html; charset=UTF-8');
-spl_autoload_register("emAutoload");
+spl_autoload_register("ttAutoload");
 
 if (PHP_VERSION < '7.2') {
-    emMsg('PHP版本太低，推荐使用PHP7.4及以上版本');
+    ttMsg('PHP版本太低，推荐使用PHP7.4及以上版本');
 }
 
-const LOG_PATH = EM_ROOT . '/content/log/';
+const LOG_PATH = TT_ROOT . '/content/log/';
 
 $act = Input::getStrVar('action');
 
@@ -20,11 +20,11 @@ $bt_db_username = 'BT_DB_USERNAME';
 $bt_db_password = 'BT_DB_PASSWORD';
 $bt_db_name = 'BT_DB_NAME';
 
-$env_em_env = getenv('EM_ENV');
-$env_db_host = getenv('EM_DB_HOST');
-$env_db_name = getenv('EM_DB_NAME');
-$env_db_user = getenv('EM_DB_USER');
-$env_db_password = getenv('EM_DB_PASSWORD');
+$env_em_env = getenv('TT_ENV');
+$env_db_host = getenv('TT_DB_HOST');
+$env_db_name = getenv('TT_DB_NAME');
+$env_db_user = getenv('TT_DB_USER');
+$env_db_password = getenv('TT_DB_PASSWORD');
 
 $timestamp = time();
 
@@ -40,7 +40,7 @@ if (!$act) {
         <meta name="renderer" content="webkit">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <meta name="applicable-device" content="pc,mobile">
-        <title>EMSHOP 安装程序</title>
+        <title>TTSHOP 安装程序</title>
         <link rel="stylesheet" href="./admin/views/layui-v2.11.6/layui/css/layui.css">
         <link rel="stylesheet" href="./content/static/css/install.css">
     </head>
@@ -48,13 +48,13 @@ if (!$act) {
     <div class="bg-grid"></div>
     <div class="bg-orb orb-1"></div>
     <div class="bg-orb orb-2"></div>
-    <div class="bg-logo">EMSHOP</div>
+    <div class="bg-logo">TTSHOP</div>
     <div class="install-shell">
         <section class="form-panel">
             <form class="layui-form" id="form" method="post" action="install.php?action=install">
                 <div class="form-header">
                     <div class="form-eyebrow">安装向导</div>
-                    <div class="form-title">EMSHOP <span class="form-version">v<?= Option::EM_VERSION ?></span></div>
+                    <div class="form-title">TTSHOP <span class="form-version">v<?= Option::TT_VERSION ?></span></div>
                     <div class="form-subtitle">在线安装程序 · 建议准备好数据库信息</div>
                 </div>
                 <?php $show_db_card = true; ?>
@@ -64,14 +64,14 @@ if (!$act) {
                     <input name="dbuser" type="hidden" value="<?= $env_db_user ?>">
                     <input name="dbpasswd" type="hidden" value="<?= $env_db_password ?>">
                     <input name="dbname" type="hidden" value="<?= $env_db_name ?>">
-                    <input name="dbprefix" type="hidden" value="em_">
+                    <input name="dbprefix" type="hidden" value="tt_">
                 <?php elseif (strpos($bt_db_username, 'BT_DB_') === false): ?>
                     <?php $show_db_card = false; ?>
                     <input name="hostname" type="hidden" value="<?= $bt_db_host ?>">
                     <input name="dbuser" type="hidden" value="<?= $bt_db_username ?>">
                     <input name="dbpasswd" type="hidden" value="<?= $bt_db_password ?>">
                     <input name="dbname" type="hidden" value="<?= $bt_db_name ?>">
-                    <input name="dbprefix" type="hidden" value="em_">
+                    <input name="dbprefix" type="hidden" value="tt_">
                 <?php endif; ?>
 
                 <div class="install-grid">
@@ -110,7 +110,7 @@ if (!$act) {
                             <div class="layui-form-item">
                                 <label class="layui-form-label">数据表前缀</label>
                                 <div class="layui-input-block">
-                                    <input type="text" name="dbprefix" class="layui-input" value="em_">
+                                    <input type="text" name="dbprefix" class="layui-input" value="tt_">
                                     <div class="form-tips">默认即可，由字母、数字、下划线组成，以下划线结束</div>
                                 </div>
                             </div>
@@ -175,20 +175,20 @@ if ($act == 'install' || $act == 'reinstall' || $act == 'reinstall_mysql' || $ac
 
 
     if ($db_prefix === '') {
-        emMsg('数据库表前缀不能为空!');
+        ttMsg('数据库表前缀不能为空!');
     } elseif (!$db_name) {
 //        sleep(2);
-        emMsg('数据库名不能为空!');
+        ttMsg('数据库名不能为空!');
     } elseif (!preg_match("/^[\w_]+_$/", $db_prefix)) {
-        emMsg('数据库表前缀格式错误!');
+        ttMsg('数据库表前缀格式错误!');
     } elseif (!$username) {
-        emMsg('管理员登录账号不能为空!');
+        ttMsg('管理员登录账号不能为空!');
     } elseif (!$password) {
-        emMsg('管理员登录密码不能为空!');
+        ttMsg('管理员登录密码不能为空!');
     }  elseif (strlen($password) < 6) {
-        emMsg('登录密码不得小于6位');
+        ttMsg('登录密码不得小于6位');
     } elseif ($password != $repassword) {
-        emMsg('两次输入的密码不一致');
+        ttMsg('两次输入的密码不一致');
     }
 
     define('DB_HOST', $db_host);
@@ -206,7 +206,7 @@ if ($act == 'install' || $act == 'reinstall' || $act == 'reinstall_mysql' || $ac
 <html>
 <head>
 <meta charset="utf-8">
-<title>EMSHOP</title>
+<title>TTSHOP</title>
 <style>
 body {background-color:#F7F7F7;font-family: Arial;font-size: 12px;line-height:150%;}
 .main {background-color:#FFFFFF;font-size: 12px;color: #666666;width:750px;margin:10px auto;padding:10px;list-style:none;border:#DFDFDF 1px solid;}
@@ -244,7 +244,7 @@ EOT;
 <html>
 <head>
 <meta charset="utf-8">
-<title>EMSHOP</title>
+<title>TTSHOP</title>
 <style>
 body {background-color:#F7F7F7;font-family: Arial;font-size: 12px;line-height:150%;}
 .main {background-color:#FFFFFF;font-size: 12px;color: #666666;width:750px;margin:10px auto;padding:10px;list-style:none;border:#DFDFDF 1px solid;}
@@ -279,7 +279,7 @@ EOT;
 <html>
 <head>
 <meta charset="utf-8">
-<title>EMSHOP</title>
+<title>TTSHOP</title>
 <style>
 body {background-color:#F7F7F7;font-family: Arial;font-size: 12px;line-height:150%;}
 .main {background-color:#FFFFFF;font-size: 12px;color: #666666;width:750px;margin:10px auto;padding:10px;list-style:none;border:#DFDFDF 1px solid;}
@@ -298,7 +298,7 @@ body {background-color:#F7F7F7;font-family: Arial;font-size: 12px;line-height:15
     <input name="repassword" type="hidden" class="input" value="$repassword">
     <input name="email" type="hidden" class="input" value="$email">
 <p>
-你的EMSHOP看起来已经安装过了。继续安装将会覆盖原有数据，确定要继续吗？
+你的TTSHOP看起来已经安装过了。继续安装将会覆盖原有数据，确定要继续吗？
 <input type="submit" value="继续&raquo;">
 </p>
 <p><a href="javascript:history.back(-1);">&laquo;点击返回</a></p>
@@ -312,10 +312,10 @@ EOT;
     }
 
     if (!is_writable('config.php')) {
-        emMsg('配置文件(config.php)不可写，请调整文件读写权限。');
+        ttMsg('配置文件(config.php)不可写，请调整文件读写权限。');
     }
-    if (!is_writable(EM_ROOT . '/content/cache')) {
-        emMsg('缓存目录（content/cache）不可写。请检查目录读写权限。');
+    if (!is_writable(TT_ROOT . '/content/cache')) {
+        ttMsg('缓存目录（content/cache）不可写。请检查目录读写权限。');
     }
 
     $PHPASS = new PasswordHash(8, true);
@@ -334,10 +334,10 @@ EOT;
         . "\n//Auth key\n"
         . "const AUTH_KEY = '" . $PHPASS->HashPassword(getRandStr(32) . md5(getIp()) . getUA() . microtime()) . "';"
         . "\n//Cookie name\n"
-        . "const AUTH_COOKIE_NAME = 'EM_AUTHCOOKIE_" . sha1(getRandStr(32, false) . md5(getIp()) . getUA() . microtime()) . "';";
+        . "const AUTH_COOKIE_NAME = 'TT_AUTHCOOKIE_" . sha1(getRandStr(32, false) . md5(getIp()) . getUA() . microtime()) . "';";
 
     if (!file_put_contents('config.php', $config)) {
-        emMsg('配置文件(config.php)不可写，请调整文件读写权限。');
+        ttMsg('配置文件(config.php)不可写，请调整文件读写权限。');
     }
 
     $password = $PHPASS->HashPassword($password);
@@ -352,7 +352,7 @@ EOT;
     $apikey = md5(getRandStr(32));
 
 
-    $em_url = realUrl();
+    $tt_url = realUrl();
 
     $sql = "
 DROP TABLE IF EXISTS `{$db_prefix}attachment`;
@@ -393,7 +393,7 @@ CREATE TABLE {$db_prefix}twitter (
 
 DROP TABLE IF EXISTS `{$db_prefix}authorization`;
 CREATE TABLE `{$db_prefix}authorization`  (
-  `emkey` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  `ttkey` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `domain` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `type` tinyint(1) NULL DEFAULT 0
 )" . $table_charset_sql . "
@@ -588,7 +588,7 @@ CREATE TABLE `{$db_prefix}link`  (
   `taxis` int(11) UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序序号',
   PRIMARY KEY (`id`) USING BTREE
 )" . $table_charset_sql . "
-INSERT INTO {$db_prefix}link (id, sitename, siteurl, icon, description, taxis) VALUES (1, 'EMSHOP', 'https://emshop.ihehe.me', '', 'EMSHOP官方主页', 0);
+INSERT INTO {$db_prefix}link (id, sitename, siteurl, icon, description, taxis) VALUES (1, 'TTSHOP', 'https://emshop.ihehe.me', '', 'TTSHOP官方主页', 0);
 
 DROP TABLE IF EXISTS `{$db_prefix}media_sort`;
 CREATE TABLE `{$db_prefix}media_sort`  (
@@ -631,15 +631,15 @@ CREATE TABLE `{$db_prefix}options`  (
   UNIQUE INDEX `option_name_uindex`(`option_name`) USING BTREE
 )" . $table_charset_sql . "
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES 
-('blogname','EMSHOP'),
-('bloginfo','使用EMSHOP搭建的站点'),
+('blogname','TTSHOP'),
+('bloginfo','使用TTSHOP搭建的站点'),
 ('site_title',''),
 ('site_description',''),
 ('site_key','EM'),
 ('log_title_style','0'),
-('blogurl','{$em_url}'),
+('blogurl','{$tt_url}'),
 ('icp',''),
-('footer_info','本站使用 EMSHOP 免费开源程序搭建'),
+('footer_info','本站使用 TTSHOP 免费开源程序搭建'),
 ('rss_output_num','10'),
 ('rss_output_fulltext','y'),
 ('index_lognum','12'),
@@ -1077,15 +1077,15 @@ CREATE TABLE `{$db_prefix}charge`  (
 
     $show_warning = $env_em_env === 'develop' || ($env_em_env !== 'develop' && !@unlink('./install.php'));
 
-    $emGatewayUrl = "https://emshop.ihehe.me/api/emshop.php?action=install_record";
+    $ttGatewayUrl = "https://emshop.ihehe.me/api/emshop.php?action=install_record";
     $reqData = [
         "ip" => getServerIp(),
         "service_token" => SERVICE_TOKEN,
-        "version" => Option::EM_VERSION
+        "version" => Option::TT_VERSION
     ];
-    emCurl($emGatewayUrl, http_build_query($reqData), true, false, 5);
+    ttCurl($ttGatewayUrl, http_build_query($reqData), true, false, 5);
 
-    Log::info('EMSHOP系统安装完成');
+    Log::info('TTSHOP系统安装完成');
 
     ?>
     <!doctype html>
@@ -1095,7 +1095,7 @@ CREATE TABLE `{$db_prefix}charge`  (
         <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
         <meta name="renderer" content="webkit">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <title>安装成功 - EMSHOP</title>
+        <title>安装成功 - TTSHOP</title>
         <link rel="stylesheet" href="./admin/views/layui-v2.11.6/layui/css/layui.css">
         <style>
             * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -1239,7 +1239,7 @@ CREATE TABLE `{$db_prefix}charge`  (
             </svg>
         </div>
         <h1 class="success-title">安装成功</h1>
-        <p class="success-subtitle">EMSHOP 已成功安装，现在可以开始使用了</p>
+        <p class="success-subtitle">TTSHOP 已成功安装，现在可以开始使用了</p>
 
         <div class="info-card">
             <div class="info-row">

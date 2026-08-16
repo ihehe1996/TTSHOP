@@ -2,7 +2,7 @@
 /**
  * comments
  *
- * @package EMLOG
+ * @package TTSHOP
  * @link https://www.emlog.net
  */
 
@@ -44,18 +44,18 @@ if ($action === 'del') {
 
     $Comment_Model->delComment($id);
     $CACHE->updateCache(array('sta', 'comment'));
-    emDirect("./comment.php?active_del=1");
+    ttDirect("./comment.php?active_del=1");
 }
 
 if ($action === 'delbyip') {
     LoginAuth::checkToken();
     if (!User::haveEditPermission()) {
-        emMsg('权限不足！', './');
+        ttMsg('权限不足！', './');
     }
     $ip = $_GET['ip'] ? addslashes($_GET['ip']) : '';
     $Comment_Model->delCommentByIp($ip);
     $CACHE->updateCache(array('sta', 'comment'));
-    emDirect("./comment.php?active_del=1");
+    ttDirect("./comment.php?active_del=1");
 }
 
 if ($action === 'batch_operation') {
@@ -63,35 +63,35 @@ if ($action === 'batch_operation') {
     $comments = isset($_POST['com']) ? array_map('intval', $_POST['com']) : [];
 
     if (empty($comments)) {
-        emDirect("./comment.php?error_a=1");
+        ttDirect("./comment.php?error_a=1");
     }
 
     switch ($operate) {
         case 'del' :
             $Comment_Model->batchComment('delcom', $comments);
             $CACHE->updateCache(array('sta', 'comment'));
-            emDirect("./comment.php?active_del=1");
+            ttDirect("./comment.php?active_del=1");
             break;
         case 'hide':
             $Comment_Model->batchComment('hidecom', $comments);
             $CACHE->updateCache(array('sta', 'comment'));
-            emDirect("./comment.php?active_hide=1");
+            ttDirect("./comment.php?active_hide=1");
             break;
         case 'pub':
             $Comment_Model->batchComment('showcom', $comments);
             $CACHE->updateCache(array('sta', 'comment'));
-            emDirect("./comment.php?active_show=1");
+            ttDirect("./comment.php?active_show=1");
             break;
         case 'top':
             $Comment_Model->batchComment('top', $comments);
-            emDirect("./comment.php?active_top=1");
+            ttDirect("./comment.php?active_top=1");
             break;
         case 'untop':
             $Comment_Model->batchComment('untop', $comments);
-            emDirect("./comment.php?active_untop=1");
+            ttDirect("./comment.php?active_untop=1");
             break;
         default:
-            emDirect("./comment.php?error_b=1");
+            ttDirect("./comment.php?error_b=1");
     }
 }
 
@@ -101,7 +101,7 @@ if ($action === 'doreply') {
     $hide = Input::postStrVar('hide', 'n');
 
     if (empty($reply)) {
-        emDirect("./comment.php?error_c=1");
+        ttDirect("./comment.php?error_c=1");
     }
 
     //回复一条待审核的评论，视为要将其公开（包括回复内容）
@@ -120,5 +120,5 @@ if ($action === 'doreply') {
     $CACHE->updateCache('comment');
     $CACHE->updateCache('sta');
     doAction('comment_reply', $commentId, $reply);
-    emDirect("./comment.php?active_rep=1");
+    ttDirect("./comment.php?active_rep=1");
 }

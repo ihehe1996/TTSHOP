@@ -17,23 +17,23 @@ if (empty($action)) {
     $domain = getTopHost();
     $sql = "select * from {$db_prefix}authorization where domain='{$domain}'";
     $res = $db->once_fetch_array($sql);
-    $emkeyInfo =  empty($res) ? false : $res;
-    $emkey = $emkeyInfo ? $emkeyInfo['emkey'] : false;
+    $ttkeyInfo =  empty($res) ? false : $res;
+    $ttkey = $ttkeyInfo ? $ttkeyInfo['ttkey'] : false;
 
-    if($emkeyInfo){
+    if($ttkeyInfo){
 
         Register::isRegServer();
 
-        $emkey_type = '未授权';
+        $ttkey_type = '未授权';
 
-        if($emkeyInfo['type'] == 1){
-            $emkey_type = 'VIP授权';
+        if($ttkeyInfo['type'] == 1){
+            $ttkey_type = 'VIP授权';
         }
-        if($emkeyInfo['type'] == 2){
-            $emkey_type = 'SVIP授权';
+        if($ttkeyInfo['type'] == 2){
+            $ttkey_type = 'SVIP授权';
         }
-        if($emkeyInfo['type'] == 3){
-            $emkey_type = '至尊授权';
+        if($ttkeyInfo['type'] == 3){
+            $ttkey_type = '至尊授权';
         }
 
     }
@@ -47,24 +47,24 @@ if (empty($action)) {
 }
 
 if ($action === 'auth') {
-    $emkey = Input::postStrVar('emkey');
-    if (empty($emkey)) {
+    $ttkey = Input::postStrVar('ttkey');
+    if (empty($ttkey)) {
         Ret::error('请输入授权码');
     }
-    $r = Register::doReg($emkey);
+    $r = Register::doReg($ttkey);
 
 
 
     
     if($r['code'] == 200){
 
-        $emkey_type = $r['data'];
+        $ttkey_type = $r['data'];
 
         $db = Database::getInstance();
         $db_prefix = DB_PREFIX;
         $domain = getTopHost();
 
-        $sql = "INSERT INTO `{$db_prefix}authorization` (`emkey`, `domain`, `type`) VALUES ('{$emkey}', '{$domain}', '{$emkey_type}');";
+        $sql = "INSERT INTO `{$db_prefix}authorization` (`ttkey`, `domain`, `type`) VALUES ('{$ttkey}', '{$domain}', '{$ttkey_type}');";
 
         $db->query($sql);
 

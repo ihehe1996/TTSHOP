@@ -32,9 +32,9 @@ if ($action === 'install') {
 
 
     if ($cdn_source) {
-        $temp_file = emFetchFile($cdn_source);
+        $temp_file = ttFetchFile($cdn_source);
     } else {
-        $temp_file = emFetchFile(EM_LINE[CURRENT_LINE]['value'] . $source);
+        $temp_file = ttFetchFile(TT_LINE[CURRENT_LINE]['value'] . $source);
     }
     if (!$temp_file) {
         output::error('安装失败，下载超时或没有权限');
@@ -47,7 +47,7 @@ if ($action === 'install') {
     $unzip_path = '../content/plugins/';
     $suc_url = 'plugin.php';
 
-    $ret = emUnZip($temp_file, $unzip_path, $source_type);
+    $ret = ttUnZip($temp_file, $unzip_path, $source_type);
     @unlink($temp_file);
     switch ($ret) {
         case 0:

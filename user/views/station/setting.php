@@ -1,5 +1,5 @@
 <?php
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 ?>
 <style>
     /* 主内容区样式 */
@@ -338,7 +338,7 @@ defined('EM_ROOT') || exit('access denied!');
 
 </main>
 
-<script src="<?= EM_URL ?>admin/tinymce/tinymce.min.js?t=<?= Option::EM_VERSION_TIMESTAMP ?>"></script>
+<script src="<?= TT_URL ?>admin/tinymce/tinymce.min.js?t=<?= Option::TT_VERSION_TIMESTAMP ?>"></script>
 <script>
     // 初始化Layui模块
     layui.use(['layer', 'form'], function() {

@@ -9,7 +9,7 @@ Author URL:
 Ui: Layui
 */
 
-defined('EM_ROOT') || exit('access denied!');
+defined('TT_ROOT') || exit('access denied!');
 
 /**
  * 前台 - 商品列表页
@@ -61,21 +61,21 @@ function adminStockOnce($goods){
     $total_available = array_sum(array_column($sku_stock_stats, 'available'));
     $total_sold = array_sum(array_column($sku_stock_stats, 'sold'));
 
-    include_once EM_ROOT . '/content/plugins/goods_once/views/admin_stock.php';
+    include_once TT_ROOT . '/content/plugins/goods_once/views/admin_stock.php';
 }
 
 /**
  * 后台管理 - 订单详情页
  */
 function adminOrderDetailOnce($goods, $order, $child_order, $user){
-    include_once EM_ROOT . '/content/plugins/goods_once/views/admin_order_detail.php';
+    include_once TT_ROOT . '/content/plugins/goods_once/views/admin_order_detail.php';
 }
 
 /**
  * 个人中心 - 订单详情页
  */
 function orderDetailOnce($goods, $order, $child_order){
-    include_once EM_ROOT . '/content/plugins/goods_once/views/user_order_detail.php';
+    include_once TT_ROOT . '/content/plugins/goods_once/views/user_order_detail.php';
 }
 
 /**
@@ -262,7 +262,7 @@ function plugin_goods_once_adm_deliver_view($db, $db_prefix, $goods, $order, $ch
         return;
     }
     include View::getAdmView('open_head');
-    include EM_ROOT . '/content/plugins/goods_once/views/adm_deliver.php';
+    include TT_ROOT . '/content/plugins/goods_once/views/adm_deliver.php';
     include View::getAdmView('open_foot');
     View::output();
 }

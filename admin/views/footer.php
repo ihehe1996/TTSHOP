@@ -1,4 +1,4 @@
-<?php defined('EM_ROOT') || exit('access denied!'); ?>
+<?php defined('TT_ROOT') || exit('access denied!'); ?>
 
 </div>
 </div>
@@ -8,7 +8,7 @@
 
 <script>
 
-    $('.get-em-buy-info').click(function(){
+    $('.get-tt-buy-info').click(function(){
         loadIndex = layer.load(2);
         $.ajax({
             url: "./index.php?action=get_em_buy_info",
@@ -26,13 +26,13 @@
                         var url = clean(it.url);
                         if(url){
                             linksHtml += `
-                                <a href="${url}" target="_blank" rel="noopener" class="em-modal-item">
-                                    <div class="em-item-icon"><i class="layui-icon layui-icon-cart"></i></div>
-                                    <div class="em-item-content">
-                                        <span class="em-item-title">${name}</span>
-                                        <span class="em-item-sub">${url}</span>
+                                <a href="${url}" target="_blank" rel="noopener" class="tt-modal-item">
+                                    <div class="tt-item-icon"><i class="layui-icon layui-icon-cart"></i></div>
+                                    <div class="tt-item-content">
+                                        <span class="tt-item-title">${name}</span>
+                                        <span class="tt-item-sub">${url}</span>
                                     </div>
-                                    <div class="em-item-action"><i class="layui-icon layui-icon-right"></i></div>
+                                    <div class="tt-item-action"><i class="layui-icon layui-icon-right"></i></div>
                                 </a>
                             `;
                         }
@@ -43,17 +43,17 @@
                     var desc = qq ? ('官方客服QQ：' + qq) : '请通过官方认证渠道获取正版授权';
                     
                     var content = `
-                        <div class="em-modal-box">
-                            <div class="em-modal-close-btn" onclick="layer.close(layer.index)">
+                        <div class="tt-modal-box">
+                            <div class="tt-modal-close-btn" onclick="layer.close(layer.index)">
                                 <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
                             </div>
-                            <div class="em-modal-header">
-                                <div class="em-modal-icon-wrapper"><i class="layui-icon layui-icon-diamond"></i></div>
-                                <div class="em-modal-title">获取正版授权码</div>
-                                <div class="em-modal-desc">${desc}</div>
+                            <div class="tt-modal-header">
+                                <div class="tt-modal-icon-wrapper"><i class="layui-icon layui-icon-diamond"></i></div>
+                                <div class="tt-modal-title">获取正版授权码</div>
+                                <div class="tt-modal-desc">${desc}</div>
                             </div>
-                            <div class="em-modal-body">
-                                <div class="em-modal-list">
+                            <div class="tt-modal-body">
+                                <div class="tt-modal-list">
                                     ${linksHtml}
                                 </div>
                             </div>
@@ -66,7 +66,7 @@
                         closeBtn: 0,
                         area: area,
                         shadeClose: true,
-                        skin: 'em-modal-skin',
+                        skin: 'tt-modal-skin',
                         btn: false,
                         content: content
                     });

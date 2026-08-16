@@ -1,7 +1,7 @@
 <?php
 /**
  * commment model
- * @package EMLOG
+ * @package TTSHOP
  * @link https://www.emlog.net
  */
 
@@ -308,7 +308,7 @@ class Comment_Model {
         $query = $this->db->query("SELECT a.cid FROM " . DB_PREFIX . "comment as a," . DB_PREFIX . "blog as b WHERE a.cid=$cid and a.gid=b.gid AND b.author=" . UID);
         $result = $this->db->num_rows($query);
         if ($result <= 0) {
-            emMsg('权限不足！', './');
+            ttMsg('权限不足！', './');
         }
     }
 

@@ -1,10 +1,10 @@
-<?php defined('EM_ROOT') || exit('access denied!'); ?>
+<?php defined('TT_ROOT') || exit('access denied!'); ?>
 <style>
-    .em-stock-sold {
+    .tt-stock-sold {
         padding: 24px;
         background: #f8fafb;
     }
-    .em-stock-header {
+    .tt-stock-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -12,7 +12,7 @@
         gap: 12px;
         flex-wrap: wrap;
     }
-    .em-stock-title {
+    .tt-stock-title {
         font-size: 16px;
         font-weight: 600;
         color: #1f2937;
@@ -20,27 +20,27 @@
         align-items: center;
         gap: 8px;
     }
-    .em-stock-title::before {
+    .tt-stock-title::before {
         content: '';
         width: 4px;
         height: 16px;
         border-radius: 2px;
         background: linear-gradient(180deg, #0f766e, #14b8a6);
     }
-    .em-stock-total {
+    .tt-stock-total {
         color: #6b7280;
         font-size: 12px;
     }
-    .em-search {
+    .tt-search {
         display: flex;
         align-items: center;
         gap: 8px;
     }
-    .em-search .layui-input {
+    .tt-search .layui-input {
         width: 220px;
         border-radius: 8px;
     }
-    .em-table-wrap {
+    .tt-table-wrap {
         border: 1px solid #e5e7eb;
         border-radius: 12px;
         background: #fff;
@@ -74,18 +74,18 @@
         margin-top: 18px;
     }
     @media (max-width: 768px) {
-        .em-stock-sold { padding: 16px; }
-        .em-search .layui-input { width: 160px; }
+        .tt-stock-sold { padding: 16px; }
+        .tt-search .layui-input { width: 160px; }
     }
 </style>
 
-<div class="em-stock-sold" id="open-box">
-    <div class="em-stock-header">
+<div class="tt-stock-sold" id="open-box">
+    <div class="tt-stock-header">
         <div>
-            <div class="em-stock-title">已售列表</div>
-            <div class="em-stock-total">共 <?= (int)$total ?> 条</div>
+            <div class="tt-stock-title">已售列表</div>
+            <div class="tt-stock-total">共 <?= (int)$total ?> 条</div>
         </div>
-        <form class="layui-form em-search" method="get" action="stock.php">
+        <form class="layui-form tt-search" method="get" action="stock.php">
             <input type="hidden" name="action" value="index">
             <input type="hidden" name="goods_id" value="<?= (int)$goods['id'] ?>">
             <input type="text" name="keyword" placeholder="搜索订单号/内容" class="layui-input" value="<?= htmlspecialchars($keyword) ?>">
@@ -93,7 +93,7 @@
         </form>
     </div>
 
-    <div class="em-table-wrap">
+    <div class="tt-table-wrap">
         <table class="layui-table" lay-skin="line">
             <colgroup>
                 <col width="80">
@@ -126,8 +126,8 @@
                     $content = (string)($record['content'] ?? '');
                     $skuText = '默认规格';
                     if (!empty($record['sku']) && $record['sku'] !== '0') {
-                        if (function_exists('emFormatSkuOptionIds')) {
-                            $skuText = rtrim(emFormatSkuOptionIds($goods['id'], $record['sku']), '；');
+                        if (function_exists('ttFormatSkuOptionIds')) {
+                            $skuText = rtrim(ttFormatSkuOptionIds($goods['id'], $record['sku']), '；');
                         } else {
                             $skuText = (string)$record['sku'];
                         }

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package EMSHOP
+ * @package TTSHOP
  */
 
 /**
@@ -480,7 +480,7 @@ if($action == 'export_ajax'){
     $stock = $db->fetch_all($sql);
 
     if(empty($stock)){
-        emMsg('暂无库存', 'javascript:window.close();');
+        ttMsg('暂无库存', 'javascript:window.close();');
     }
 
     $sku_value = $db->fetch_all("select * from {$db_prefix}sku_value");
@@ -534,7 +534,7 @@ if($action == 'export_ajax'){
     header('Content-Type: application/json; charset=utf-8');
     header('Cache-Control: no-cache, no-store, must-revalidate');
     $filename = "导出卡密_{$timestamp}_{$goods_id}.txt";
-    $saveDir = EM_ROOT . '/content/em_temp/';
+    $saveDir = TT_ROOT . '/content/em_temp/';
     if (!is_dir($saveDir)) {
         mkdir($saveDir, 0755, true);
     }
@@ -589,7 +589,7 @@ if($action == 'export_ajax'){
         $db->query($sql);
 
         // 生成下载地址
-        output::ok(EM_URL . 'admin/download.php?filename=' . $filename);
+        output::ok(TT_URL . 'admin/download.php?filename=' . $filename);
     } else {
         output::error('文件权限不足，请设置网站目录权限为755');
     }

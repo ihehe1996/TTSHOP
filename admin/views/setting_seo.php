@@ -1,4 +1,4 @@
-<?php defined('EM_ROOT') || exit('access denied!'); ?>
+<?php defined('TT_ROOT') || exit('access denied!'); ?>
 
 <div class="layui-tabs" style="margin-bottom: 12px;" lay-options="{trigger: false}">
     <ul class="layui-tabs-header">
@@ -16,19 +16,19 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">链接格式</label>
                 <div class="layui-input-block">
-                    <input type="radio" name="permalink" value="0" title="默认格式&nbsp;&nbsp;<?= EM_URL ?>?post=1" <?= $ex0 ?>>
+                    <input type="radio" name="permalink" value="0" title="默认格式&nbsp;&nbsp;<?= TT_URL ?>?post=1" <?= $ex0 ?>>
                 </div>
                 <div class="layui-input-block">
-                    <input type="radio" name="permalink" value="1" title="文件格式&nbsp;&nbsp;<?= EM_URL ?>post-1.html" <?= $ex1 ?>>
+                    <input type="radio" name="permalink" value="1" title="文件格式&nbsp;&nbsp;<?= TT_URL ?>post-1.html" <?= $ex1 ?>>
                 </div>
                 <div class="layui-input-block">
-                    <input type="radio" name="permalink" value="2" title="目录格式①&nbsp;&nbsp;<?= EM_URL ?>post/1" <?= $ex2 ?>>
+                    <input type="radio" name="permalink" value="2" title="目录格式①&nbsp;&nbsp;<?= TT_URL ?>post/1" <?= $ex2 ?>>
                 </div>
                 <div class="layui-input-block">
-                    <input type="radio" name="permalink" value="3" title="目录格式②&nbsp;&nbsp;<?= EM_URL ?>buy/1" <?= $ex3 ?>>
+                    <input type="radio" name="permalink" value="3" title="目录格式②&nbsp;&nbsp;<?= TT_URL ?>buy/1" <?= $ex3 ?>>
                 </div>
                 <!--<div class="layui-input-block">
-                    <input type="radio" name="permalink" value="3" title="3 分类格式&nbsp;&nbsp;<?php /*= EM_URL */?>category/1.html" <?php /*= $ex3 */?>>
+                    <input type="radio" name="permalink" value="3" title="3 分类格式&nbsp;&nbsp;<?php /*= TT_URL */?>category/1.html" <?php /*= $ex3 */?>>
                 </div>-->
             </div>
             <div class="layui-form-item">

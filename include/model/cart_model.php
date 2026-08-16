@@ -2,7 +2,7 @@
 /**
  * article and page model
  *
- * @package EMLOG
+ * @package TTSHOP
  * @link https://www.emlog.net
  */
 
@@ -32,9 +32,9 @@ class Cart_Model {
      */
     public function getMyCartsForHome() {
         if(ISLOGIN){
-            $where = "c.EM_LOCAL='" . EM_LOCAL . "' or c.user_id=" . UID;
+            $where = "c.TT_LOCAL='" . TT_LOCAL . "' or c.user_id=" . UID;
         }else{
-            $where = "c.is_local=1 and c.EM_LOCAL='" . EM_LOCAL . "'";
+            $where = "c.is_local=1 and c.TT_LOCAL='" . TT_LOCAL . "'";
         }
         $prefix = DB_PREFIX;
         $sql = <<<sql
@@ -112,9 +112,9 @@ sql;
      * 加入购物车
      */
     public function insertCart($data){
-        $sql = "insert into ". $this->table . " (is_local, EM_LOCAL, user_id, goods_id, sku, quantity, create_time) values ";
+        $sql = "insert into ". $this->table . " (is_local, TT_LOCAL, user_id, goods_id, sku, quantity, create_time) values ";
         foreach($data as $val){
-            $sql .= "({$val['is_local']}, '{$val['EM_LOCAL']}', {$val['user_id']}, {$val['goods_id']}, '{$val['sku']}', {$val['quantity']}, '{$val['create_time']}'),";
+            $sql .= "({$val['is_local']}, '{$val['TT_LOCAL']}', {$val['user_id']}, {$val['goods_id']}, '{$val['sku']}', {$val['quantity']}, '{$val['create_time']}'),";
         }
         $sql = rtrim($sql, ',');
         $this->db->query($sql);

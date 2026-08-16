@@ -2,7 +2,7 @@
 /**
  * Database operation routing (only compatible with old version, not recommended)
  *
- * @package EMLOG
+ * @package TTSHOP
  * @link https://www.emlog.net
  */
 
@@ -13,7 +13,7 @@ class MySql {
             return MySqlii::getInstance();
         }
 
-        emMsg('服务器PHP不支持MySQL数据库');
+        ttMsg('服务器PHP不支持MySQL数据库');
     }
 
 }

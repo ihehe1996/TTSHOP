@@ -3,7 +3,7 @@
  * Shared API Management - Provider
  * Manage shared apps and goods for inter-system integration
  *
- * @package EMSHOP
+ * @package TTSHOP
  */
 
 require_once 'globals.php';

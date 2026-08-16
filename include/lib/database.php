@@ -2,7 +2,7 @@
 /**
  * Database operation routing
  *
- * @package EMLOG
+ * @package TTSHOP
  * @link https://www.emlog.net
  */
 
@@ -17,7 +17,7 @@ class Database {
             return Mysqlpdo::getInstance();
         }
 
-        emMsg('服务器PHP不支持MySQL数据库');
+        ttMsg('服务器PHP不支持MySQL数据库');
     }
 
 }

@@ -2,7 +2,7 @@
 /**
  * notes model
  *
- * @package EMLOG
+ * @package TTSHOP
  * @link https://www.emlog.net
  */
 
@@ -79,7 +79,7 @@ class Twitter_Model {
         // del tw
         $this->db->query("DELETE FROM $this->table where id=$tid $author");
         if ($this->db->affected_rows() < 1) {
-            emMsg('权限不足！', './');
+            ttMsg('权限不足！', './');
         }
         // del pic
         if (!empty($row['img'])) {
