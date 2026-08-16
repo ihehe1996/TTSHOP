@@ -391,12 +391,6 @@
                             <span>网站首页</span>
                         </a>
                     </li>
-                    <li class="layui-nav-item" lay-unselect>
-                        <a href="<?= TT_URL ?>admin/repair.php" class="nav-link-home">
-                            <i class="fa fa-wrench"></i>
-                            <span>修复系统</span>
-                        </a>
-                    </li>
                     <li class="layui-nav-item nav-user-item" lay-unselect>
                         <a href="javascript:;" class="nav-link-user">
                             <img src="<?= User::getAvatar($user['photo']) ?>" class="nav-avatar">
@@ -448,9 +442,6 @@
                         </a>
                         <a href="<?= TT_URL ?>admin/blogger.php" class="mobile-dropdown-item">
                             <i class="layui-icon layui-icon-set"></i>个人信息
-                        </a>
-                        <a href="<?= TT_URL ?>admin/repair.php" class="mobile-dropdown-item">
-                            <i class="fa fa-wrench"></i>修复系统
                         </a>
                         <a href="javascript:;" class="mobile-dropdown-item delete-cache">
                             <i class="layui-icon layui-icon-refresh"></i>清除缓存
