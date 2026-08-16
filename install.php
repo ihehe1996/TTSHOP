@@ -337,8 +337,12 @@ EOT;
     if (!is_writable('config.php')) {
         ttMsg('配置文件(config.php)不可写，请调整文件读写权限。');
     }
-    if (!is_writable(TT_ROOT . '/content/cache')) {
-        ttMsg('缓存目录（content/cache）不可写。请检查目录读写权限。');
+    $cache_dir = TT_ROOT . '/content/cache';
+    if (!is_dir($cache_dir) && !@mkdir($cache_dir, 0755, true)) {
+        ttMsg('缓存目录（content/cache）不存在，且无法自动创建。请手动创建该目录并确保可写。');
+    }
+    if (!is_writable($cache_dir)) {
+        ttMsg('缓存目录（content/cache）不可写。请设置目录权限为755。');
     }
 
     $PHPASS = new PasswordHash(8, true);
