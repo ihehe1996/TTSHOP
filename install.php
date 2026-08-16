@@ -41,122 +41,133 @@ if (!$act) {
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <meta name="applicable-device" content="pc,mobile">
         <title>TTSHOP 安装程序</title>
-        <link rel="stylesheet" href="./admin/views/layui-v2.11.6/layui/css/layui.css">
         <link rel="stylesheet" href="./content/static/css/install.css">
     </head>
-    <body>
-    <div class="bg-grid"></div>
-    <div class="bg-orb orb-1"></div>
-    <div class="bg-orb orb-2"></div>
-    <div class="bg-logo">TTSHOP</div>
-    <div class="install-shell">
-        <section class="form-panel">
-            <form class="layui-form" id="form" method="post" action="install.php?action=install">
-                <div class="form-header">
-                    <div class="form-eyebrow">安装向导</div>
-                    <div class="form-title">TTSHOP <span class="form-version">v<?= Option::TT_VERSION ?></span></div>
-                    <div class="form-subtitle">在线安装程序 · 建议准备好数据库信息</div>
-                </div>
-                <?php $show_db_card = true; ?>
-                <?php if ($env_db_user): ?>
-                    <?php $show_db_card = false; ?>
-                    <input name="hostname" type="hidden" value="<?= $env_db_host ?>">
-                    <input name="dbuser" type="hidden" value="<?= $env_db_user ?>">
-                    <input name="dbpasswd" type="hidden" value="<?= $env_db_password ?>">
-                    <input name="dbname" type="hidden" value="<?= $env_db_name ?>">
-                    <input name="dbprefix" type="hidden" value="tt_">
-                <?php elseif (strpos($bt_db_username, 'BT_DB_') === false): ?>
-                    <?php $show_db_card = false; ?>
-                    <input name="hostname" type="hidden" value="<?= $bt_db_host ?>">
-                    <input name="dbuser" type="hidden" value="<?= $bt_db_username ?>">
-                    <input name="dbpasswd" type="hidden" value="<?= $bt_db_password ?>">
-                    <input name="dbname" type="hidden" value="<?= $bt_db_name ?>">
-                    <input name="dbprefix" type="hidden" value="tt_">
-                <?php endif; ?>
+    <body class="install-page">
+    <div class="install">
+        <header class="masthead">
+            <span class="masthead-brand">
+                <span class="masthead-mark" aria-hidden="true"></span>
+                <span class="masthead-name">TTSHOP</span>
+            </span>
+            <span class="masthead-meta">
+                <span>v<?= Option::TT_VERSION ?></span>
+                <span class="masthead-dot" aria-hidden="true">·</span>
+                <span>PHP <?= PHP_VERSION ?></span>
+            </span>
+        </header>
 
-                <div class="install-grid">
-                <?php if ($show_db_card): ?>
-                    <div class="layui-card db-card">
-                        <div class="layui-card-header">
-                            <span>数据库配置</span>
-                        </div>
-                        <div class="layui-card-body">
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">数据库地址</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="hostname" class="layui-input" value="localhost" placeholder="localhost">
-                                    <div class="form-tips">通常为 localhost 或指定端口 localhost:3306</div>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">数据库名</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="dbname" class="layui-input" placeholder="请输入数据库名">
-                                    <div class="form-tips">请提前创建空数据库或使用已有数据库</div>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">数据库用户名</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="dbuser" class="layui-input" placeholder="数据库用户名">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">数据库密码</label>
-                                <div class="layui-input-block">
-                                    <input type="password" name="dbpasswd" class="layui-input" placeholder="数据库密码">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">数据表前缀</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="dbprefix" class="layui-input" value="tt_">
-                                    <div class="form-tips">默认即可，由字母、数字、下划线组成，以下划线结束</div>
-                                </div>
-                            </div>
-                        </div>
+        <main class="cert">
+            <div class="cert-head">
+                <span class="cert-kicker">安装向导 · INSTALLATION WIZARD</span>
+                <span class="cert-no">安装编号 · TT-<?= date('Ymd', $timestamp) ?>-<?= strtoupper(substr(md5($timestamp), 0, 4)) ?></span>
+            </div>
+
+            <div class="cert-grid">
+                <aside class="cert-aside">
+                    <p class="aside-eyebrow">INSTALLATION · 安装向导</p>
+                    <h1 class="aside-title">安装你的<br>TTSHOP</h1>
+                    <p class="aside-desc">填入数据库与管理员信息，系统将自动建表、写入配置并生成管理员账号。</p>
+
+                    <ol class="steps">
+                        <li class="steps-item"><span class="steps-num">01</span><span class="steps-text"><b>数据库</b>连接你的 MySQL</span></li>
+                        <li class="steps-item"><span class="steps-num">02</span><span class="steps-text"><b>管理员</b>设定后台账号</span></li>
+                        <li class="steps-item"><span class="steps-num">03</span><span class="steps-text"><b>建站</b>自动建表并生成站点</span></li>
+                    </ol>
+
+                    <div class="seal" aria-hidden="true">
+                        <span class="seal-top">TTSHOP</span>
+                        <span class="seal-mid">安装</span>
+                        <span class="seal-bot">SELF-HOSTED</span>
                     </div>
-                <?php endif; ?>
+                </aside>
 
-                    <div class="layui-card admin-card">
-                        <div class="layui-card-header">
-                            <span>管理员配置</span>
+                <form class="cert-body" id="form" method="post" action="install.php?action=install">
+                    <?php $show_db_card = true; ?>
+                    <?php if ($env_db_user): ?>
+                        <?php $show_db_card = false; ?>
+                        <input name="hostname" type="hidden" value="<?= $env_db_host ?>">
+                        <input name="dbuser" type="hidden" value="<?= $env_db_user ?>">
+                        <input name="dbpasswd" type="hidden" value="<?= $env_db_password ?>">
+                        <input name="dbname" type="hidden" value="<?= $env_db_name ?>">
+                        <input name="dbprefix" type="hidden" value="tt_">
+                    <?php elseif (strpos($bt_db_username, 'BT_DB_') === false): ?>
+                        <?php $show_db_card = false; ?>
+                        <input name="hostname" type="hidden" value="<?= $bt_db_host ?>">
+                        <input name="dbuser" type="hidden" value="<?= $bt_db_username ?>">
+                        <input name="dbpasswd" type="hidden" value="<?= $bt_db_password ?>">
+                        <input name="dbname" type="hidden" value="<?= $bt_db_name ?>">
+                        <input name="dbprefix" type="hidden" value="tt_">
+                    <?php endif; ?>
+
+                    <?php if ($show_db_card): ?>
+                    <section class="fieldset">
+                        <div class="fieldset-head">
+                            <span class="fieldset-tag">DATABASE</span>
+                            <span class="fieldset-title">数据库配置</span>
                         </div>
-                        <div class="layui-card-body">
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">登录账号</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="username" class="layui-input" value="admin" placeholder="管理员账号">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">登录密码</label>
-                                <div class="layui-input-block">
-                                    <input type="password" name="password" class="layui-input" placeholder="请设置登录密码">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">确认密码</label>
-                                <div class="layui-input-block">
-                                    <input type="password" name="repassword" class="layui-input" placeholder="请再次输入密码">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">邮箱</label>
-                                <div class="layui-input-block">
-                                    <input type="email" name="email" class="layui-input" placeholder="管理员邮箱">
-                                </div>
-                            </div>
+                        <div class="field">
+                            <label class="field-label" for="hostname">数据库地址</label>
+                            <input type="text" id="hostname" name="hostname" class="field-input" value="localhost" placeholder="localhost">
+                            <p class="field-hint">通常为 localhost，或指定端口 localhost:3306</p>
                         </div>
+                        <div class="field">
+                            <label class="field-label" for="dbname">数据库名</label>
+                            <input type="text" id="dbname" name="dbname" class="field-input" placeholder="请输入数据库名">
+                            <p class="field-hint">请提前创建空数据库，或使用已有数据库</p>
+                        </div>
+                        <div class="field">
+                            <label class="field-label" for="dbuser">数据库用户名</label>
+                            <input type="text" id="dbuser" name="dbuser" class="field-input" placeholder="数据库用户名">
+                        </div>
+                        <div class="field">
+                            <label class="field-label" for="dbpasswd">数据库密码</label>
+                            <input type="password" id="dbpasswd" name="dbpasswd" class="field-input" placeholder="数据库密码">
+                        </div>
+                        <div class="field">
+                            <label class="field-label" for="dbprefix">数据表前缀</label>
+                            <input type="text" id="dbprefix" name="dbprefix" class="field-input is-code" value="tt_">
+                            <p class="field-hint">默认即可，由字母、数字、下划线组成，以下划线结束</p>
+                        </div>
+                    </section>
+                    <?php endif; ?>
+
+                    <section class="fieldset">
+                        <div class="fieldset-head">
+                            <span class="fieldset-tag">ADMIN</span>
+                            <span class="fieldset-title">管理员配置</span>
+                        </div>
+                        <div class="field">
+                            <label class="field-label" for="username">登录账号</label>
+                            <input type="text" id="username" name="username" class="field-input" value="admin" placeholder="管理员账号">
+                        </div>
+                        <div class="field">
+                            <label class="field-label" for="password">登录密码</label>
+                            <input type="password" id="password" name="password" class="field-input" placeholder="请设置登录密码">
+                        </div>
+                        <div class="field">
+                            <label class="field-label" for="repassword">确认密码</label>
+                            <input type="password" id="repassword" name="repassword" class="field-input" placeholder="请再次输入密码">
+                        </div>
+                        <div class="field">
+                            <label class="field-label" for="email">邮箱</label>
+                            <input type="email" id="email" name="email" class="field-input" placeholder="管理员邮箱">
+                        </div>
+                    </section>
+
+                    <div class="submit-row">
+                        <button type="submit" class="submit-btn">开始安装</button>
+                        <p class="submit-note">安装完成后可立即进入后台进行站点配置</p>
                     </div>
-                </div>
+                </form>
+            </div>
+        </main>
 
-                <div class="submit-wrap">
-                    <button type="submit" class="layui-btn">开始安装</button>
-                    <div class="submit-note">安装完成后可立即进入后台进行站点配置</div>
-                </div>
-            </form>
-        </section>
+        <footer class="install-foot">
+            <span>轻量 · 自托管 · 虚拟商品商城</span>
+            <span class="install-foot-sep">/</span>
+            <span>TTSHOP · 基于 EMLOG 深度二次开发</span>
+        </footer>
     </div>
     </body>
     </html>
@@ -203,34 +214,38 @@ if ($act == 'install' || $act == 'reinstall' || $act == 'reinstall_mysql' || $ac
     $mysql_res = $DB->once_fetch_array("SELECT VERSION() AS mysql_version");
     if($act == 'install' && !empty($mysql_res) && ($mysql_res['mysql_version'] > '5.7.99' || $mysql_res['mysql_version'] < '5.6')){
         echo <<<EOT
-<html>
+<!doctype html>
+<html lang="zh-cn">
 <head>
 <meta charset="utf-8">
-<title>TTSHOP</title>
-<style>
-body {background-color:#F7F7F7;font-family: Arial;font-size: 12px;line-height:150%;}
-.main {background-color:#FFFFFF;font-size: 12px;color: #666666;width:750px;margin:10px auto;padding:10px;list-style:none;border:#DFDFDF 1px solid;}
-.main p {line-height: 18px;margin: 5px 20px;}
-</style>
-</head><body>
-<form name="form1" method="post" action="install.php?action=reinstall_mysql">
-<div class="main">
-    <input name="hostname" type="hidden" class="input" value="$db_host">
-    <input name="dbuser" type="hidden" class="input" value="$db_user">
-    <input name="dbpasswd" type="hidden" class="input" value="$db_pw">
-    <input name="dbname" type="hidden" class="input" value="$db_name">
-    <input name="dbprefix" type="hidden" class="input" value="$db_prefix">
-    <input name="username" type="hidden" class="input" value="$username">
-    <input name="password" type="hidden" class="input" value="$password">
-    <input name="repassword" type="hidden" class="input" value="$repassword">
-    <input name="email" type="hidden" class="input" value="$email">
-<p>
-你当前MySQL版本是：{$mysql_res['mysql_version']} 建议使用MySQL5.6或5.7系列的版本 确定强制安装吗？
-<input type="submit" value="强制安装 &raquo;">
-</p>
-<p><a href="javascript:history.back(-1);">&laquo;点击返回</a></p>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>版本提示 - TTSHOP</title>
+<link rel="stylesheet" href="./content/static/css/install.css">
+</head>
+<body class="install-page">
+<div class="install install-center">
+    <main class="notice">
+        <div class="notice-mark" aria-hidden="true">!</div>
+        <p class="notice-eyebrow">VERSION CHECK · 版本提示</p>
+        <h1 class="notice-title">MySQL 版本偏旧或过新</h1>
+        <p class="notice-desc">你当前的 MySQL 版本是 <span class="mono">{$mysql_res['mysql_version']}</span>，建议使用 MySQL 5.6 / 5.7 系列。确定强制安装吗？</p>
+        <form name="form1" method="post" action="install.php?action=reinstall_mysql">
+            <input name="hostname" type="hidden" value="$db_host">
+            <input name="dbuser" type="hidden" value="$db_user">
+            <input name="dbpasswd" type="hidden" value="$db_pw">
+            <input name="dbname" type="hidden" value="$db_name">
+            <input name="dbprefix" type="hidden" value="$db_prefix">
+            <input name="username" type="hidden" value="$username">
+            <input name="password" type="hidden" value="$password">
+            <input name="repassword" type="hidden" value="$repassword">
+            <input name="email" type="hidden" value="$email">
+            <div class="notice-actions">
+                <a href="javascript:history.back(-1);" class="btn-ghost">返回</a>
+                <button type="submit" class="btn-primary">强制安装</button>
+            </div>
+        </form>
+    </main>
 </div>
-</form>
 </body>
 </html>
 EOT;
@@ -241,34 +256,38 @@ EOT;
     $php_version = PHP_VERSION;
     if(($act == 'install' || $act == 'reinstall_mysql') && $php_version < '7.2'){
         echo <<<EOT
-<html>
+<!doctype html>
+<html lang="zh-cn">
 <head>
 <meta charset="utf-8">
-<title>TTSHOP</title>
-<style>
-body {background-color:#F7F7F7;font-family: Arial;font-size: 12px;line-height:150%;}
-.main {background-color:#FFFFFF;font-size: 12px;color: #666666;width:750px;margin:10px auto;padding:10px;list-style:none;border:#DFDFDF 1px solid;}
-.main p {line-height: 18px;margin: 5px 20px;}
-</style>
-</head><body>
-<form name="form1" method="post" action="install.php?action=reinstall_php">
-<div class="main">
-    <input name="hostname" type="hidden" class="input" value="$db_host">
-    <input name="dbuser" type="hidden" class="input" value="$db_user">
-    <input name="dbpasswd" type="hidden" class="input" value="$db_pw">
-    <input name="dbname" type="hidden" class="input" value="$db_name">
-    <input name="dbprefix" type="hidden" class="input" value="$db_prefix">
-    <input name="username" type="hidden" class="input" value="$username">
-    <input name="password" type="hidden" class="input" value="$password">
-    <input name="repassword" type="hidden" class="input" value="$repassword">
-    <input name="email" type="hidden" class="input" value="$email">
-<p>
-你当前PHP版本是：{$php_version} 建议使用PHP7.4+ 确定强制安装吗？
-<input type="submit" value="强制安装 &raquo;">
-</p>
-<p><a href="javascript:history.back(-1);">&laquo;点击返回</a></p>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>版本提示 - TTSHOP</title>
+<link rel="stylesheet" href="./content/static/css/install.css">
+</head>
+<body class="install-page">
+<div class="install install-center">
+    <main class="notice">
+        <div class="notice-mark" aria-hidden="true">!</div>
+        <p class="notice-eyebrow">VERSION CHECK · 版本提示</p>
+        <h1 class="notice-title">PHP 版本偏低</h1>
+        <p class="notice-desc">你当前的 PHP 版本是 <span class="mono">{$php_version}</span>，建议使用 PHP 7.4 及以上版本。确定强制安装吗？</p>
+        <form name="form1" method="post" action="install.php?action=reinstall_php">
+            <input name="hostname" type="hidden" value="$db_host">
+            <input name="dbuser" type="hidden" value="$db_user">
+            <input name="dbpasswd" type="hidden" value="$db_pw">
+            <input name="dbname" type="hidden" value="$db_name">
+            <input name="dbprefix" type="hidden" value="$db_prefix">
+            <input name="username" type="hidden" value="$username">
+            <input name="password" type="hidden" value="$password">
+            <input name="repassword" type="hidden" value="$repassword">
+            <input name="email" type="hidden" value="$email">
+            <div class="notice-actions">
+                <a href="javascript:history.back(-1);" class="btn-ghost">返回</a>
+                <button type="submit" class="btn-primary">强制安装</button>
+            </div>
+        </form>
+    </main>
 </div>
-</form>
 </body>
 </html>
 EOT;
@@ -276,34 +295,38 @@ EOT;
     }
     if ($act != 'reinstall' && $DB->num_rows($DB->query("SHOW TABLES LIKE '{$db_prefix}blog'")) == 1) {
         echo <<<EOT
-<html>
+<!doctype html>
+<html lang="zh-cn">
 <head>
 <meta charset="utf-8">
-<title>TTSHOP</title>
-<style>
-body {background-color:#F7F7F7;font-family: Arial;font-size: 12px;line-height:150%;}
-.main {background-color:#FFFFFF;font-size: 12px;color: #666666;width:750px;margin:10px auto;padding:10px;list-style:none;border:#DFDFDF 1px solid;}
-.main p {line-height: 18px;margin: 5px 20px;}
-</style>
-</head><body>
-<form name="form1" method="post" action="install.php?action=reinstall">
-<div class="main">
-    <input name="hostname" type="hidden" class="input" value="$db_host">
-    <input name="dbuser" type="hidden" class="input" value="$db_user">
-    <input name="dbpasswd" type="hidden" class="input" value="$db_pw">
-    <input name="dbname" type="hidden" class="input" value="$db_name">
-    <input name="dbprefix" type="hidden" class="input" value="$db_prefix">
-    <input name="username" type="hidden" class="input" value="$username">
-    <input name="password" type="hidden" class="input" value="$password">
-    <input name="repassword" type="hidden" class="input" value="$repassword">
-    <input name="email" type="hidden" class="input" value="$email">
-<p>
-你的TTSHOP看起来已经安装过了。继续安装将会覆盖原有数据，确定要继续吗？
-<input type="submit" value="继续&raquo;">
-</p>
-<p><a href="javascript:history.back(-1);">&laquo;点击返回</a></p>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>已安装 - TTSHOP</title>
+<link rel="stylesheet" href="./content/static/css/install.css">
+</head>
+<body class="install-page">
+<div class="install install-center">
+    <main class="notice">
+        <div class="notice-mark" aria-hidden="true">!</div>
+        <p class="notice-eyebrow">ALREADY INSTALLED · 重复安装</p>
+        <h1 class="notice-title">你的 TTSHOP 看起来已经安装过了</h1>
+        <p class="notice-desc">继续安装将会覆盖原有数据，请确认是否继续。</p>
+        <form name="form1" method="post" action="install.php?action=reinstall">
+            <input name="hostname" type="hidden" value="$db_host">
+            <input name="dbuser" type="hidden" value="$db_user">
+            <input name="dbpasswd" type="hidden" value="$db_pw">
+            <input name="dbname" type="hidden" value="$db_name">
+            <input name="dbprefix" type="hidden" value="$db_prefix">
+            <input name="username" type="hidden" value="$username">
+            <input name="password" type="hidden" value="$password">
+            <input name="repassword" type="hidden" value="$repassword">
+            <input name="email" type="hidden" value="$email">
+            <div class="notice-actions">
+                <a href="javascript:history.back(-1);" class="btn-ghost">返回</a>
+                <button type="submit" class="btn-primary">继续安装</button>
+            </div>
+        </form>
+    </main>
 </div>
-</form>
 </body>
 </html>
 EOT;
@@ -1096,178 +1119,45 @@ CREATE TABLE `{$db_prefix}charge`  (
         <meta name="renderer" content="webkit">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <title>安装成功 - TTSHOP</title>
-        <link rel="stylesheet" href="./admin/views/layui-v2.11.6/layui/css/layui.css">
-        <style>
-            * { margin: 0; padding: 0; box-sizing: border-box; }
-            body {
-                min-height: 100vh;
-                background: #EDF2F1;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
-            }
-            .success-container {
-                background: rgba(255, 255, 255, 0.85);
-                backdrop-filter: blur(20px);
-                -webkit-backdrop-filter: blur(20px);
-                border: 1px solid rgba(255, 255, 255, 0.4);
-                border-radius: 16px;
-                box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-                padding: 50px 60px;
-                text-align: center;
-                max-width: 480px;
-                width: 90%;
-                animation: slideUp 0.6s ease-out;
-            }
-            @keyframes slideUp {
-                from { opacity: 0; transform: translateY(30px); }
-                to { opacity: 1; transform: translateY(0); }
-            }
-            .success-icon {
-                width: 80px;
-                height: 80px;
-                background: linear-gradient(135deg, #7BA89D 0%, #9DBEB5 100%);
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin: 0 auto 24px;
-                animation: scaleIn 0.5s ease-out 0.3s both;
-            }
-            @keyframes scaleIn {
-                from { transform: scale(0); }
-                to { transform: scale(1); }
-            }
-            .success-icon svg {
-                width: 40px;
-                height: 40px;
-                stroke: #fff;
-                stroke-width: 3;
-                fill: none;
-            }
-            .success-title {
-                font-size: 28px;
-                font-weight: 600;
-                color: #1a1a2e;
-                margin-bottom: 8px;
-            }
-            .success-subtitle {
-                font-size: 15px;
-                color: #666;
-                margin-bottom: 32px;
-            }
-            .info-card {
-                background: #f8f9fc;
-                border-radius: 12px;
-                padding: 20px 24px;
-                margin-bottom: 24px;
-                text-align: left;
-            }
-            .info-row {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 10px 0;
-            }
-            .info-row:not(:last-child) {
-                border-bottom: 1px dashed #e0e0e0;
-            }
-            .info-label {
-                color: #666;
-                font-size: 14px;
-            }
-            .info-value {
-                color: #1a1a2e;
-                font-weight: 500;
-                font-size: 14px;
-            }
-            .warning-box {
-                background: #fff3e0;
-                border-left: 4px solid #ff9800;
-                border-radius: 8px;
-                padding: 14px 18px;
-                margin-bottom: 24px;
-                text-align: left;
-                font-size: 13px;
-                color: #e65100;
-            }
-            .btn-group {
-                display: flex;
-                gap: 12px;
-                justify-content: center;
-            }
-            .btn {
-                padding: 12px 32px;
-                border-radius: 8px;
-                font-size: 15px;
-                font-weight: 500;
-                text-decoration: none;
-                transition: all 0.3s ease;
-                cursor: pointer;
-                border: none;
-            }
-            .btn-primary {
-                background: linear-gradient(135deg, #7BA89D 0%, #9DBEB5 100%);
-                color: #fff;
-            }
-            .btn-primary:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 20px rgba(123, 168, 157, 0.4);
-            }
-            .btn-outline {
-                background: #fff;
-                color: #7BA89D;
-                border: 2px solid #7BA89D;
-            }
-            .btn-outline:hover {
-                background: #7BA89D;
-                color: #fff;
-            }
-            @media (max-width: 500px) {
-                .success-container { padding: 40px 30px; }
-                .btn-group { flex-direction: column; }
-                .btn { width: 100%; }
-            }
-        </style>
+        <link rel="stylesheet" href="./content/static/css/install.css">
     </head>
-    <body>
-    <div class="success-container">
-        <div class="success-icon">
-            <svg viewBox="0 0 24 24">
-                <polyline points="20 6 9 17 4 12"></polyline>
-            </svg>
-        </div>
-        <h1 class="success-title">安装成功</h1>
-        <p class="success-subtitle">TTSHOP 已成功安装，现在可以开始使用了</p>
+    <body class="install-page">
+    <div class="install install-center">
+        <main class="success">
+            <div class="success-seal" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            <h1 class="success-title">安装成功</h1>
+            <p class="success-subtitle">TTSHOP 已成功安装，现在可以开始使用了</p>
 
-        <div class="info-card">
-            <div class="info-row">
-                <span class="info-label">管理员账号</span>
-                <span class="info-value"><?php echo htmlspecialchars($username); ?></span>
+            <div class="info-card">
+                <div class="info-row">
+                    <span class="info-label">管理员账号</span>
+                    <span class="info-value"><?php echo htmlspecialchars($username); ?></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">管理员密码</span>
+                    <span class="info-value">您设置的密码</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">管理面板</span>
+                    <span class="info-value">
+                        <a href="<?= realUrl() ?>admin" target="_blank"><?= realUrl() ?>admin</a>
+                    </span>
+                </div>
             </div>
-            <div class="info-row">
-                <span class="info-label">管理员密码</span>
-                <span class="info-value">您设置的密码</span>
-            </div>
-            <div class="info-row">
-                <span class="info-label">管理面板</span>
-                <span class="info-value">
-                    <a href="<?= realUrl() ?>admin" target="_blank"><?= realUrl() ?>admin</a>
-                </span>
-            </div>
-        </div>
 
-        <?php if ($show_warning): ?>
+            <?php if ($show_warning): ?>
             <div class="warning-box">
-                ⚠️ 安全提示：请手动删除根目录下的安装文件 install.php
+                <span class="warning-title">安全提示</span>请手动删除根目录下的安装文件 install.php
             </div>
-        <?php endif; ?>
+            <?php endif; ?>
 
-        <div class="btn-group">
-            <a href="./" class="btn btn-outline">访问首页</a>
-            <a href="./admin/" class="btn btn-primary">进入后台</a>
-        </div>
+            <div class="btn-group">
+                <a href="./" class="btn-ghost">访问首页</a>
+                <a href="./admin/" class="btn-primary">进入后台</a>
+            </div>
+        </main>
     </div>
     </body>
     </html>

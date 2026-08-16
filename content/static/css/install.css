@@ -1,20 +1,37 @@
-/* ==================== TTSHOP 安装程序样式 ==================== */
+/* =====================================================================
+   TTSHOP 安装程序样式 — 主题「纸面 · 安装向导」
+   浅米色纸面 + 朱砂红印章 + 玉色点缀 + 等宽字体卡密元素
+   覆盖：主安装表单 / 版本与已安装确认页 / 安装成功页
+   ===================================================================== */
 
 :root {
-    --ink: #0f172a;
-    --ink-soft: #334155;
-    --muted: #64748b;
-    --brand: #0f766e;
-    --brand-strong: #0b5f59;
-    --brand-soft: #0f8b8d;
-    --accent: #f59e0b;
-    --surface: rgba(255, 255, 255, 0.86);
-    --card: rgba(255, 255, 255, 0.96);
-    --border: rgba(255, 255, 255, 0.65);
-    --shadow-strong: 0 32px 90px rgba(15, 23, 42, 0.22);
-    --shadow-soft: 0 18px 50px rgba(15, 23, 42, 0.14);
-    --radius-lg: 24px;
-    --radius-md: 18px;
+    /* 纸面 */
+    --paper: #f5f1e8;
+    --paper-2: #ece6d7;
+    --card: #fffdf8;
+    --card-warm: #faf7ef;
+
+    /* 墨 */
+    --ink: #23262b;
+    --ink-2: #4c5058;
+    --muted: #958d7c;
+    --line: #ddd4c1;
+    --line-strong: #c9bfa9;
+
+    /* 朱砂 · 玉 */
+    --vermilion: #bf3527;
+    --vermilion-deep: #a22a1e;
+    --vermilion-soft: #f6e0dc;
+    --jade: #1f7a63;
+    --jade-deep: #17624e;
+    --jade-soft: #dcebe4;
+
+    /* 字体 */
+    --mono: "SF Mono", "JetBrains Mono", "Cascadia Code", "Roboto Mono", Consolas, "Liberation Mono", monospace;
+    --sans: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+    --radius: 14px;
+    --shadow: 0 22px 60px rgba(60, 50, 30, 0.10), 0 2px 8px rgba(60, 50, 30, 0.05);
 }
 
 * {
@@ -23,491 +40,640 @@
     box-sizing: border-box;
 }
 
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
 body {
     min-height: 100vh;
-    background: radial-gradient(1200px circle at 8% 12%, rgba(15, 118, 110, 0.22), transparent 55%),
-        radial-gradient(900px circle at 90% 8%, rgba(245, 158, 11, 0.18), transparent 50%),
-        linear-gradient(160deg, #f4f5f3 0%, #eef2ef 45%, #fef9ef 100%);
-    font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--paper);
     color: var(--ink);
-    padding: 32px;
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.6;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 40px 22px;
     position: relative;
-    overflow-x: hidden;
 }
 
-/* 背景纹理 */
-.bg-grid {
+/* 顶部朱砂细线（安装向导的克制点缀） */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--vermilion);
+    z-index: 20;
+}
+
+/* 账本格纸点阵（极淡） */
+body::after {
+    content: "";
     position: fixed;
     inset: 0;
-    background-image: linear-gradient(rgba(15, 23, 42, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
-    background-size: 48px 48px;
-    opacity: 0.25;
+    background-image: radial-gradient(rgba(60, 50, 30, 0.075) 1px, transparent 1px);
+    background-size: 24px 24px;
     pointer-events: none;
     z-index: 0;
 }
 
-.bg-orb {
-    position: fixed;
-    width: 420px;
-    height: 420px;
-    border-radius: 50%;
-    filter: blur(0px);
-    opacity: 0.7;
-    z-index: 0;
-    animation: float 14s ease-in-out infinite;
-}
-
-.bg-orb.orb-1 {
-    top: -140px;
-    left: -120px;
-    background: radial-gradient(circle at 30% 30%, rgba(15, 118, 110, 0.55), transparent 60%);
-}
-
-.bg-orb.orb-2 {
-    bottom: -160px;
-    right: -120px;
-    background: radial-gradient(circle at 40% 40%, rgba(245, 158, 11, 0.5), transparent 60%);
-    animation-delay: -6s;
-}
-
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-18px);
-    }
-}
-
-/* 背景 Logo */
-.bg-logo {
-    position: fixed;
-    bottom: 6%;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: clamp(80px, 16vw, 220px);
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    color: rgba(15, 23, 42, 0.05);
-    pointer-events: none;
-    z-index: 0;
-    white-space: nowrap;
-}
-
-/* 主容器 */
-.install-shell {
+.install {
     position: relative;
     z-index: 1;
-    width: min(1080px, 100%);
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0;
-    animation: liftIn 0.6s ease-out;
-}
-
-.install-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px;
-    align-items: start;
-}
-
-.install-grid .layui-card:only-child {
-    grid-column: 1 / -1;
-}
-
-@keyframes liftIn {
-    from {
-        opacity: 0;
-        transform: translateY(24px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* 品牌面板 */
-.brand-panel {
-    position: relative;
-    overflow: hidden;
-    border-radius: var(--radius-lg);
-    padding: 36px;
-    background: linear-gradient(140deg, #0b5f59 0%, #0f766e 55%, #0f8b8d 100%);
-    color: #f8fafc;
-    box-shadow: var(--shadow-strong);
+    width: 100%;
+    max-width: 1120px;
+    margin: auto;
     display: flex;
     flex-direction: column;
-    min-height: 540px;
 }
 
-.brand-panel::before,
-.brand-panel::after {
-    content: "";
-    position: absolute;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.25), transparent 70%);
-    opacity: 0.5;
+.install-center {
+    max-width: 560px;
 }
 
-.brand-panel::before {
-    width: 260px;
-    height: 260px;
-    top: -120px;
-    right: -90px;
+/* ===================== 顶栏 ===================== */
+
+.masthead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4px 18px;
 }
 
-.brand-panel::after {
-    width: 220px;
-    height: 220px;
-    bottom: -120px;
-    left: -80px;
-}
-
-.brand-logo {
+.masthead-brand {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    font-family: "Bricolage Grotesque", "Noto Sans SC", sans-serif;
-    font-size: 18px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
 }
 
-.logo-dot {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.8);
+.masthead-mark {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    background: var(--jade);
     position: relative;
+    display: inline-block;
 }
 
-.logo-dot::after {
+.masthead-mark::after {
     content: "";
     position: absolute;
     inset: 4px;
-    border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 14px rgba(245, 158, 11, 0.6);
+    border-radius: 1px;
+    background: var(--vermilion);
 }
 
-.brand-version {
-    margin-top: 12px;
-    display: inline-block;
-    padding: 6px 12px;
-    border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    background: rgba(255, 255, 255, 0.16);
-    font-size: 12px;
-    letter-spacing: 0.08em;
+.masthead-name {
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 17px;
+    letter-spacing: 0.22em;
+    color: var(--ink);
 }
 
-.brand-title {
-    margin-top: 24px;
-    font-family: "Bricolage Grotesque", "Noto Sans SC", sans-serif;
-    font-size: clamp(26px, 2.5vw, 34px);
-    line-height: 1.25;
+.masthead-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
 }
 
-.brand-subtitle {
-    margin-top: 12px;
-    font-size: 14px;
-    line-height: 1.8;
-    color: rgba(255, 255, 255, 0.85);
+.masthead-dot {
+    color: var(--line-strong);
 }
 
-.brand-badges {
-    margin-top: 20px;
+/* ===================== 安装卡片 ===================== */
+
+.cert {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.cert-head {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.brand-badges span {
-    padding: 6px 12px;
-    border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    background: rgba(255, 255, 255, 0.14);
-    font-size: 12px;
-}
-
-.brand-list {
-    margin-top: auto;
-    display: grid;
+    align-items: center;
+    justify-content: space-between;
     gap: 16px;
+    padding: 14px 26px;
+    background: var(--card-warm);
+    border-bottom: 1px solid var(--line);
 }
 
-.brand-item {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
+.cert-kicker {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--jade);
 }
 
-.brand-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.18);
+.cert-no {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    white-space: nowrap;
+}
+
+.cert-grid {
+    display: grid;
+    grid-template-columns: 5fr 7fr;
+}
+
+/* ===================== 左侧品牌 / 说明 ===================== */
+
+.cert-aside {
     position: relative;
-    flex-shrink: 0;
-}
-
-.brand-icon::before {
-    content: "";
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: var(--accent);
-    top: 12px;
-    left: 12px;
-    box-shadow: 0 0 12px rgba(245, 158, 11, 0.55);
-}
-
-.brand-item-title {
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.brand-item-desc {
-    margin-top: 4px;
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.75);
-}
-
-/* 表单面板 */
-.form-panel {
-    background: var(--surface);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    border-radius: var(--radius-lg);
-    padding: 28px 32px 32px;
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow-soft);
-}
-
-.form-panel .layui-form {
+    background: linear-gradient(180deg, var(--paper-2) 0%, #f7f3e9 100%);
+    border-right: 1px solid var(--line);
+    padding: 36px 32px;
     display: flex;
     flex-direction: column;
-    gap: 18px;
 }
 
-.form-header {
-    margin-bottom: 2px;
-}
-
-.form-eyebrow {
-    font-size: 12px;
-    letter-spacing: 0.25em;
+.aside-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--brand);
-    font-weight: 600;
+    color: var(--jade);
 }
 
-.form-title {
-    margin-top: 6px;
-    font-family: "Bricolage Grotesque", "Noto Sans SC", sans-serif;
+.aside-title {
+    margin-top: 14px;
+    font-size: 34px;
+    font-weight: 800;
+    line-height: 1.16;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+}
+
+.aside-desc {
+    margin-top: 14px;
+    max-width: 30em;
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.8;
+}
+
+.steps {
+    list-style: none;
+    margin: 26px 0 0;
+    display: grid;
+    gap: 14px;
+}
+
+.steps-item {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+}
+
+.steps-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--jade);
+    flex-shrink: 0;
+    min-width: 22px;
+}
+
+.steps-text {
+    font-size: 13px;
+    color: var(--ink-2);
+}
+
+.steps-text b {
+    font-weight: 600;
+    color: var(--ink);
+    margin-right: 4px;
+}
+
+/* 朱砂印章 —— 本页签名元素 */
+.seal {
+    position: absolute;
+    top: 32px;
+    right: 30px;
+    width: 96px;
+    height: 96px;
+    border-radius: 10px;
+    background: var(--vermilion);
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.85), 0 10px 24px rgba(191, 53, 39, 0.25);
+    transform: rotate(-7deg);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    line-height: 1;
+}
+
+.seal-top {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    opacity: 0.95;
+}
+
+.seal-mid {
     font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+
+.seal-bot {
+    font-family: var(--mono);
+    font-size: 7px;
+    letter-spacing: 0.18em;
+    opacity: 0.88;
+}
+
+/* ===================== 右侧表单 ===================== */
+
+.cert-body {
+    padding: 30px 36px 34px;
+}
+
+.fieldset + .fieldset {
+    margin-top: 26px;
+    padding-top: 24px;
+    border-top: 1px dashed var(--line-strong);
+}
+
+.fieldset-head {
     display: flex;
     align-items: baseline;
     gap: 10px;
-    color: var(--ink);
-}
-
-.form-version {
-    font-size: 12px;
-    color: var(--brand);
-    background: rgba(15, 118, 110, 0.12);
-    padding: 4px 10px;
-    border-radius: 999px;
-}
-
-.form-subtitle {
-    margin-top: 6px;
-    color: var(--muted);
-    font-size: 13px;
-}
-
-/* 卡片样式 */
-.layui-card {
-    background: var(--card);
-    border-radius: var(--radius-md);
-    border: 1px solid rgba(226, 232, 240, 0.9);
-    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
-    overflow: hidden;
-}
-
-.db-card {
-    border-top: 3px solid rgba(15, 118, 110, 0.35);
-}
-
-.admin-card {
-    border-top: 3px solid rgba(245, 158, 11, 0.35);
-}
-
-.layui-card-header {
-    background: linear-gradient(90deg, rgba(15, 118, 110, 0.08), rgba(245, 158, 11, 0.08));
-    padding: 16px 20px !important;
-    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
-    display: flex;
-    align-items: center;
-}
-
-.db-card .layui-card-header {
-    background: rgba(15, 118, 110, 0.08);
-}
-
-.admin-card .layui-card-header {
-    background: rgba(245, 158, 11, 0.12);
-}
-
-.layui-card-header span {
-    font-size: 15px !important;
-    font-weight: 600 !important;
-    color: var(--ink);
-    display: inline-flex;
-    align-items: center;
-}
-
-.layui-card-header span::before {
-    content: "";
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 3px;
-    background: linear-gradient(135deg, var(--brand), var(--accent));
-    margin-right: 10px;
-}
-
-.db-card .layui-card-header span::before {
-    background: linear-gradient(135deg, var(--brand), var(--brand-soft));
-}
-
-.admin-card .layui-card-header span::before {
-    background: linear-gradient(135deg, var(--accent), #fbbf24);
-}
-
-.layui-card-body {
-    padding: 22px !important;
-}
-
-/* 表单项 */
-.layui-form-item {
     margin-bottom: 18px;
 }
 
-.layui-form-item:last-child {
+.fieldset-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    color: var(--jade);
+    background: var(--jade-soft);
+    padding: 3px 8px;
+    border-radius: 5px;
+}
+
+.fieldset-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.field {
+    margin-bottom: 16px;
+}
+
+.field:last-child {
     margin-bottom: 0;
 }
 
-.layui-form-label {
-    width: 110px !important;
-    font-size: 13px !important;
-    color: var(--ink-soft);
+.field-label {
+    display: block;
+    font-size: 13px;
     font-weight: 600;
-    padding: 10px 12px 10px 0 !important;
-    text-align: right;
+    color: var(--ink-2);
+    margin-bottom: 7px;
 }
 
-.layui-input-block {
-    margin-left: 130px !important;
+.field-input {
+    display: block;
+    width: 100%;
+    height: 44px;
+    padding: 0 14px;
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--ink);
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
 }
 
-/* 输入框 */
-.layui-input {
-    height: 46px !important;
-    padding: 0 16px !important;
-    border: 1.5px solid #e2e8f0 !important;
-    border-radius: 12px !important;
-    font-size: 14px !important;
-    color: var(--ink) !important;
-    background: #fff !important;
-    box-shadow: 0 10px 18px rgba(15, 23, 42, 0.04);
-    transition: all 0.2s ease !important;
+.field-input.is-code {
+    font-family: var(--mono);
+    letter-spacing: 0.06em;
 }
 
-.layui-input:focus {
-    border-color: var(--brand) !important;
-    box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.2) !important;
-    outline: none !important;
+.field-input::placeholder {
+    color: #b6ad9a;
 }
 
-.layui-input::placeholder {
-    color: #94a3b8;
+.field-input:hover {
+    border-color: var(--line-strong);
 }
 
-/* 提示文字 */
-.form-tips {
-    margin-top: 8px;
+.field-input:focus {
+    outline: none;
+    border-color: var(--jade);
+    box-shadow: 0 0 0 4px rgba(31, 122, 99, 0.15);
+}
+
+.field-hint {
+    margin-top: 6px;
     font-size: 12px;
     color: var(--muted);
     line-height: 1.5;
-    padding-left: 2px;
 }
 
-/* 提交按钮 */
-.submit-wrap {
+/* 提交 */
+.submit-row {
+    margin-top: 28px;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
     gap: 10px;
-    padding-top: 4px;
 }
 
-.layui-btn {
-    height: 52px !important;
-    min-width: 200px;
-    padding: 0 52px !important;
-    font-size: 16px !important;
-    font-weight: 600 !important;
-    border-radius: 14px !important;
-    background: linear-gradient(135deg, var(--brand) 0%, var(--brand-soft) 60%, var(--accent) 100%);
-    border: none !important;
-    box-shadow: 0 18px 40px rgba(15, 118, 110, 0.3);
-    transition: all 0.3s ease !important;
+.submit-btn {
+    display: block;
+    width: 100%;
+    height: 52px;
+    border: none;
+    border-radius: 10px;
+    background: var(--vermilion);
+    color: #fff;
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
     cursor: pointer;
-    color: #fff !important;
-    position: relative;
-    overflow: hidden;
+    box-shadow: 0 12px 26px rgba(191, 53, 39, 0.28);
+    transition: background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-.layui-btn::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.35), transparent);
-    transform: translateX(-100%);
-    transition: transform 0.6s ease;
+.submit-btn:hover {
+    background: var(--vermilion-deep);
+    transform: translateY(-1px);
+    box-shadow: 0 16px 30px rgba(191, 53, 39, 0.34);
 }
 
-.layui-btn:hover {
-    transform: translateY(-2px);
-}
-
-.layui-btn:hover::after {
-    transform: translateX(100%);
-}
-
-.layui-btn:active {
+.submit-btn:active {
     transform: translateY(0);
-}
-
-.layui-btn:focus-visible {
-    outline: 3px solid rgba(15, 118, 110, 0.25);
-    outline-offset: 2px;
 }
 
 .submit-note {
     font-size: 12px;
     color: var(--muted);
+    text-align: center;
+}
+
+/* ===================== 页脚 ===================== */
+
+.install-foot {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    color: var(--muted);
+    text-align: center;
+}
+
+.install-foot-sep {
+    color: var(--line-strong);
+}
+
+/* ===================== 确认页（版本 / 已安装） ===================== */
+
+.notice {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 44px 40px 40px;
+    text-align: center;
+}
+
+.notice-mark {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 20px;
+    border-radius: 12px;
+    background: var(--vermilion);
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.85), 0 10px 22px rgba(191, 53, 39, 0.24);
+    transform: rotate(-6deg);
+    color: #fff;
+    font-family: var(--mono);
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 64px;
+}
+
+.notice-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--jade);
+}
+
+.notice-title {
+    margin-top: 10px;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.notice-desc {
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--ink-2);
+    line-height: 1.8;
+}
+
+.mono {
+    font-family: var(--mono);
+    letter-spacing: 0.03em;
+    color: var(--ink);
+    background: var(--paper-2);
+    padding: 1px 6px;
+    border-radius: 5px;
+}
+
+.notice-actions {
+    margin-top: 26px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+/* 按钮（确认页 / 成功页共用） */
+.btn-ghost,
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 26px;
+    border-radius: 9px;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+
+.btn-ghost {
+    background: #fff;
+    color: var(--ink-2);
+    border: 1px solid var(--line);
+}
+
+.btn-ghost:hover {
+    border-color: var(--line-strong);
+    color: var(--ink);
+}
+
+.btn-primary {
+    background: var(--vermilion);
+    color: #fff;
+    border: 1px solid var(--vermilion);
+}
+
+.btn-primary:hover {
+    background: var(--vermilion-deep);
+    border-color: var(--vermilion-deep);
+    transform: translateY(-1px);
+}
+
+/* ===================== 安装成功页 ===================== */
+
+.success {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 46px 42px 40px;
+    text-align: center;
+}
+
+.success-seal {
+    width: 76px;
+    height: 76px;
+    margin: 0 auto 22px;
+    border-radius: 14px;
+    background: var(--jade);
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.85), 0 10px 24px rgba(31, 122, 99, 0.26);
+    transform: rotate(-6deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.success-seal svg {
+    width: 38px;
+    height: 38px;
+    stroke: #fff;
+    stroke-width: 3;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.success-title {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--ink);
+}
+
+.success-subtitle {
+    margin-top: 8px;
+    font-size: 14px;
+    color: var(--muted);
+}
+
+.info-card {
+    margin-top: 24px;
+    background: var(--card-warm);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 6px 20px;
+    text-align: left;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 13px 0;
+}
+
+.info-row:not(:last-child) {
+    border-bottom: 1px dashed var(--line-strong);
+}
+
+.info-label {
+    color: var(--muted);
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+.info-value {
+    color: var(--ink);
+    font-size: 13px;
+    font-weight: 500;
+    word-break: break-all;
     text-align: right;
 }
 
-/* 取消输入框自动填充的背景色 */
+.info-value a {
+    color: var(--jade);
+    text-decoration: none;
+}
+
+.info-value a:hover {
+    text-decoration: underline;
+}
+
+.warning-box {
+    margin-top: 20px;
+    background: var(--vermilion-soft);
+    border: 1px solid #ecb9af;
+    border-left: 4px solid var(--vermilion);
+    border-radius: 9px;
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 13px;
+    color: var(--vermilion-deep);
+    line-height: 1.6;
+}
+
+.warning-title {
+    font-weight: 700;
+    margin-right: 6px;
+}
+
+.btn-group {
+    margin-top: 24px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.btn-group .btn-ghost,
+.btn-group .btn-primary {
+    flex: 1;
+}
+
+/* 自动填充底色 */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -517,111 +683,89 @@ input:-webkit-autofill:active {
     transition: background-color 5000s ease-in-out 0s !important;
 }
 
-/* ==================== 响应式布局 ==================== */
-@media (max-width: 1024px) {
+/* 可见焦点 */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+    outline: 3px solid rgba(31, 122, 99, 0.35);
+    outline-offset: 2px;
+}
+
+/* ===================== 响应式 ===================== */
+
+@media (max-width: 900px) {
+    .cert-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cert-aside {
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+    }
+}
+
+@media (max-width: 600px) {
     body {
-        padding: 28px 20px;
+        padding: 26px 14px;
+    }
+
+    .masthead {
+        padding: 0 2px 14px;
+    }
+
+    .cert-head {
+        flex-direction: column;
         align-items: flex-start;
+        gap: 6px;
+        padding: 12px 18px;
     }
 
-    .install-shell {
-        grid-template-columns: 1fr;
+    .cert-aside {
+        padding: 26px 20px;
     }
 
-    .install-grid {
-        grid-template-columns: 1fr;
+    .aside-title {
+        font-size: 27px;
     }
 
-    .brand-panel {
-        order: 2;
-        max-height: none;
+    .seal {
+        width: 78px;
+        height: 78px;
+        top: 24px;
+        right: 18px;
     }
 
-    .form-panel {
-        order: 1;
+    .seal-mid {
+        font-size: 23px;
     }
 
-    .brand-panel {
-        min-height: auto;
-    }
-}
-
-@media (max-width: 768px) {
-    .form-panel {
-        padding: 24px;
+    .cert-body {
+        padding: 24px 20px 26px;
     }
 
-    .layui-form-label {
-        width: 100px !important;
-        padding: 10px 10px 10px 0 !important;
+    .notice,
+    .success {
+        padding: 34px 22px 30px;
     }
 
-    .layui-input-block {
-        margin-left: 115px !important;
+    .notice-actions,
+    .btn-group {
+        flex-direction: column;
     }
 
-    .bg-logo {
-        font-size: clamp(72px, 20vw, 160px);
-    }
-}
-
-@media (max-width: 576px) {
-    body {
-        padding: 22px 14px;
-    }
-
-    .brand-panel {
-        padding: 28px 22px;
-    }
-
-    .form-panel {
-        padding: 22px 18px 26px;
-    }
-
-    .layui-form-item {
-        margin-bottom: 16px;
-    }
-
-    .layui-form-label {
-        display: block;
-        width: 100% !important;
-        text-align: left;
-        padding: 0 0 8px 0 !important;
-        font-size: 14px !important;
-    }
-
-    .layui-input-block {
-        margin-left: 0 !important;
-    }
-
-    .layui-input {
-        height: 48px !important;
-        font-size: 16px !important;
-        border-radius: 10px !important;
-    }
-
-    .submit-wrap {
-        align-items: stretch;
-    }
-
-    .submit-note {
-        text-align: left;
-    }
-
-    .layui-btn {
+    .btn-ghost,
+    .btn-primary {
         width: 100%;
-        height: 50px !important;
-        border-radius: 12px !important;
-    }
-}
-
-@media (max-width: 420px) {
-    .form-title {
-        font-size: 24px;
     }
 
-    .brand-title {
-        font-size: 24px;
+    .info-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+    }
+
+    .info-value {
+        text-align: left;
     }
 }
 
