@@ -77,5 +77,5 @@ if ($action === 'auth') {
         Ret::error('授权码错误或请求授权失败，请重试');
     }
 
-    Ret::success();
+    Ret::success('授权成功');
 }

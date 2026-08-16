@@ -105,9 +105,7 @@ const MSGCODE_NO_UPUPDATE = 1002;
 const MSGCODE_SUCCESS = 200;
 
 const TT_LINE = [
-    ['name' => '官方线路', 'value' => 'https://emshop.ihehe.me/'],
-    ['name' => '备用线路', 'value' => 'http://154.44.8.63:10000/'],
-//    ['name' => '测试线路(无效)', 'value' => 'http://admin.em.cc/'],
+    ['name' => '官方线路', 'value' => 'https://ttshop.ihehe.me/'],
 ];
 $options_cache = $CACHE->readCache('options');
 define('CURRENT_LINE', empty($options_cache['tt_line']) || empty(TT_LINE[$options_cache['tt_line']]) ? 0 : $options_cache['tt_line']);

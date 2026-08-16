@@ -611,7 +611,7 @@ CREATE TABLE `{$db_prefix}link`  (
   `taxis` int(11) UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序序号',
   PRIMARY KEY (`id`) USING BTREE
 )" . $table_charset_sql . "
-INSERT INTO {$db_prefix}link (id, sitename, siteurl, icon, description, taxis) VALUES (1, 'TTSHOP', 'https://emshop.ihehe.me', '', 'TTSHOP官方主页', 0);
+INSERT INTO {$db_prefix}link (id, sitename, siteurl, icon, description, taxis) VALUES (1, 'TTSHOP', 'https://ttshop.ihehe.me/', '', 'TTSHOP官方主页', 0);
 
 DROP TABLE IF EXISTS `{$db_prefix}media_sort`;
 CREATE TABLE `{$db_prefix}media_sort`  (
@@ -1114,7 +1114,7 @@ CREATE TABLE `{$db_prefix}login_attempt`  (
 
     $show_warning = $env_em_env === 'develop' || ($env_em_env !== 'develop' && !@unlink('./install.php'));
 
-    $ttGatewayUrl = "https://emshop.ihehe.me/api/emshop.php?action=install_record";
+    $ttGatewayUrl = "https://ttshop.ihehe.me/api/emshop.php?action=install_record";
     $reqData = [
         "ip" => getServerIp(),
         "service_token" => SERVICE_TOKEN,
