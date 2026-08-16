@@ -1084,6 +1084,20 @@ CREATE TABLE `{$db_prefix}charge`  (
   `pay_time` bigint(16) NULL DEFAULT NULL,
   `pay_status` tinyint(1) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
+)" . $table_charset_sql . "
+
+DROP TABLE IF EXISTS `{$db_prefix}login_attempt`;
+CREATE TABLE `{$db_prefix}login_attempt`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `subject` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `fail_count` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `first_time` int(11) UNSIGNED NOT NULL DEFAULT 0,
+  `last_time` int(11) UNSIGNED NOT NULL DEFAULT 0,
+  `lock_until` int(11) UNSIGNED NOT NULL DEFAULT 0,
+  `lockouts` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `type_subject` (`type`,`subject`) USING BTREE
 )" . $table_charset_sql;
 
 

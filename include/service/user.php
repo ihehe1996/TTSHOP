@@ -86,6 +86,19 @@ class User {
         return true;
     }
 
+    // 无条件校验图形验证码（登录限流触发时强制使用，不依赖全局 login_code 开关）
+    static function checkLoginCodeForce($login_code) {
+        if (!isset($_SESSION)) {
+            session_start();
+        }
+        $session_code = isset($_SESSION['code']) ? $_SESSION['code'] : '';
+        unset($_SESSION['code']);
+        if (!$login_code || $login_code !== $session_code) {
+            return false;
+        }
+        return true;
+    }
+
     static function checkMailCode($mail_code) {
         if (!isset($_SESSION)) {
             session_start();

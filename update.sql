@@ -1,6 +1,19 @@
 # version 1.2.72
 ALTER TABLE `{PREFIX}authorization` CHANGE `emkey` `ttkey` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;
 UPDATE `{PREFIX}options` SET `option_name` = 'tt_line' WHERE `option_name` = 'em_line';
+CREATE TABLE `{db_prefix}login_attempt` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `subject` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `fail_count` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `first_time` int(11) UNSIGNED NOT NULL DEFAULT 0,
+  `last_time` int(11) UNSIGNED NOT NULL DEFAULT 0,
+  `lock_until` int(11) UNSIGNED NOT NULL DEFAULT 0,
+  `lockouts` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `type_subject` (`type`,`subject`) USING BTREE
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 
 # version 1.2.68
 ALTER TABLE `{db_prefix}order` ADD COLUMN `pwd` varchar(50) NULL COMMENT '订单密码';
