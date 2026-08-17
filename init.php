@@ -12,7 +12,7 @@ require_once TT_ROOT . '/include/lib/common.php';
 
 
 
-if (getenv('TT_ENV') === 'develop' || (defined('ENVIRONMENT') && ENVIRONMENT === 'develop')) {
+if (getenv('TT_ENV') === 'develop' || getenv('EM_ENV') === 'develop' || (defined('ENVIRONMENT') && ENVIRONMENT === 'develop')) {
     // 显示所有错误（包括警告、通知等）
     error_reporting(E_ALL);
 } else {
@@ -46,6 +46,10 @@ define('LEVEL', ISLOGIN === true ? $userData['level'] : -1); // 用户等级
 
 define('TT_URL', realUrl()); // 当前网址
 define('TT_DOMAIN', getDomain()); // 当前域名
+
+define('EM_URL', realUrl()); // 当前网址
+define('EM_DOMAIN', getDomain()); // 当前域名
+
 define('TIMESTAMP', time()); // 当前时间戳
 
 
@@ -60,6 +64,8 @@ if(isset($_COOKIE['TT_LOCAL'])){
 }
 // 每次访问都更新cookie过期时间
 setcookie('TT_LOCAL', TT_LOCAL, time() + 3600*24*365, '/');
+
+define('EM_LOCAL', TT_LOCAL); // 保留旧常量，兼容旧模板/插件
 
 
 
@@ -101,12 +107,16 @@ define('BLOG_TEMPLATE_PATH', TT_ROOT . '/content/blog/default/');
 define('COMMON_TEMPLATE_PATH', TT_ROOT . '/content/common/');
 
 const MSGCODE_TTKEY_INVALID = 1001;
+const MSGCODE_EMKEY_INVALID = 1001; // 保留旧常量，兼容旧模板/插件
 const MSGCODE_NO_UPUPDATE = 1002;
 const MSGCODE_SUCCESS = 200;
 
 const TT_LINE = [
     ['name' => '官方线路', 'value' => 'https://ttshop.ihehe.me/'],
 ];
+const EM_LINE = [
+    ['name' => '官方线路', 'value' => 'https://ttshop.ihehe.me/'],
+]; // 保留旧常量，兼容旧模板/插件
 $options_cache = $CACHE->readCache('options');
 define('CURRENT_LINE', empty($options_cache['tt_line']) || empty(TT_LINE[$options_cache['tt_line']]) ? 0 : $options_cache['tt_line']);
 

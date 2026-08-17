@@ -2,8 +2,10 @@
 
 class Option {
 
-    const TT_VERSION = '1.2.75';
-    const TT_VERSION_TIMESTAMP = 1275;
+    const TT_VERSION = '1.2.76';
+    const TT_VERSION_TIMESTAMP = 1276;
+    const EM_VERSION = '1.2.76';            // 保留旧常量，兼容旧模板/插件
+    const EM_VERSION_TIMESTAMP = 1276;      // 保留旧常量，兼容旧模板/插件
     const UPLOADFILE_PATH = '../content/uploadfile/';
     const UPLOADFILE_FULL_PATH = TT_ROOT . '/content/uploadfile/';
 
