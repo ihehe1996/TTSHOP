@@ -215,6 +215,58 @@ function ttCurl($url, $params = false, $ispost = 0, $header = false, $timeout = 
     return $response;
 }
 
+function emCurl($url, $params = false, $ispost = 0, $header = false, $timeout = 0) {
+    $protocol = substr($url, 0, 5);
+    $httpInfo = [];
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+    curl_setopt($ch, CURLOPT_USERAGENT, 'JuheData');
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 60);
+    if ($timeout > 0) {
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+    } else {
+        curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+    }
+
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+
+
+    if ($header) {
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+    }
+
+
+    if ($ispost) {
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+        curl_setopt($ch, CURLOPT_URL, $url);
+    } else {
+        if ($params) {
+            curl_setopt($ch, CURLOPT_URL, $url . '?' . $params);
+        } else {
+            curl_setopt($ch, CURLOPT_URL, $url);
+        }
+    }
+    if ('https' == $protocol) {
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+    }
+    $response = curl_exec($ch);
+    if ($response === false) {
+        //        echo "cURL Error: " . curl_error($ch);
+        return false;
+    }
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $httpInfo = array_merge($httpInfo, curl_getinfo($ch));
+
+    curl_close($ch);
+    // print_r($httpInfo);
+    return $response;
+}
+
 /**
  * 请求接口返回内容
  * @param string $url [请求的URL地址]
