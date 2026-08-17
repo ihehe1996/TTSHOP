@@ -1,6 +1,6 @@
-# version 1.2.72
-ALTER TABLE `{PREFIX}authorization` CHANGE `emkey` `ttkey` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;
-UPDATE `{PREFIX}options` SET `option_name` = 'tt_line' WHERE `option_name` = 'em_line';
+# version 1.2.75
+ALTER TABLE `{db_prefix}authorization` CHANGE `emkey` `ttkey` VARCHAR(32) NULL DEFAULT NULL;
+UPDATE `{db_prefix}options` SET `option_name` = 'tt_line' WHERE `option_name` = 'em_line';
 CREATE TABLE `{db_prefix}login_attempt` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
