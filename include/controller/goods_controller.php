@@ -6,7 +6,7 @@ class Goods_Controller {
     function display($params) {
         $options_cache = Option::getAll();
         extract($options_cache);
-        $sort_id = Input::getStrVar('sort_id');
+        $sort_id = Input::getIntVar('sort_id', 0);
         $keyword = Input::getStrVar('q');
 
         $goodsModel = new Goods_Model();

@@ -641,6 +641,7 @@ class Goods_Model {
     public function getGoodsForHome($user_id, $user_tier, $sort_id, $keyword){
 // echo 666;die;
         $where = " and station_id=0";
+        $sort_id = (int)$sort_id;
         if(!empty($keyword)){
             $where .= " and title like '%{$keyword}%'";
         }

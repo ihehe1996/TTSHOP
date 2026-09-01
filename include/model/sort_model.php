@@ -187,7 +187,7 @@ class Sort_Model {
      */
     function getChildren($sid) {
         $children = [];
-        $query = $this->db->query("SELECT * FROM $this->table WHERE pid = $sid");
+        $query = $this->db->query("SELECT * FROM $this->table WHERE pid = " . (int)$sid);
         while ($row = $this->db->fetch_array($query)) {
             $children[] = $row;
         }
