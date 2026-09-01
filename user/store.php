@@ -16,6 +16,7 @@ $Store_Model = new Store_Model();
 
 
 if ($action === 'install') {
+    Output::error('禁止上传');
     $source = isset($_POST['source']) ? trim($_POST['source']) : ''; // plugin/down/11
     $cdn_source = isset($_POST['cdn_source']) ? trim($_POST['cdn_source']) : '';
     $source_type = isset($_POST['type']) ? trim($_POST['type']) : '';

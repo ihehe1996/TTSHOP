@@ -6,6 +6,7 @@ require_once '../init.php';
 $action = Input::getStrVar('action');
 
 if(empty($action)){
+    Output::error('禁止上传');
     $Media_Model = new Media_Model();
     $ret = uploadCropImg();
     $file_id = $Media_Model->addMedia($ret['file_info']);

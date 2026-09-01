@@ -14,6 +14,7 @@ if (empty($action)) {
 }
 
 if ($action == 'upload_cover') {
+    Output::error('禁止上传');
     $Media_Model = new Media_Model();
     $ret = uploadCropImg();
     $Media_Model->addMedia($ret['file_info']);
