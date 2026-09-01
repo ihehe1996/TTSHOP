@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: 商品对接 【TTSHOP】
-Version: 1.1.1
+Version: 1.1.2
 Plugin URL:
 Description: 对接另一个 TTSHOP 系统的商品
 Author: 驳手
@@ -69,7 +69,7 @@ function goodsDeliverEm($goods, $order, $child_order){
     if ($skuIds === '') {
         $skuIds = '0';
     }
-    $skuIds = preg_replace('/[^0-9\\-]/', '', (string)$skuIds);
+    // $skuIds = preg_replace('/[^0-9\\-]/', '', (string)$skuIds);
     if ($skuIds === '') {
         $skuIds = '0';
     }
