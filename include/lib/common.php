@@ -1567,6 +1567,173 @@ function ttDirect($directUrl) {
  * @param string $url 返回地址
  * @param boolean $isAutoGo 是否自动返回 true false
  */
+function emMsg($msg, $url = 'javascript:history.back(-1);', $isAutoGo = false) {
+    $is404 = false;
+    if ($msg == '404') {
+        header("HTTP/1.1 404 Not Found");
+        $msg = '抱歉，你所请求的页面不存在！';
+        $is404 = true;
+    }
+
+    $iconSvg = $is404
+        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M16 16s-1.5-2-4-2-4 2-4 2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>'
+        : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>';
+
+    $autoRefreshMeta = $isAutoGo ? "<meta http-equiv=\"refresh\" content=\"2;url=$url\" />" : '';
+    $countdownHtml = $isAutoGo ? '<p class="countdown">页面将在 <span id="countdown">2</span> 秒后自动跳转...</p>' : '';
+    $countdownScript = $isAutoGo ? '<script>
+        let seconds = 2;
+        const countdownEl = document.getElementById("countdown");
+        setInterval(() => {
+            seconds--;
+            if (seconds >= 0 && countdownEl) countdownEl.textContent = seconds;
+        }, 1000);
+    </script>' : '';
+
+    echo <<<EOT
+<!doctype html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="applicable-device" content="pc,mobile">
+    {$autoRefreshMeta}
+    <title>提示信息</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #EDF2F1 0%, #E2E8E7 100%);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            padding: 20px;
+        }
+        .msg-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .msg-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #7BA89D 0%, #9DBEB5 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 36px;
+            font-weight: bold;
+        }
+        .msg-icon svg {
+            width: 32px;
+            height: 32px;
+        }
+        .msg-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+        .msg-content {
+            font-size: 15px;
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            word-break: break-all;
+        }
+        .msg-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 28px;
+            background: linear-gradient(135deg, #7BA89D 0%, #9DBEB5 100%);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(123, 168, 157, 0.3);
+        }
+        .msg-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(123, 168, 157, 0.4);
+        }
+        .msg-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+        .countdown {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-top: 16px;
+        }
+        .countdown span {
+            color: #7BA89D;
+            font-weight: 600;
+        }
+        @media (max-width: 480px) {
+            .msg-card {
+                padding: 30px 24px;
+            }
+            .msg-icon {
+                width: 56px;
+                height: 56px;
+            }
+            .msg-icon svg {
+                width: 28px;
+                height: 28px;
+            }
+            .msg-title {
+                font-size: 16px;
+            }
+            .msg-content {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="msg-card">
+        <div class="msg-icon">!</div>
+        <h1 class="msg-title">系统提示</h1>
+        <p class="msg-content">{$msg}</p>
+EOT;
+    if ($url != 'none') {
+        echo <<<EOT
+        <a href="{$url}" class="msg-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            返回
+        </a>
+EOT;
+    }
+    echo $countdownHtml;
+    echo <<<EOT
+    </div>
+    {$countdownScript}
+</body>
+</html>
+EOT;
+    exit;
+}
+
 function ttMsg($msg, $url = 'javascript:history.back(-1);', $isAutoGo = false) {
     $is404 = false;
     if ($msg == '404') {
