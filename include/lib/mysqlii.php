@@ -78,9 +78,11 @@ class MySqlii {
             ttMsg("MySQL缺少utf8mb4字符集，请升级到MySQL5.6或更高版本");
         }
         if (!$ignore_err && !$this->result) {
-            ttMsg("$sql<br /><br />error: " . $this->getErrNo() . ' , ' . $this->getError());
+            // 安全加固：不把 SQL 和错误细节回显给客户端（防信息泄露/结构枚举）
+            error_log("[DB ERROR] errno=" . $this->getErrNo() . ' error=' . $this->getError() . ' sql=' . $sql);
+            ttMsg("数据库操作失败，请稍后重试");
         } else {
-			 
+
             return $this->result;
         }
     }
@@ -170,18 +172,24 @@ class MySqlii {
     }
 
     public function add($table, $insert, $replace = false) {
-        $kItem = $dItem = [];
+        $field = $values = [];
         foreach ($insert as $key => $data) {
-            $kItem[] = $key;
-            $dItem[] = $data;
+            // 只允许合法列名，防止列名注入
+            if (!preg_match('/^[A-Za-z_][A-Za-z0-9_]*$/', $key)) continue;
+            $field[] = $key;
+            if ($data === null) {
+                $values[] = 'NULL';
+            } elseif (is_bool($data)) {
+                $values[] = $data ? '1' : '0';
+            } elseif (is_int($data) || is_float($data)) {
+                $values[] = $data;                                  // 数值不加引号
+            } else {
+                $values[] = "'" . $this->conn->real_escape_string((string)$data) . "'"; // 转义
+            }
         }
-        $field = implode(',', $kItem);
-        $values = "'" . implode("','", $dItem) . "'";
-        if($replace){
-            $sql = "REPLACE INTO " . DB_PREFIX . $table . " ($field) VALUES ($values)";
-        }else{
-            $sql = "INSERT INTO " . DB_PREFIX . $table . " ($field) VALUES ($values)";
-        }
+        if (empty($field)) return false;
+        $sql = ($replace ? "REPLACE INTO " : "INSERT INTO ") . DB_PREFIX . $table
+             . " (" . implode(',', $field) . ") VALUES (" . implode(',', $values) . ")";
 
         $this->query($sql);
 
@@ -190,7 +198,7 @@ class MySqlii {
     public function del($table, $ids){
         $ids = explode(',', $ids);
         foreach($ids as $val){
-            $this->query("delete from " . DB_PREFIX . "{$table} where id = {$val}");
+            $this->query("delete from " . DB_PREFIX . "{$table} where id = " . (int)$val);
         }
     }
     public function update($table, $update, $where = [], $whereType = 'AND') {
@@ -208,15 +216,15 @@ class MySqlii {
 
             // 值处理：字符串转义（适配MySQL，避免单引号等特殊字符导致SQL语法错误）
             if (is_string($value)) {
-                // 调用数据库连接的转义方法（如mysqli_real_escape_string），这里假设已封装为 escape 方法
-//                $value = $this->escape($value);
+                $value = $this->conn->real_escape_string($value); // 转义
+                $setItem[] = "`{$field}` = '{$value}'";
             } elseif (is_null($value)) {
-                $value = 'NULL'; // 空值处理为NULL（不加引号）
+                $setItem[] = "`{$field}` = NULL";
             } elseif (is_bool($value)) {
-                $value = $value ? 1 : 0; // 布尔值转int
+                $setItem[] = "`{$field}` = " . ($value ? 1 : 0);
+            } else {
+                $setItem[] = "`{$field}` = {$value}"; // 数值直接保留
             }
-            // 数字类型直接保留（无需加引号）
-            $setItem[] = "`{$field}` = " . (is_string($value) ? "'{$value}'" : $value);
         }
 
         if (empty($setItem)) {
@@ -235,15 +243,16 @@ class MySqlii {
 
                 // 值处理（同更新字段的值处理逻辑）
                 if (is_string($value)) {
-                    $value = $value;
+                    $value = $this->conn->real_escape_string($value);
+                    $whereItem[] = "`{$field}` = '{$value}'";
                 } elseif (is_null($value)) {
                     $whereItem[] = "`{$field}` IS NULL";
                     continue; // 跳过后续拼接，直接添加 IS NULL 条件
                 } elseif (is_bool($value)) {
-                    $value = $value ? 1 : 0;
+                    $whereItem[] = "`{$field}` = " . ($value ? 1 : 0);
+                } else {
+                    $whereItem[] = "`{$field}` = {$value}";
                 }
-
-                $whereItem[] = "`{$field}` = " . (is_string($value) ? "'{$value}'" : $value);
             }
 
             if (!empty($whereItem)) {

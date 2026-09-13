@@ -249,6 +249,7 @@ class Order_Model {
         }
         $data = [];
         foreach($specification_ids as $val){
+            $val = (int)$val;
             $sql = "SELECT * FROM " . DB_PREFIX . "specification where id={$val}";
             $res = $this->db->query($sql);
             $row = $this->db->fetch_array($res);
@@ -267,6 +268,7 @@ class Order_Model {
         $specification = explode('-', $specification);
         $data = [];
         foreach($specification as $val){
+            $val = (int)$val;
             $sql = "SELECT * FROM " . DB_PREFIX . "spec_option where id={$val}";
             $res = $this->db->query($sql);
             $row = $this->db->fetch_array($res);
@@ -279,6 +281,7 @@ class Order_Model {
      * 删除订单
      */
     function delete($id){
+        $id = (int)$id;
         $timestamp = time();
         $sql = "UPDATE " . DB_PREFIX . "order set delete_time={$timestamp} where id=$id";
         $this->db->query($sql);
@@ -288,6 +291,7 @@ class Order_Model {
      * 通过订单号获取主订单信息
      */
     public function getOrderInfo($out_trade_no) {
+        $out_trade_no = $this->db->escape_string($out_trade_no);
         $sql = "SELECT * FROM $this->table WHERE out_trade_no='{$out_trade_no}'";
         $res = $this->db->query($sql);
         $row = $this->db->fetch_array($res);
@@ -299,6 +303,7 @@ class Order_Model {
      * 通过ID获取主订单信息
      */
     public function getOrderInfoId($id) {
+        $id = (int)$id;
         $sql = "SELECT * FROM $this->table WHERE id={$id}";
         $res = $this->db->query($sql);
         $row = $this->db->fetch_array($res);
@@ -308,6 +313,7 @@ class Order_Model {
      * 获取子订单信息
      */
     public function getOrderList($order_id) {
+        $order_id = (int)$order_id;
         $prefix = DB_PREFIX;
         $sql = <<<sql
                     SELECT 
@@ -443,9 +449,16 @@ sql;
      * 更新订单的支付状态
      */
 	public function updateOrderPayStatus($order_id, $data){
+		$order_id = (int)$order_id;
 		$Item = [];
 		foreach ($data as $key => $var) {
-		    $Item[] = "$key=$var";
+		    if (!preg_match('/^[A-Za-z_][A-Za-z0-9_]*$/', $key)) continue; // 只允许合法列名，防止列名注入
+		    if (is_numeric($var)) {
+		        $Item[] = "$key=$var";
+		    } else {
+		        $var = $this->db->escape_string($var);
+		        $Item[] = "$key='$var'";
+		    }
 		}
 		$upStr = implode(',', $Item);
 		return $this->db->execute("UPDATE $this->table SET $upStr WHERE id = {$order_id}");
@@ -458,6 +471,7 @@ sql;
         $out_trade_no = $this->db->escape_string($out_trade_no);
         $Item = [];
         foreach ($data as $key => $var) {
+            if (!preg_match('/^[A-Za-z_][A-Za-z0-9_]*$/', $key)) continue; // 只允许合法列名，防止列名注入
             if (is_numeric($var)) {
                 $Item[] = "$key=$var";
             } else {
@@ -478,23 +492,23 @@ sql;
         $w = "";
         $prefix = DB_PREFIX;
         if(!empty($where['email_username'])){
-            $email_username = $where['email_username'];
+            $email_username = $this->db->escape_string($where['email_username']);
             $w .= " and (u.email like  CONCAT('%', '{$email_username}', '%') or u.username like  CONCAT('%', '{$email_username}', '%') or u.nickname like  CONCAT('%', '{$email_username}', '%') or u.tel like  CONCAT('%', '{$email_username}', '%'))";
         }
 
         if(!empty($where['out_trade_no'])){
-            $out_trade_no = $where['out_trade_no'];
+            $out_trade_no = $this->db->escape_string($where['out_trade_no']);
             $w .= " and (o.out_trade_no like  CONCAT('%', '{$out_trade_no}', '%') or o.up_no like  CONCAT('%', '{$out_trade_no}', '%'))";
         }
         if(!empty($where['station_id'])){
-            $w .= " and o.station_id={$where['station_id']}";
+            $w .= " and o.station_id=" . (int)$where['station_id'];
         }
         if(!empty($where['goods_title'])){
-            $goods_title = $where['goods_title'];
+            $goods_title = $this->db->escape_string($where['goods_title']);
             $w .= " and g.title like  CONCAT('%', '{$goods_title}', '%')";
         }
         if(!empty($where['client_ip'])){
-            $client_ip = $where['client_ip'];
+            $client_ip = $this->db->escape_string($where['client_ip']);
             $w .= " and o.client_ip like  CONCAT('%', '{$client_ip}', '%')";
         }
         if(isset($where['pay_status']) && $where['pay_status'] !== ''){
@@ -535,23 +549,23 @@ sql;
         $w = "";
         $prefix = DB_PREFIX;
         if(!empty($where['email_username'])){
-            $email_username = $where['email_username'];
+            $email_username = $this->db->escape_string($where['email_username']);
             $w .= " and (u.email like  CONCAT('%', '{$email_username}', '%') or u.username like  CONCAT('%', '{$email_username}', '%') or u.nickname like  CONCAT('%', '{$email_username}', '%') or u.tel like  CONCAT('%', '{$email_username}', '%'))";
         }
 
         if(!empty($where['out_trade_no'])){
-            $out_trade_no = $where['out_trade_no'];
+            $out_trade_no = $this->db->escape_string($where['out_trade_no']);
             $w .= " and (o.out_trade_no like  CONCAT('%', '{$out_trade_no}', '%') or o.up_no like  CONCAT('%', '{$out_trade_no}', '%'))";
         }
         if(!empty($where['station_id'])){
-            $w .= " and o.station_id={$where['station_id']}";
+            $w .= " and o.station_id=" . (int)$where['station_id'];
         }
         if(!empty($where['goods_title'])){
-            $goods_title = $where['goods_title'];
+            $goods_title = $this->db->escape_string($where['goods_title']);
             $w .= " and g.title like  CONCAT('%', '{$goods_title}', '%')";
         }
         if(!empty($where['client_ip'])){
-            $client_ip = $where['client_ip'];
+            $client_ip = $this->db->escape_string($where['client_ip']);
             $w .= " and o.client_ip like  CONCAT('%', '{$client_ip}', '%')";
         }
         if(isset($where['pay_status']) && $where['pay_status'] !== ''){
@@ -587,26 +601,28 @@ sql;
      * 获取订单列表
      */
     public function getOrderForAdmin($start, $limit, $where) {
+        $start = (int)$start;
+        $limit = (int)$limit;
 
         $prefix = DB_PREFIX;
 
         $w = "";
 
         if(!empty($where['email_username'])){
-            $email_username = $where['email_username'];
+            $email_username = $this->db->escape_string($where['email_username']);
             $w .= " and (u.email like  CONCAT('%', '{$email_username}', '%') or u.username like  CONCAT('%', '{$email_username}', '%') or u.nickname like  CONCAT('%', '{$email_username}', '%') or u.tel like  CONCAT('%', '{$email_username}', '%'))";
         }
 
         if(!empty($where['out_trade_no'])){
-            $out_trade_no = $where['out_trade_no'];
+            $out_trade_no = $this->db->escape_string($where['out_trade_no']);
             $w .= " and (o.out_trade_no like  CONCAT('%', '{$out_trade_no}', '%') or o.up_no like  CONCAT('%', '{$out_trade_no}', '%'))";
         }
         if(!empty($where['goods_title'])){
-            $goods_title = $where['goods_title'];
+            $goods_title = $this->db->escape_string($where['goods_title']);
             $w .= " and g.title like  CONCAT('%', '{$goods_title}', '%')";
         }
         if(!empty($where['client_ip'])){
-            $client_ip = $where['client_ip'];
+            $client_ip = $this->db->escape_string($where['client_ip']);
             $w .= " and o.client_ip like  CONCAT('%', '{$client_ip}', '%')";
         }
 
@@ -629,7 +645,7 @@ sql;
 
 
         if(!empty($where['station_id'])){
-            $w .= " and o.station_id={$where['station_id']}";
+            $w .= " and o.station_id=" . (int)$where['station_id'];
         }
 
 
@@ -738,6 +754,7 @@ sql;
 
 
     public function getUserOrderForHome($page = 1) {
+        $page = (int)$page;
         $perpage_num = Option::get('admin_article_perpage_num');
         $perpage_num = $perpage_num ? $perpage_num : 10;
 
@@ -848,6 +865,8 @@ sql;
     public function getOrdersByVisitorInfo($contact = '', $password = '', $page = 1, $pageSize = 10) {
         $contact = $this->db->escape_string($contact);
         $password = $this->db->escape_string($password);
+        $page = (int)$page;
+        $pageSize = (int)$pageSize;
 
         $conditions = [];
 
@@ -929,6 +948,7 @@ sql;
      * 游客查询订单 - 订单总数量
      */
     public function getYoukeOrderCount($pwd) {
+        $pwd = $this->db->escape_string($pwd);
         $prefix = DB_PREFIX;
         $sql = "SELECT count(o.id) AS total FROM $this->table as o LEFT JOIN {$prefix}order_list as ol on o.id=ol.order_id where delete_time is null and (contact = '{$pwd}' or up_no='{$pwd}' or out_trade_no='{$pwd}' or ol.attach_user LIKE '%:\"{$pwd}\"%')";
         $data = $this->db->once_fetch_array($sql);
@@ -946,6 +966,8 @@ sql;
         }
 
         $keyword = trim((string)$keyword);
+        $page = (int)$page;
+        $pageNum = (int)$pageNum;
         if ($keyword === '') {
             return [];
         }
@@ -992,7 +1014,7 @@ sql;
      */
     public function addCommission($order, $order_child, $user, $goods){
         Log::info('开始执行分站返佣方法');
-        $stationData = $this->db->once_fetch_array("select id, user_id, money, goods_premium from {$this->db_prefix}station where id={$order['station_id']}");
+        $stationData = $this->db->once_fetch_array("select id, user_id, money, goods_premium from {$this->db_prefix}station where id=" . (int)$order['station_id']);
         $order_child = $order_child[0];
 
         $stationPremium = (isset($stationData['goods_premium']) && is_numeric($stationData['goods_premium'])) ? (string)$stationData['goods_premium'] : '0.00';
@@ -1003,7 +1025,7 @@ sql;
         $station_admin = $userModel->getOneUser($stationData['user_id']);
 
 
-        $sql = "select * from {$this->db_prefix}product_sku where goods_id={$order_child['goods_id']} and option_ids='{$order_child['sku']}'";
+        $sql = "select * from {$this->db_prefix}product_sku where goods_id=" . (int)$order_child['goods_id'] . " and option_ids='" . $this->db->escape_string($order_child['sku']) . "'";
         $product_sku = $this->db->once_fetch_array($sql);
         $station_admin_price = $product_sku['user_price'] / 100 * $order_child['quantity'];
 
@@ -1038,7 +1060,8 @@ sql;
      * 获取登录用户的订单数量
      */
     public function getOrderCountForHome($user_id, $status = null, $search = null){
-        $sql = "SELECT count(*) as total FROM {$this->db_prefix}order o 
+        $user_id = (int)$user_id;
+        $sql = "SELECT count(*) as total FROM {$this->db_prefix}order o
                 LEFT JOIN {$this->db_prefix}order_list ol ON o.id = ol.order_id
                 LEFT JOIN {$this->db_prefix}goods g ON ol.goods_id = g.id
                 WHERE o.user_id = {$user_id} and o.delete_time is null";
@@ -1067,6 +1090,9 @@ sql;
      * 获取登录用户的订单
      */
     public function getOrderForHome($user_id, $page = 1, $pageSize = 10, $status = null, $search = null){
+        $user_id = (int)$user_id;
+        $page = (int)$page;
+        $pageSize = (int)$pageSize;
         $offset = ($page - 1) * $pageSize;
         $prefix = DB_PREFIX;
         
@@ -1183,6 +1209,8 @@ sql;
      */
     public function getOrdersByLocal($local, $page = 1, $pageSize = 10) {
         $local = $this->db->escape_string($local);
+        $page = (int)$page;
+        $pageSize = (int)$pageSize;
         $offset = ($page - 1) * $pageSize;
         $prefix = DB_PREFIX;
 
