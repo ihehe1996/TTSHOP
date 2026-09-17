@@ -10,14 +10,17 @@ $post = [
     'goods_id' => $goods_id,
     'type' => Input::postStrVar('type'),
     'sort_id' => Input::postStrVar('sort_id', -1),
-    'title' => Input::postStrVar('title'),
+    // Input::postStrVar 里的 addslashes 是给裸拼 SQL 的调用点用的，而这里最终走
+    // $db->add()/$db->update() 写入，数据层还会再转义一次，反斜杠会被当成真实数据存进库
+    // （富文本的 <img src="..."> 会存成 src=\"...\"，图片就坏了），所以先 stripslashes 还原。
+    'title' => stripslashes(Input::postStrVar('title')),
     'cover' => Input::postStrVar('cover'),
     'is_sku' => Input::postStrVar('is_sku'),
     'group_id' => Input::postIntVar('group_id', 0),
     'skus' => Input::postStrArray('skus', []),
-    'des' => Input::postStrVar('des'),
-    'content' => Input::postStrVar('content'),
-    'pay_content' => Input::postStrVar('pay_content'),
+    'des' => stripslashes(Input::postStrVar('des')),
+    'content' => stripslashes(Input::postStrVar('content')),
+    'pay_content' => stripslashes(Input::postStrVar('pay_content')),
     'is_on_shelf' => Input::postIntVar('is_on_shelf', 0),
     'index_top' => Input::postIntVar('index_top', 0),
     'sort_top' => Input::postIntVar('sort_top', 0),
