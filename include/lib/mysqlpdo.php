@@ -188,10 +188,40 @@ class Mysqlpdo {
     }
 
     /**
-     *  Escapes special characters
+     * 转义 SQL 语句中的特殊字符（防 SQL 注入）
+     *
+     * 原先这里只做了 trim()，等于**完全没有转义**，与 MySqlii / imysql 的
+     * real_escape_string 行为不一致：在没有 mysqli 扩展、回退到 PDO 的服务器上，
+     * 全站 `$db->escape_string($x)` 后再拼接 SQL 的写法（数十处）都会失去保护。
+     *
+     * PDO 没有"只转义、不加引号"的对应方法，因此用 quote() 转义后剥掉它自动
+     * 补上的首尾单引号——本项目的调用方都自行给值加引号（如 `field='{$val}'`），
+     * 保留引号会变成 `field=''val''` 而报语法错误。
      */
     function escape_string($sql) {
-        return trim($sql);
+        if (is_array($sql) || is_object($sql)) {
+            return '';
+        }
+
+        if (is_null($sql)) {
+            return '';
+        }
+
+        $sql = (string)$sql;
+
+        try {
+            $quoted = $this->conn->quote($sql);
+        } catch (\PDOException $e) {
+            $quoted = false;
+        }
+
+        if ($quoted === false || $quoted === null) {
+            // quote() 失败（连接已断开等）时退化为 addslashes：
+            // 连接字符集固定为 utf8mb4（见构造函数），不存在多字节绕过问题。
+            $quoted = "'" . addslashes($sql) . "'";
+        }
+
+        return substr($quoted, 1, -1);
     }
 
     /**
