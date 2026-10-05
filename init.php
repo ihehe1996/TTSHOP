@@ -124,9 +124,12 @@ $options_cache = $CACHE->readCache('options');
  * 地址必须跟着程序版本走，否则用户在线更新之后，配置里残留的旧地址会继续生效；
  * 配置里存的是开关不是地址，改不出第三个地址来。
  */
+
+// d($options_cache['dev_mode']);die;
 $tt_line_url = isset($options_cache['dev_mode']) && $options_cache['dev_mode'] == 'y'
-    ? 'https://bs.ihehe.me/'
-    : 'http://127.0.0.1:3000/';
+    ? 'http://127.0.0.1:3000/'
+    : 'https://bs.ihehe.me/';
+
 
 define('TT_LICENSE_SERVER_URL', $tt_line_url);
 
