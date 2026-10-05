@@ -121,6 +121,17 @@ class LicenseClient
     }
 
     /**
+     * 接口完整地址：`{服务器}/api/open/v1/tt/{path}`。
+     *
+     * ⚠️ 拼地址**只走这里**：`downloadUrl()` 原来手拼过一次，漏了 `api/open/v1/tt/`
+     * 这一段，服务端只会回 404 —— 表现就是商店里点安装永远「下载超时或没有权限」。
+     */
+    private static function apiUrl($path)
+    {
+        return self::baseUrl() . 'api/open/v1/tt/' . $path;
+    }
+
+    /**
      * 安装包的下载地址（**只是拼地址**，不在这里下）。
      *
      * 服务端返回的 `package_url` 是**根相对路径**，前面拼上服务器地址才是完整地址。
@@ -129,7 +140,7 @@ class LicenseClient
      */
     public static function downloadUrl($appId, $domain, $code)
     {
-        return self::baseUrl() . 'app/' . (int) $appId . '/download'
+        return self::apiUrl('app/' . (int) $appId . '/download')
             . '?' . http_build_query(['domain' => $domain, 'code' => $code]);
     }
 
@@ -168,7 +179,7 @@ class LicenseClient
      */
     private static function post($path, $payload, $timeout, $maxAttempts)
     {
-        $url = self::baseUrl() . 'api/open/v1/tt/' . $path;
+        $url = self::apiUrl($path);
         $body = json_encode($payload, JSON_UNESCAPED_UNICODE);
         $headers = ['Content-Type: application/json'];
 

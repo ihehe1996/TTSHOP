@@ -172,7 +172,7 @@ if ($action === 'install') {
         LicenseService::effectiveHost(),
         (string) getMyTtKey()
     );
-
+// echo $url;die;
     $temp_file = ttFetchFile($url);
 
     
