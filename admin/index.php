@@ -197,62 +197,38 @@ if($action == 'update_line'){
 }
 
 /**
- * 获取广告位等信息
+ * 获取广告位等信息（首页仪表盘那份）。
+ *
+ * 2026-10-05 改走新协议：三个旧 action（`admin_index` / `get_em_buy_info` /
+ * `get_download_url`）原来各查各的旧接口，现在都走**同一条** `base-data`，
+ * 由 `BaseDataService` 翻成**老形状**（视图那边一个字不用改 —— 为什么必须翻、
+ * 哪两个字段名对不上，见 `include/service/basedataservice.php` 的文件头）。
  */
 if($action == 'admin_index'){
-    $default_token = '89Z78A9S7D8F9G7H8J9K8L7M9N8B7V8C9X8Z76T54R32E1WQ';
-    $service_token = (defined('SERVICE_TOKEN') && SERVICE_TOKEN) ? SERVICE_TOKEN : $default_token;
-    $data = [
-        'service_token' => $service_token,
-    ];
-    $url = TT_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=admin_index';
-
-//    echo $url;die;
-
-    $res = ttCurl($url, $data, true, [], 10);
-    if(empty($res)){
-        Log::warning('本次更新服务连通失败，如多次遇到此问题，建议更换其他线路重试！');
+    try {
+        Ret::success('', BaseDataService::forDashboard());
+    } catch (RuntimeException $e) {
+        Log::warning('本次更新服务连通失败：' . $e->getMessage());
         Ret::error('网络请求超时，请重试或更换其他线路');
     }
-    $res = json_decode($res, true);
-    if($res['code'] == 200){
-        Ret::success('', $res['data']);
-    }else{
-        Ret::error($res['msg']);
-    }
-    
 }
 
 /**
- * 获取购买授权信息
+ * 获取购买授权信息（页脚那个「获取正版授权」弹窗用）
  */
 if($action == 'get_em_buy_info'){
-    $default_token = '89Z78A9S7D8F9G7H8J9K8L7M9N8B7V8C9X8Z76T54R32E1WQ';
-    $service_token = (defined('SERVICE_TOKEN') && SERVICE_TOKEN) ? SERVICE_TOKEN : $default_token;
-    $data = [
-        'service_token' => $service_token
-    ];
-    $res = ttCurl(TT_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=get_em_buy_info', $data, true, [], 10);
-    // var_dump($res);die;
-    if(empty($res)){
+    try {
+        Ret::success('success', BaseDataService::forBuyInfo());
+    } catch (RuntimeException $e) {
         Ret::error('网络请求超时，请重试或更换其他线路');
     }
-    $res = json_decode($res, true);
-    
-    Ret::success('success', $res['data']);
 }
 
 if($action == 'get_download_url'){
-    $default_token = '89Z78A9S7D8F9G7H8J9K8L7M9N8B7V8C9X8Z76T54R32E1WQ';
-    $service_token = (defined('SERVICE_TOKEN') && SERVICE_TOKEN) ? SERVICE_TOKEN : $default_token;
-    $data = [
-        'service_token' => $service_token
-    ];
-    $res = ttCurl(TT_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=get_em_buy_info', $data, true, [], 10);
-    if(empty($res)){
+    try {
+        Ret::success('success', BaseDataService::forBuyInfo(true));
+    } catch (RuntimeException $e) {
         Ret::error('网络请求超时，请重试或更换其他线路');
     }
-    $res = json_decode($res, true);
-    Ret::success('success', $res['data']);
 }
 

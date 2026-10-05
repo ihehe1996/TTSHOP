@@ -109,6 +109,27 @@
         text-decoration: underline;
     }
 
+    /*
+     * 次级按钮（2026-10-05 加的「重新校验 / 解绑」用）。
+     * 比主按钮轻一档：白底细描边 —— 这两颗是「出问题了才点」的操作，
+     * 不该和「进入官方网站」抢视觉重量。
+     */
+    .btn-ghost {
+        flex: 1;
+        height: 44px;
+        background: #fff;
+        color: #4b5563;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all .2s ease;
+    }
+    .btn-ghost:hover {
+        border-color: #4C7D71;
+        color: #4C7D71;
+    }
+
     .link-group {
         margin-top: 25px;
         text-align: center;
@@ -212,6 +233,12 @@
             </form>
 
         <?php else: ?>
+            <!--
+                已授权态**也要**这个 token：下面「重新校验 / 解绑」两颗按钮要带上它
+                （这个分支里没有那个激活表单，token 得单独给一个）
+            -->
+            <input type="hidden" id="token" value="<?= LoginAuth::genToken() ?>"/>
+
             <!-- 已授权信息 -->
             <div class="form-header">
                 <div class="form-title">TTSHOP 正版授权</div>
@@ -229,18 +256,38 @@
                 </div>
                 <div class="info-row">
                     <span class="info-label">授权域名</span>
-                    <span class="info-val"><?= getTopHost() ?></span>
+                    <!-- ⚠️ 显示**服务端记的那个**（激活时它归一过），不是本机 Host：
+                         两边不一致时你才知道问题出在哪（换过域名、加了 www. 之类） -->
+                    <span class="info-val"><?= $license_host !== '' ? htmlspecialchars($license_host) : getTopHost() ?></span>
                 </div>
                 <div class="info-row">
                     <span class="info-label">授权密钥</span>
                     <span class="info-val"><?= substr($ttkey, 0, 8) . '****' . substr($ttkey, -4) ?></span>
                 </div>
+                <?php if (!empty($license_aliases)) : ?>
+                    <div class="info-row">
+                        <span class="info-label">别名域名</span>
+                        <span class="info-val"><?= htmlspecialchars(implode('、', $license_aliases)) ?></span>
+                    </div>
+                <?php endif ?>
             </div>
 
             <div style="margin-top: 30px;">
                 <a href="<?= TT_LINE[0]['value'] ?>" target="_blank" class="btn-action">
                     进入官方网站
                 </a>
+
+                <!--
+                    两颗「出问题才点」的按钮（2026-10-05 加的）：
+                    · 重新校验 —— 怀疑码作废了 / 刚换过域名，让它去服务端问一次
+                    · 解绑     —— 要把这台机器摘下来换绑别的域名（**会先问服务端**，
+                                  远程没成功就绝不动本地）
+                -->
+                <div style="margin-top: 14px; display: flex; gap: 12px;">
+                    <button type="button" class="btn-ghost" id="btn-revalidate">重新校验</button>
+                    <button type="button" class="btn-ghost" id="btn-unbind">解绑这个域名</button>
+                </div>
+
                 <div style="margin-top: 15px; font-size: 13px; color: #999; text-align: center; line-height: 1.6;">
                     请妥善保管好您的授权码，如您要更换授权域名，请前往官方网站操作。
                 </div>
@@ -294,7 +341,63 @@
                     layer.close(loadIndex);
                 },
             });
-            return false; 
+            return false;
+        });
+
+        /*
+         * 「重新校验 / 解绑」（2026-10-05 加的）。
+         *
+         * ⚠️ 两个都**必须带上 token** —— 后端那三个 action 现在都走
+         * `LoginAuth::checkToken()`（后台别处一直是这么做的，这个文件原来漏了）。
+         * 解绑那颗还要二次确认：解绑之后这台机器就未激活了。
+         */
+        function postAction(action, confirmText, successText) {
+            var doPost = function () {
+                var loadIndex = layer.load(2, {shade: 0.1});
+
+                $.ajax({
+                    type: "POST",
+                    url: "?action=" + action,
+                    data: { token: $("#token").val() },
+                    dataType: "json",
+                    success: function (e) {
+                        if (e.code == 200) {
+                            layer.msg(successText, {icon: 1, time: 1200}, function () {
+                                location.reload();
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    },
+                    error: function () {
+                        layer.msg('连接服务器失败，请稍后重试');
+                    },
+                    complete: function () {
+                        layer.close(loadIndex);
+                    },
+                });
+            };
+
+            if (confirmText) {
+                layer.confirm(confirmText, {btn: ['确定', '取消'], icon: 3}, function (index) {
+                    layer.close(index);
+                    doPost();
+                });
+            } else {
+                doPost();
+            }
+        }
+
+        $('#btn-revalidate').on('click', function () {
+            postAction('revalidate', null, '授权正常');
+        });
+
+        $('#btn-unbind').on('click', function () {
+            postAction(
+                'unbind',
+                '解绑之后这台机器就回到「未激活」，要用同一个授权码重新激活才能再用。<br>确定解绑吗？',
+                '已解绑'
+            );
         });
     })
 </script>

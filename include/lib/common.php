@@ -1,14 +1,25 @@
 <?php
 
 
+/**
+ * 这台机器的授权码（没激活就是 null）。
+ *
+ * ⚠️ 2026-10-05 改了来源：原来是查 `authorization` 表（按域名），现在是
+ * `LicenseService` 那一份本地状态（`options` 里的 `license_ttkey`）——
+ * 授权那套整体从「旧表 + 旧协议」搬到了「键值 + 新协议」，见
+ * `include/service/licenseservice.php` 的文件头。
+ *
+ * 老站点不用管：`LicenseService::currentLicense()` 里有一段**一次性迁移**，
+ * 会把旧表里本域名那一行搬过来（老客户不该被迫重新激活）。
+ */
 function getMyTtKey(){
-    $db = Database::getInstance();
-    $db_prefix = DB_PREFIX;
-    $domain = getTopHost();
-    $sql = "select * from {$db_prefix}authorization where domain='{$domain}'";
-    $res = $db->once_fetch_array($sql);
-    $ttkey =  empty($res) ? null : $res['ttkey'];
-    return $ttkey;
+    $license = LicenseService::currentLicense();
+
+    if ($license === null || $license['ttkey'] === '') {
+        return null;
+    }
+
+    return $license['ttkey'];
 }
 
 function isEmail($str) {

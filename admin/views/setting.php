@@ -184,6 +184,16 @@
             </div>
 
 
+            <div class="layui-form-item">
+                <label class="layui-form-label">开发模式</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="dev_mode" value="y" lay-skin="switch" lay-text="开启|关闭" <?= $conf_dev_mode ?>>
+                </div>
+                <div class="layui-form-mid layui-word-aux" style="display:block; margin-top:6px;">
+                    关闭：走本地线路 http://127.0.0.1:3000/ ；开启：走开发线路 https://bs.ihehe.me/
+                </div>
+            </div>
+
             <input name="token" id="token" value="<?= LoginAuth::genToken() ?>" type="hidden"/>
             <div class="layui-form-item">
                 <div class="layui-input-block">

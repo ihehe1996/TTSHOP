@@ -13,16 +13,23 @@ require_once 'globals.php';
 $Store_Model = new Store_Model();
 
 
-$plugin_type_arr = [
-    ['id' => 0, 'title' => '全部插件'],
-    ['id' => 1, 'title' => '支付方式'],
-    ['id' => 7, 'title' => '商品类型扩展'],
-    ['id' => 2, 'title' => '系统通知'],
-    ['id' => 3, 'title' => '页面美化'],
-    ['id' => 4, 'title' => '系统扩展'],
-    ['id' => 6, 'title' => '客服组件'],
-    ['id' => 5, 'title' => '未归类'],
-];
+/*
+ * 插件分类（商店那一排筛选）。
+ *
+ * ⚠️ 2026-10-05 改成**以服务端为准**：原来这里硬编了一串分类
+ * （支付方式 / 系统通知 / 页面美化……），那是**老服务端**的字典。
+ * 新后台的分类在 `bs_tt_app_category` 里、由站长自己维护，两边的 id 和名字
+ * 都对不上 —— 硬编着用的话，**点任何一个分类都筛不出东西**（后端拿这个 id
+ * 去查它自己的分类表）。
+ *
+ * 取不到分类（连不上 / 还没配）就只剩「全部插件」那一项：筛选没了，
+ * 但列表照常能用（`categories()` 吞掉异常返回空，见那个方法）。
+ */
+$plugin_type_arr = [['id' => 0, 'title' => '全部插件']];
+
+foreach (Store_Model::categories() as $categoryRow) {
+    $plugin_type_arr[] = ['id' => $categoryRow['id'], 'title' => $categoryRow['title']];
+}
 
 
 
@@ -148,19 +155,24 @@ if ($action === 'install') {
     $plugin_id = Input::postStrVar('plugin_id');
     $source_type = Input::postStrVar('type');
 
+    /*
+     * ⚠️ 2026-10-05 起这道本地判定**只问「本机激活了没有」**：
+     * 「买过这一款没有」由**服务端的下载接口**判（它会 400），客户端这边判不了、
+     * 也拦不住谁 —— 见 `include/lib/register.php` 里 `verifyDownload` 那段注释。
+     */
     $r = Register::verifyDownload($plugin_id);
 
-    
-    if($r == -1){
-        Ret::error('官方验证接口请求失败，请重试或更换其他线路');
+    if ($r == 2) {
+        Ret::error('您当前未激活，请先到「正版授权」页激活后再安装');
     }
 
-    if($r == 2){
-        Ret::error('您当前未购买过此插件，禁止安装');
-    }
+    /* 新的下载地址（付费应用由服务端那两道门把着：有效授权 + 买过这一款）*/
+    $url = LicenseClient::downloadUrl(
+        (int) $plugin_id,
+        LicenseService::effectiveHost(),
+        (string) getMyTtKey()
+    );
 
-    $url = TT_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=downloadPlugin&host=' . getTopHost() . '&plugin_id=' . $plugin_id;
-    // echo $url;die;
     $temp_file = ttFetchFile($url);
 
     
@@ -189,6 +201,51 @@ if ($action === 'install') {
         default:
             output::error('安装失败，不是有效的安装包');
     }
+}
+
+/**
+ * 下单（商店里点「立即购买」）。
+ *
+ * 老流程是一颗**链接**直接跳到服务端的购买页
+ * （`api/emshop.php?action=buy&ttkey=…&plugin=…`）—— 那个页面已经不在了。
+ * 新协议是**先开一张单**再跳收款页：`POST /api/open/v1/tt/order` 回 `pay_url`，
+ * 我们把它交给前端在新标签里打开。
+ *
+ * ⚠️ **金额不由我们说**：服务端按这个客户端端的授权档位算（至尊 = 0，
+ * 那种情况界面上根本不会出现「购买」按钮，见视图里 `my_price == 0` 那个分支）。
+ */
+if ($action === 'create_order') {
+    LoginAuth::checkToken();
+
+    $appId = Input::postIntVar('app_id');
+
+    if ($appId <= 0) {
+        Ret::error('请指定要购买的应用');
+    }
+
+    try {
+        $order = LicenseClient::createOrder(
+            (string) getMyTtKey(),
+            LicenseService::effectiveHost(),
+            $appId
+        );
+    } catch (RuntimeException $e) {
+        /* 服务端那句人话直接给用户（「下单需要有效授权…」这种）*/
+        Ret::error($e->getMessage());
+    }
+
+    if (empty($order['pay_url'])) {
+        Ret::error('下单成功但没拿到收款地址，请联系官方');
+    }
+
+    /*
+     * ⚠️ 收款页在**服务端**那个域名下，不是本机的 —— 所以用
+     * `LicenseClient::absolute()` 拼服务端地址，别拼成自己站。
+     */
+    Ret::success('', [
+        'pay_url'  => LicenseClient::absolute($order['pay_url']),
+        'order_no' => isset($order['order_no']) ? (string) $order['order_no'] : '',
+    ]);
 }
 
 function storeHandleData($apps){

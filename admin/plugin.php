@@ -36,7 +36,7 @@ if ($action == 'index') {
     output::data($plugins, count($plugins));
 }
 
-// 检测插件更新
+// 检测插件更新（2026-10-05 改走新协议，见 include/service/appupdateservice.php）
 if ($action == 'checkUpdates') {
     $Plugin_Model = new Plugin_Model();
     $plugins = $Plugin_Model->getPlugins($filter);
@@ -44,44 +44,35 @@ if ($action == 'checkUpdates') {
     $check = [];
     foreach($plugins as $val){
         $check[] = [
-            'name' => $val['Plugin'],
-            'version' => $val['Version']
+            'name_en' => $val['Plugin'],   // 服务端认的是**目录名**（那是它的唯一标识）
+            'version' => $val['Version'],
         ];
     }
 
-    $ttkey = getMyTtKey();
-    $post_data = [
-        'ttkey' => $ttkey,
-        'apps'  => json_encode($check),
-    ];
-    $res = ttCurl(
-        TT_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=is_plugin_upgrade', 
-        http_build_query($post_data), 1, [], 10
-    );
-    $res = json_decode($res, 1);
-    if($res['code'] == 200){
-        $update_data = $res['data'];
-        $result = [];
-        foreach($plugins as $key => $val){
-            $hasUpdate = 0;
-            $pluginId = 0;
-            foreach($update_data as $v){
-                if($val['Plugin'] == $v['name']){
-                    $hasUpdate = 1;
-                    $pluginId = $v['id'];
-                    break;
-                }
-            }
-            $result[] = [
-                'plugin' => $val['Plugin'],
-                'update' => $hasUpdate,
-                'id' => $pluginId
-            ];
-        }
-        output::data($result, count($result));
-    } else {
-        output::data([], 0);
+    try {
+        $updates = AppUpdateService::checkInstalled($check);
+    } catch (RuntimeException $e) {
+        /*
+         * ⚠️ **查不上就如实说**。旧代码在这里 `output::data([], 0)` ——
+         * 界面上就是「全部已是最新」，那是在骗人（实际根本没查上）。
+         */
+        output::error('查不到更新：' . $e->getMessage());
+        return;
     }
+
+    $result = [];
+    foreach($plugins as $val){
+        $row = AppUpdateService::updateOf($updates, $val['Plugin']);
+
+        $result[] = [
+            'plugin' => $val['Plugin'],
+            'update' => $row === null ? 0 : 1,
+            /* 这个 id 是**服务端那个应用的 id**，升级时拿它拼下载地址 */
+            'id' => $row === null ? 0 : (int) $row['app_id'],
+        ];
+    }
+
+    output::data($result, count($result));
 }
 
 if($action == 'switch'){
@@ -165,10 +156,22 @@ if ($action === 'upgrade') {
         output::error('当前程序未授权，无法更新！');
     }
 
-    $url = TT_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=downloadPlugin&host=' . getTopHost() . '&plugin_id=' . $plugin_id;
-    // echo $url;die;
+    /*
+     * 新协议的下载地址（2026-10-05 换的）。`$plugin_id` 现在就是**服务端那个
+     * 应用的 id**（`checkUpdates` 里从 `app_id` 来的）。
+     *
+     * ⚠️ 那两个查询参数是**身份**：付费应用服务端要「有效授权 + 买过这一款」
+     * 两道门，下不来时它回 400（`ttFetchFile` 见非 200 就返回 false），
+     * 下面那句「未购买该插件或更新失败」正是这个意思。
+     */
+    $url = LicenseClient::downloadUrl(
+        (int) $plugin_id,
+        LicenseService::effectiveHost(),
+        (string) getMyTtKey()
+    );
+
     $temp_file = ttFetchFile($url);
-    // var_dump($temp_file);die;
+
     if (!$temp_file) {
         output::error('未购买该插件或更新失败！');
     }

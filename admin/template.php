@@ -43,45 +43,44 @@ if($action == 'index'){
     output::data($list, count($list));
 }
 
+// 检测模板更新（2026-10-05 改走新协议，和插件那边共用 AppUpdateService）
 if($action == 'checkUpdates'){
     $list = $Template_Model->getTemplates();
-    $ttkey = getMyTtKey();
-    $post_data = [
-        'ttkey' => $ttkey,
-        'apps'  => [],
-    ];
+
+    $check = [];
     foreach($list as $key => $val){
-        $post_data['apps'][] = [
-            'name' => $val['tplfile'],
-            'version' => $val['version']
+        $check[] = [
+            'name_en' => $val['tplfile'],   // 服务端认的是**目录名**（它的唯一标识）
+            'version' => $val['version'],
         ];
     }
-    $res = ttCurl(TT_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=is_plugin_upgrade',
-     http_build_query($post_data), 1, [], 10);
-    $res = json_decode($res, 1);
-    if($res['code'] == 200){
-        $update_data = $res['data'];
+
+    try {
+        $updates = AppUpdateService::checkInstalled($check);
+    } catch (RuntimeException $e) {
+        /* ⚠️ 查不上就如实说（旧的写法是当「全部已是最新」，那是在骗人）*/
+        output::error('查不到更新：' . $e->getMessage());
+        return;
     }
-    
+
     $result = [];
     foreach($list as $key => $val){
+        $row = AppUpdateService::updateOf($updates, $val['tplfile']);
+
+        /* ⚠️ 这里的 update 是**字符串 y / n**（视图那边是按它判的），
+           别顺手改成插件的 0 / 1 —— 两页的写法本来就不一样 */
         $template_info = [
             'tplfile' => $val['tplfile'],
-            'update' => 'n',
+            'update' => $row === null ? 'n' : 'y',
         ];
-        
-        if(isset($update_data)){
-            foreach($update_data as $k => $v){
-                if($v['name'] == $val['tplfile']){
-                    $template_info['update'] = 'y';
-                    $template_info['id'] = $v['id'];
-                    break;
-                }
-            }
+
+        if ($row !== null) {
+            $template_info['id'] = (int) $row['app_id'];
         }
+
         $result[] = $template_info;
     }
-    
+
     output::data($result, count($result));
 }
 
@@ -136,7 +135,13 @@ if ($action === 'upgrade') {
     if (!Register::isRegLocal()) {
         Ret::error('未授权版本无法更新');
     }
-    $url = TT_LINE[CURRENT_LINE]['value'] . 'api/emshop.php?action=downloadPlugin&host=' . getTopHost() . '&plugin_id=' . $plugin_id;
+    /* 新协议的下载地址（2026-10-05 换的）：`$plugin_id` 就是服务端那个应用的 id */
+    $url = LicenseClient::downloadUrl(
+        (int) $plugin_id,
+        LicenseService::effectiveHost(),
+        (string) getMyTtKey()
+    );
+
     $temp_file = ttFetchFile($url);
     if (!$temp_file) {
         Ret::error('更新包下载失败');

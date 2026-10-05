@@ -466,7 +466,12 @@ layui.use(['laypage', 'layer'], function(){
             } else if (item.is_buy === 'y' && item.reg_type > 0) {
                 actionBtn = '<button class="layui-btn btn-install layui-btn-green" data-action="install" data-id="' + item.id + '" data-type="' + item.type + '" data-name="' + item.name + '"><i class="layui-icon layui-icon-download-circle"></i> 立即安装</button>';
             } else if (item.is_buy === 'n' && item.my_price > 0 && item.reg_type > 0) {
-                actionBtn = '<a href="<?= TT_LINE[0]['value'] ?>api/emshop.php?action=buy&ttkey=<?= $ttkey ?>&plugin=' + item.id + '" target="_blank" class="layui-btn btn-buy layui-btn-blue">' + item.my_price + ' 立即购买</a>';
+                /*
+                 * 2026-10-05 改的：原来是**一颗链接**直接跳到服务端的购买页
+                 * （`api/emshop.php?action=buy&ttkey=…&plugin=…`），那个页面
+                 * 已经不在了。现在点它先去开一张单、再跳收款页（见下面那个事件）。
+                 */
+                actionBtn = '<button class="layui-btn btn-buy layui-btn-blue" data-action="buy" data-id="' + item.id + '" data-name="' + item.name + '"><i class="layui-icon layui-icon-cart"></i> ' + item.my_price + ' 立即购买</button>';
             } else if (item.my_price == 0) {
                 actionBtn = '<button class="layui-btn btn-install layui-btn-green" data-action="install" data-id="' + item.id + '" data-type="' + item.type + '" data-name="' + item.name + '"><i class="layui-icon layui-icon-download-circle"></i> 免费安装</button>';
             }
@@ -561,6 +566,55 @@ layui.use(['laypage', 'layer'], function(){
                 $btn.prop('disabled', false).html('<i class="layui-icon layui-icon-download-circle"></i> 重试');
                 layer.alert(err.responseJSON ? err.responseJSON.msg : '安装失败');
             }
+        });
+    });
+
+    /*
+     * 购买事件（2026-10-05 加的）。
+     *
+     * 老流程是一颗链接直接跳服务端的购买页；现在是**先开单、再跳收款页**：
+     * 后端 `?action=create_order` 拿到 `pay_url`，我们在新标签里打开它。
+     * 金额是服务端按这个客户端的档位算的（接口上没有金额入参）。
+     */
+    $(document).on('click', '[data-action="buy"]', function() {
+        var $btn = $(this);
+        var id = $btn.data('id');
+        var name = $btn.data('name') || '这个应用';
+
+        layer.confirm('确定购买「' + name + '」吗？<br>接下来会打开收款页，付完款就能安装了。', {
+            btn: ['去付款', '取消'],
+            icon: 3,
+            title: '确认购买'
+        }, function(index) {
+            layer.close(index);
+
+            var loadIndex = layer.load(2);
+            $btn.prop('disabled', true);
+
+            $.ajax({
+                url: './store.php?action=create_order',
+                type: 'POST',
+                dataType: 'json',
+                data: { app_id: id, token: '<?= LoginAuth::genToken() ?>' },
+                success: function(e) {
+                    layer.close(loadIndex);
+                    $btn.prop('disabled', false);
+
+                    if (e.code === 400) {
+                        return layer.msg(e.msg, {icon: 2});
+                    }
+
+                    /* 新标签打开收款页（本窗口留在商店里，付完回来刷新就能装） */
+                    window.open(e.data.pay_url, '_blank');
+
+                    layer.msg('已开出订单，请在打开的页面里完成付款', {icon: 1, time: 3000});
+                },
+                error: function(err) {
+                    layer.close(loadIndex);
+                    $btn.prop('disabled', false);
+                    layer.alert(err.responseJSON ? err.responseJSON.msg : '下单失败，请稍后重试');
+                }
+            });
         });
     });
 

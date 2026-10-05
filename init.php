@@ -111,13 +111,32 @@ const MSGCODE_EMKEY_INVALID = 1001; // 保留旧常量，兼容旧模板/插件
 const MSGCODE_NO_UPUPDATE = 1002;
 const MSGCODE_SUCCESS = 200;
 
-const TT_LINE = [
-    ['name' => '官方线路', 'value' => 'https://ttshop.ihehe.me/'],
-];
-const EM_LINE = [
-    ['name' => '官方线路', 'value' => 'https://ttshop.ihehe.me/'],
-]; // 保留旧常量，兼容旧模板/插件
 $options_cache = $CACHE->readCache('options');
+
+/*
+ * 授权服务器（**新协议** `/api/open/v1/tt/...`），授权 / 应用商店 / 在线更新都走这条线路。
+ *
+ * 由后台「系统管理 → 基础设置 → 开发模式」决定（option `dev_mode`，默认关闭）：
+ *   关闭 → 本地线路 `http://127.0.0.1:3000/`
+ *   开启 → 开发线路 `https://bs.ihehe.me/`
+ *
+ * ⚠️ **两个地址写死在这里、只从配置读开关**（和 EMSHOP 那边同一个理由）：
+ * 地址必须跟着程序版本走，否则用户在线更新之后，配置里残留的旧地址会继续生效；
+ * 配置里存的是开关不是地址，改不出第三个地址来。
+ */
+$tt_line_url = isset($options_cache['dev_mode']) && $options_cache['dev_mode'] == 'y'
+    ? 'https://bs.ihehe.me/'
+    : 'http://127.0.0.1:3000/';
+
+define('TT_LICENSE_SERVER_URL', $tt_line_url);
+
+define('TT_LINE', [
+    ['name' => '官方线路', 'value' => $tt_line_url],
+]);
+define('EM_LINE', [
+    ['name' => '官方线路', 'value' => $tt_line_url],
+]); // 保留旧常量，兼容旧模板/插件
+
 define('CURRENT_LINE', empty($options_cache['tt_line']) || empty(TT_LINE[$options_cache['tt_line']]) ? 0 : $options_cache['tt_line']);
 
 $active_plugins = Option::get('active_plugins');

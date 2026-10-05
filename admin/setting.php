@@ -21,6 +21,8 @@ if (empty($action)) {
     $conf_isthumbnail = $isthumbnail == 'y' ? 'checked="checked"' : '';
     $conf_comment_paging = $comment_paging == 'y' ? 'checked="checked"' : '';
     $conf_detect_url = $detect_url == 'y' ? 'checked="checked"' : '';
+    $dev_mode = empty($dev_mode) ? 'n' : $dev_mode; // 开发模式，默认关闭
+    $conf_dev_mode = $dev_mode == 'y' ? 'checked="checked"' : '';
 
     $ex1 = $ex2 = $ex3 = $ex4 = '';
     if ($rss_output_fulltext == 'y') {
@@ -218,6 +220,7 @@ if ($action == 'save') {
         'att_imgmaxw'         => Input::postIntVar('att_imgmaxw', 420),
         'att_imgmaxh'         => Input::postIntVar('att_imgmaxh', 460),
         'detect_url'          => Input::postStrVar('detect_url', 'n'),
+        'dev_mode'            => Input::postStrVar('dev_mode', 'n'),
         'admin_article_perpage_num'   => Input::postIntVar('admin_article_perpage_num'),
         'panel_menu_title'    => Input::postStrVar('panel_menu_title'),
         'admin_icon'          => Input::postStrVar('admin_icon'),
