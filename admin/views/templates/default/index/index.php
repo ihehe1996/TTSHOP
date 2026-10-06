@@ -952,6 +952,27 @@
         return shouldUseRawHtml ? String(richContent) : '';
     };
 
+    /*
+     * 把 HTML 里自带的 <a> 拆掉，只保留里面的文字/图片。
+     * 广告的 content 里通常自己写了个推广链接，但外层还要再套一层 <a> 让整条
+     * 都能点 —— 嵌套 <a> 是非法 HTML，浏览器解析时会走 adoption agency 把外层
+     * 提前闭合，后面的节点被甩到 .notice-list 里变成独立 flex 子项，整块
+     * 「推荐服务」就错位了。所以内层链接必须先拆平。
+     */
+    const unwrapAnchors = function(html) {
+        var holder = document.createElement('div');
+        holder.innerHTML = String(html || '');
+        var links = holder.querySelectorAll('a');
+        for (var i = links.length - 1; i >= 0; i--) {
+            var link = links[i];
+            while (link.firstChild) {
+                link.parentNode.insertBefore(link.firstChild, link);
+            }
+            link.parentNode.removeChild(link);
+        }
+        return holder.innerHTML;
+    };
+
     const setElementHtml = function(container, html) {
         if (!container) return;
         container.innerHTML = String(html || '');
@@ -976,8 +997,8 @@
         item = item || {};
         var tag = item.tag || item.badge || item.label || item.type_name || '';
         var tagClass = item.tag_class || item.tagClass || '';
-        var tagBg = item.tag_bg || item.tagBg || item.badge_bg || item.badgeBg || '';
-        var tagColor = item.tag_color || item.tagColor || item.badge_color || item.badgeColor || '';
+        var tagBg = item.tag_bg || item.tagBg || item.badge_bg || item.badgeBg || item.label_bg || item.labelBg || '';
+        var tagColor = item.tag_color || item.tagColor || item.badge_color || item.badgeColor || item.label_color || item.labelColor || '';
         var title = item.title || item.text || item.desc || item.name || '';
         var content = item.content || item.body || item.code || '';
         var html = getItemRawHtml(item, title, content);
@@ -992,6 +1013,13 @@
         var titleHtml = isRichContent ? html : escapeHtml(title || content);
         var tagHtml = tag ? ('<span class="notice-tag' + tagClassAttr + '"' + tagStyle + '>' + escapeHtml(tag) + '</span>') : '';
         var urlSafe = safeUrl(url);
+        /*
+         * 有链接时整条（含富文本内容）都用 <a> 包起来，所以富文本自带的 <a>
+         * 先拆平，避免嵌套；没有链接就维持原样，内容里的链接还能点。
+         */
+        if (urlSafe && isRichContent) {
+            titleHtml = unwrapAnchors(titleHtml);
+        }
         var contentTag = isRichContent ? 'div' : 'span';
         var itemTag = urlSafe ? 'a' : (isRichContent ? 'div' : 'span');
         var contentHtml = '<' + contentTag + ' class="' + titleClass + '">' + (titleHtml || '') + '</' + contentTag + '>';

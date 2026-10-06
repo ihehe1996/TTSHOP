@@ -2570,6 +2570,38 @@ body {
     -webkit-box-orient: initial;
     overflow: visible;
     white-space: normal;
+    line-height: 1.6;
+    /* 富文本是服务端直接给的 HTML，长链接/长单词不能撑破卡片 */
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+/* 富文本里块级标签自带的 margin 会把这一行撑得比左边「推荐」标签高出一截 */
+.notice-title--rich p,
+.notice-title--rich ul,
+.notice-title--rich ol,
+.notice-title--rich blockquote,
+.notice-title--rich pre,
+.notice-title--rich h1,
+.notice-title--rich h2,
+.notice-title--rich h3,
+.notice-title--rich h4,
+.notice-title--rich h5,
+.notice-title--rich h6 {
+    margin: 0;
+}
+
+.notice-title--rich > *:first-child {
+    margin-top: 0;
+}
+
+.notice-title--rich > *:last-child {
+    margin-bottom: 0;
+}
+
+.notice-title--rich a {
+    color: var(--admin-primary-strong);
+    text-decoration: underline;
 }
 
 .notice-title--rich img,
