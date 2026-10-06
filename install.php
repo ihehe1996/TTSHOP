@@ -1124,7 +1124,7 @@ CREATE TABLE `{$db_prefix}login_attempt`  (
         "service_token" => SERVICE_TOKEN,
         "version" => Option::TT_VERSION
     ];
-    ttCurl($ttGatewayUrl, http_build_query($reqData), true, false, 5);
+    // ttCurl($ttGatewayUrl, http_build_query($reqData), true, false, 5);
 
     Log::info('TTSHOP系统安装完成');
 
